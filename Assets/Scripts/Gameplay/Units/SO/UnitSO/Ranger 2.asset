@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd9b355280ff1ea40874f23fb931751d, type: 3}
+  m_Name: Ranger 2
+  m_EditorClassIdentifier: 
+  unitName: Ranger 2
+  unitIcon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  UnitHome: 0
+  UnitType: 1
+  health: 350
+  physicAttack: 6
+  physicDefence: 6
+  magicAttack: 2
+  magicDefence: 3
+  speedAttack: 1
+  size: 1
+  level: 2
+  UnitAbility: 4
+  attackTool: {fileID: 0}
+  coinsPrice: 887
+  foodPrice: 875
+  woodPrice: 557
+  ironPrice: 86
+  stonePrice: 66
+  magicPrice: 767

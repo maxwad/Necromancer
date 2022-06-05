@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd9b355280ff1ea40874f23fb931751d, type: 3}
+  m_Name: Meg 1
+  m_EditorClassIdentifier: 
+  unitName: Meg 1
+  unitIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  UnitHome: 0
+  UnitType: 2
+  health: 111
+  physicAttack: 2
+  physicDefence: 2
+  magicAttack: 4
+  magicDefence: 4
+  speedAttack: 1
+  size: 1
+  level: 1
+  UnitAbility: 6
+  attackTool: {fileID: 0}
+  coinsPrice: 67
+  foodPrice: 876
+  woodPrice: 753
+  ironPrice: 87
+  stonePrice: 678
+  magicPrice: 57

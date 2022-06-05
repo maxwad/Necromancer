@@ -40,6 +40,7 @@ public class AudioManager : MonoBehaviour
         {
             instanse = this;
             DontDestroyOnLoad(instanse);
+
             library = GetComponent<SoundLibrary>();
             musicSource = musicSourceObj.GetComponent<AudioSource>();
             effectsAudioSource = effectsAudioSourceObj.GetComponent<AudioSource>();

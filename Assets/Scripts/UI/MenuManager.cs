@@ -61,7 +61,7 @@ public class MenuManager : MonoBehaviour
         else
         {
             isMainMenu = false;
-            AudioManager.instanse.PlayMusic(SoundLibrary.instance.levelTheme);
+            //AudioManager.instanse.PlayMusic(SoundLibrary.instance.levelTheme);
         }
 
         SelectedMenuButton("FirstButton");
