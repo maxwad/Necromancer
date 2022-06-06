@@ -13,12 +13,14 @@ public class UnitManager : MonoBehaviour
     public List<Unit> allCurrentBaseUnitsByTypes = new List<Unit>();
     public List<Unit> allCurrentBoostUnitsByTypes = new List<Unit>();
 
-    public UnitBoostManager boostManager;
+    private UnitBoostManager boostManager;
 
     private void Awake()
     {
+        boostManager = GlobalStorage.instance.boostManager.GetComponent<UnitBoostManager>();
+
         //формируем список начальных уровней всех юнитов
-        foreach(UnitsTypes item in Enum.GetValues(typeof(UnitsTypes)))
+        foreach (UnitsTypes item in Enum.GetValues(typeof(UnitsTypes)))
         {
             currentLevelOfUnitsDict.Add(item, 1);
         }
@@ -51,21 +53,28 @@ public class UnitManager : MonoBehaviour
 
     }
 
-    public List<Unit> GetUnitsForPlayersArmy(UnitsTypes[] playersArmy)
+    public Unit[] GetUnitsForPlayersArmy(UnitsTypes[] playersArmy)
     {
-        List<Unit> army = new List<Unit>();
+        Unit[] army = new Unit[4];
 
-        for (int i = 0; i < playersArmy.Length; i++)
+        for (int i = 0; i < army.Length; i++)
         {
-            foreach (var item in allCurrentBoostUnitsByTypes)
+            if (i < playersArmy.Length)
             {
-                if (playersArmy[i] == item.UnitType)
+                foreach (var item in allCurrentBoostUnitsByTypes)
                 {
-                    army.Add(item);
-                    Debug.Log(item.unitName + " was boosted...");
+                    if (playersArmy[i] == item.UnitType)
+                    {
+                        army[i] = item;
+                        Debug.Log(item.unitName + " got to the army");
+                    }
                 }
             }
-        }
+            else
+            {
+                army[i] = null;
+            }
+        }              
         
         return army;
     }

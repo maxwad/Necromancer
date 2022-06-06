@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Kosar 1
   m_EditorClassIdentifier: 
   unitName: Kosar 1
-  unitIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  unitIcon: {fileID: 21300000, guid: 1418d4264d263344eabb5aab433b3bd7, type: 3}
   UnitHome: 0
   UnitType: 0
   health: 200

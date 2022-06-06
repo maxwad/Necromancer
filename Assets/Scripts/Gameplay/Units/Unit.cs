@@ -62,5 +62,8 @@ public class Unit
         stonePrice = unitSO.stonePrice;
         magicPrice = unitSO.magicPrice;
 
+
+        quantity = 1;
+        commonHealth = health;
     }
 }

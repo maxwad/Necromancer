@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skeleton 2
   m_EditorClassIdentifier: 
   unitName: Skeleton 2
-  unitIcon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  unitIcon: {fileID: 21300000, guid: 99aee00bdac063147babedfb0ccce484, type: 3}
   UnitHome: 0
   UnitType: 3
   health: 234
