@@ -15,7 +15,7 @@ public class UnitManager : MonoBehaviour
 
     private UnitBoostManager boostManager;
 
-    private void Awake()
+    private void Start()
     {
         boostManager = GlobalStorage.instance.boostManager.GetComponent<UnitBoostManager>();
 

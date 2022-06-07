@@ -7,6 +7,7 @@ using static NameManager;
 public class UnitSO : ScriptableObject
 {
     public string unitName;
+    public GameObject unitGO;
     public Sprite unitIcon;
 
     //battle parameters

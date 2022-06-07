@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (GlobalStorage.instance.isGlobalMode == true && Input.GetKeyDown(KeyCode.I))
         {
             if (playersArmyWindow.activeInHierarchy == true)
                 playersArmyWindow.GetComponent<PlayersArmyWindow>().CloseWindow();

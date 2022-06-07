@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PlayersArmyWindow : MonoBehaviour
 {
@@ -11,20 +10,16 @@ public class PlayersArmyWindow : MonoBehaviour
     public Button fightButton;
     public Button closeWindow;
 
-    private void OnEnable()
+    private void Awake()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1)
-            fightButton.onClick.AddListener(ToTheBattle);
-        else
-            fightButton.onClick.AddListener(ToTheGlobalMap);
-
+        fightButton.onClick.AddListener(ToTheBattle);       
         closeWindow.onClick.AddListener(CloseWindow);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         fightButton.onClick.RemoveListener(ToTheBattle);
-        fightButton.onClick.RemoveListener(ToTheGlobalMap);
+        //fightButton.onClick.RemoveListener(ToTheGlobalMap);
         closeWindow.onClick.RemoveListener(CloseWindow);
     }
 
@@ -38,24 +33,25 @@ public class PlayersArmyWindow : MonoBehaviour
 
     private void ToTheBattle()
     {
-        Debug.Log("Start MORTAL COMBAT!");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        fightButton.onClick.RemoveListener(ToTheBattle);
+        //fightButton.onClick.AddListener(ToTheGlobalMap);
+        
+        GlobalStorage.instance.battleManager.GetComponent<BattleManager>().InitializeBattle(null);
         CloseWindow();
     }
 
-    private void ToTheGlobalMap()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-        Debug.Log("Back to the map!");
-        CloseWindow();
-    }
+    //private void ToTheGlobalMap()
+    //{
+    //    fightButton.onClick.RemoveListener(ToTheGlobalMap);
+    //    fightButton.onClick.AddListener(ToTheBattle);
+
+    //    CloseWindow();
+    //}
 
     public void CloseWindow()
     {      
         for (int i = 0; i < armySlots.Length; i++)
-        {
             armySlots[i].ResetSelecting();
-        }
 
         gameObject.SetActive(false);
     }

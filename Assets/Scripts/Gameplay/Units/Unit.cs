@@ -6,6 +6,7 @@ using static NameManager;
 public class Unit
 {
     public string unitName;
+    public GameObject unitGO;
     public Sprite unitIcon;
 
     //battle parameters
@@ -37,6 +38,7 @@ public class Unit
     public Unit(UnitSO unitSO)
     {
         unitName = unitSO.unitName;
+        unitGO   = unitSO.unitGO;
         unitIcon = unitSO.unitIcon;
 
         UnitHome = unitSO.UnitHome;

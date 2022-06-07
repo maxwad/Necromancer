@@ -18,16 +18,11 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
-        backlight = GetComponent<Image>();
-        StartCoroutine(GetArmy());
+        backlight = GetComponent<Image>();        
     }
 
-    //this coroutine is nessesary for load data!
-    private IEnumerator GetArmy()
+    private void Start()
     {
-        while (GlobalStorage.instance == null)
-            yield return null;
-
         playersArmy = GlobalStorage.instance.player.GetComponent<PlayersArmy>();
     }
 
@@ -46,7 +41,7 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
             quantity.text = null;
         }
 
-       GetComponent<Image>().enabled = false;    
+        backlight.enabled = false;    
     }
 
     public void OnPointerClick(PointerEventData eventData)
