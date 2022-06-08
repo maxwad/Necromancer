@@ -17,20 +17,35 @@ public class UnitManager : MonoBehaviour
 
     private void Start()
     {
-        boostManager = GlobalStorage.instance.boostManager.GetComponent<UnitBoostManager>();
+        boostManager = GlobalStorage.instance.boostManager;
 
+        StartCreatingPlayersArmy();
+    }
+
+    private void StartCreatingPlayersArmy()
+    {
+        GetCurrentLevelOfUnits();
+        GetAllUnitsBase();
+    }
+
+    private void GetCurrentLevelOfUnits()
+    {
         //формируем список начальных уровней всех юнитов
         foreach (UnitsTypes item in Enum.GetValues(typeof(UnitsTypes)))
-        {
             currentLevelOfUnitsDict.Add(item, 1);
-        }
-        
+    }
+
+    private void GetAllUnitsBase()
+    {
         //переводим все скриптеблќбджекты в дикт и получаем ¬—≈ юниты базовых параметров
         foreach (UnitSO item in allUnitsSO)
-        {
             allUnitsBase.Add(new Unit(item));
-        }
 
+        GetAllCurrentBaseUnitsByTypes();
+    }
+
+    private void GetAllCurrentBaseUnitsByTypes()
+    {
         //формируем список из юнитов (по одному каждого типа)
         foreach (UnitsTypes itemType in Enum.GetValues(typeof(UnitsTypes)))
         {
@@ -39,18 +54,19 @@ public class UnitManager : MonoBehaviour
                 if (itemUnit.UnitType == itemType && itemUnit.level == 1)
                 {
                     allCurrentBaseUnitsByTypes.Add(itemUnit);
-                    Debug.Log(itemUnit.unitName + " was created...");
                     break;
                 }
             }
         }
 
-        foreach (var item in allCurrentBaseUnitsByTypes)
-        {            
-            allCurrentBoostUnitsByTypes.Add(boostManager.AddBonusStatsToUnit(item));
-            Debug.Log(item.unitName + " was boosted...");
-        }      
+        GetAllCurrentBoostUnitsByTypes();
+    }
 
+    private void GetAllCurrentBoostUnitsByTypes()
+    {
+        //накладываем эффекты на все базовые юниты
+        foreach (var item in allCurrentBaseUnitsByTypes)
+            allCurrentBoostUnitsByTypes.Add(boostManager.AddBonusStatsToUnit(item));
     }
 
     public Unit[] GetUnitsForPlayersArmy(UnitsTypes[] playersArmy)

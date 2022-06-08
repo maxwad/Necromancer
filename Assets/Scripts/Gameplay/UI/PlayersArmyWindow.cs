@@ -5,22 +5,36 @@ using UnityEngine.UI;
 
 public class PlayersArmyWindow : MonoBehaviour
 {
-    public ArmySlot[] armySlots;
+    private Unit[] playersArmy;
+    [SerializeField] private GameObject playerArmyUI;  
+    [SerializeField] private ArmySlot[] armySlots;
 
-    public Button fightButton;
-    public Button closeWindow;
+    [SerializeField] private Button fightButton;
+    [SerializeField] private Button closeWindow;
+
+    [HideInInspector] public bool isWindowOpened = false;
 
     private void Awake()
     {
         fightButton.onClick.AddListener(ToTheBattle);       
-        closeWindow.onClick.AddListener(CloseWindow);
+        closeWindow.onClick.AddListener(CloseWindow);        
+    }
+
+    private void Start()
+    {
+        EventManager.PlayersArmyIsReady += SetArmy;
     }
 
     private void OnDestroy()
     {
         fightButton.onClick.RemoveListener(ToTheBattle);
-        //fightButton.onClick.RemoveListener(ToTheGlobalMap);
         closeWindow.onClick.RemoveListener(CloseWindow);
+        EventManager.PlayersArmyIsReady -= SetArmy;
+    }
+
+    private void SetArmy(Unit[] army)
+    {
+        playersArmy = army;
     }
 
     public void CreateArmyScheme(Unit[] army)
@@ -34,25 +48,30 @@ public class PlayersArmyWindow : MonoBehaviour
     private void ToTheBattle()
     {
         fightButton.onClick.RemoveListener(ToTheBattle);
-        //fightButton.onClick.AddListener(ToTheGlobalMap);
         
-        GlobalStorage.instance.battleManager.GetComponent<BattleManager>().InitializeBattle(null);
+        GlobalStorage.instance.battleManager.InitializeBattle(null);
         CloseWindow();
     }
 
-    //private void ToTheGlobalMap()
-    //{
-    //    fightButton.onClick.RemoveListener(ToTheGlobalMap);
-    //    fightButton.onClick.AddListener(ToTheBattle);
 
-    //    CloseWindow();
-    //}
+    public void OpenWindow()
+    {
+        if (isWindowOpened == false)
+        {
+            playerArmyUI.SetActive(true);
+            isWindowOpened = true;
+            CreateArmyScheme(playersArmy);
+        }            
+        else
+            CloseWindow();
+    }
 
     public void CloseWindow()
     {      
         for (int i = 0; i < armySlots.Length; i++)
             armySlots[i].ResetSelecting();
 
-        gameObject.SetActive(false);
+        playerArmyUI.SetActive(false);
+        isWindowOpened = false;
     }
 }

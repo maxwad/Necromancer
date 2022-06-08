@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public GameObject playersArmyWindow;
+    [SerializeField] private GameObject playersArmyWindow;
+
+    private GameObject globalPlayer;
+    private GameObject battlePlayer;
 
     private void Update()
     {
         if (GlobalStorage.instance.isGlobalMode == true && Input.GetKeyDown(KeyCode.I))
         {
-            if (playersArmyWindow.activeInHierarchy == true)
-                playersArmyWindow.GetComponent<PlayersArmyWindow>().CloseWindow();
-            else
-                playersArmyWindow.SetActive(true);
+            playersArmyWindow.GetComponent<PlayersArmyWindow>().OpenWindow();
         }
     }
 

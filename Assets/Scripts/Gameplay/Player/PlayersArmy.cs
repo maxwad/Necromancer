@@ -1,24 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static NameManager;
 
 public class PlayersArmy : MonoBehaviour
 {
     private UnitManager unitManager;
 
-    public UnitsTypes[] playersArmyEnums;
+    [SerializeField] private UnitsTypes[] playersArmyEnums;
+    [SerializeField] private Unit[] playersArmy = new Unit[4];
 
-    public Unit[] playersArmy = new Unit[4];
-
-
-    public PlayersArmyWindow playersArmyWindow;
+    [SerializeField] private PlayersArmyWindow playersArmyWindow;
     private int firstIndexForReplaceUnit = -1;
     private int secondIndexForReplaceUnit = -1;
 
     private void Start()
     {
-        unitManager = GlobalStorage.instance.unitManager.GetComponent<UnitManager>();
+        unitManager = GlobalStorage.instance.unitManager;
 
         playersArmy = unitManager.GetUnitsForPlayersArmy(playersArmyEnums);
 
@@ -33,7 +33,10 @@ public class PlayersArmy : MonoBehaviour
                 
             }           
         }
-        playersArmyWindow.CreateArmyScheme(playersArmy);
+
+
+        EventManager.OnPlayersArmyIsReadyEvent(playersArmy);
+        //playersArmyWindow.CreateArmyScheme(playersArmy);
     }
 
     public void UnitsReplacement(int index)
