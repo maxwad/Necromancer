@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     public static bool canIOpenMenu = true;
     public static bool isMainMenu;
     public static bool isGamePaused;
+    public static bool isMiniPause = false;
     private bool isSettingsOpen = false;
 
     public GameObject pauseMenuUI;
@@ -110,7 +111,8 @@ public class MenuManager : MonoBehaviour
 
         pauseMenuUI.SetActive(false);
         isGamePaused = false;
-        Time.timeScale = 1.0f;
+        if (isMiniPause == false)
+            Time.timeScale = 1.0f;
     }
 
     public void Pause()
@@ -126,9 +128,16 @@ public class MenuManager : MonoBehaviour
     }
 
 
-    public void LetsTestSomething()
+    public void MiniPauseOn()
     {
+        isMiniPause = true;
+        Time.timeScale = 0f;
+    }
 
+    public void MiniPauseOff()
+    {
+        isMiniPause = false;
+        Time.timeScale = 1.0f;
     }
 
     //public void ReloadGame()

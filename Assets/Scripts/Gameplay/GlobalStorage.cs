@@ -7,6 +7,7 @@ public class GlobalStorage : MonoBehaviour
 {
     public static GlobalStorage instance;
 
+    public MenuManager menuManager;
     public UnitManager unitManager;
     public UnitBoostManager boostManager;
     public BattleManager battleManager;

@@ -61,6 +61,9 @@ public class PlayersArmyWindow : MonoBehaviour
             playerArmyUI.SetActive(true);
             isWindowOpened = true;
             CreateArmyScheme(playersArmy);
+            if (GlobalStorage.instance.isGlobalMode == false)
+                MenuManager.instance.MiniPauseOn();
+           
         }            
         else
             CloseWindow();
@@ -73,5 +76,7 @@ public class PlayersArmyWindow : MonoBehaviour
 
         playerArmyUI.SetActive(false);
         isWindowOpened = false;
+        if (GlobalStorage.instance.isGlobalMode == false)
+            MenuManager.instance.MiniPauseOff();
     }
 }

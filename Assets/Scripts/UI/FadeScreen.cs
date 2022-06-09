@@ -8,7 +8,7 @@ public class FadeScreen : MonoBehaviour
     [SerializeField] private GameObject veil;
     [SerializeField] private Image fadeScreen;
 
-    private Vector3 globalCameraPosition = new Vector3(0, 0, 0);
+    private Vector3 globalCameraPosition;
     private Vector3 battleCameraPosition = new Vector3(0, 0, 10);
 
     private void FadeIn(bool mode)
@@ -34,16 +34,20 @@ public class FadeScreen : MonoBehaviour
 
         if (mode == true)
         {
-            //switch camera mode
+            //switch camera behavior mode
             globalCameraPosition = transform.position;
-            transform.position = battleCameraPosition;
+            transform.position = battleCameraPosition;            
         }
         else
         {
             transform.position = globalCameraPosition;
-        }        
+        }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
+
+        EventManager.OnChangePlayerEvent(mode);
+
+        yield return new WaitForSeconds(0.25f);
 
         while (alfa > 0)
         {

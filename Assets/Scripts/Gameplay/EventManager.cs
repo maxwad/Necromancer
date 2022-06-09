@@ -17,12 +17,20 @@ public static class EventManager
 
     #endregion
 
+
+    #region PLAYER
+    //calls when we should switch between globalPlayer and battlePlayer
+    public delegate void ChangePlayerEvent(bool mode);
+    public static event ChangePlayerEvent ChangePlayer;
+    public static void OnChangePlayerEvent(bool mode) => ChangePlayer?.Invoke(mode);
+
+    #endregion
+
     #region OTHER
     //calls when we switch between global mode and battle mode
     public delegate void ChangePlayModeEvent(bool mode);
     public static event ChangePlayModeEvent ChangePlayMode;
     public static void OnChangePlayModeEvent(bool mode) => ChangePlayMode?.Invoke(mode);
-
 
     #endregion
 }

@@ -47,7 +47,7 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         backlight.enabled = !backlight.enabled;
-        playersArmy.UnitsReplacement(index);
+        playersArmy.UnitsReplacementUI(index);
     }
 
     public void ResetSelecting()

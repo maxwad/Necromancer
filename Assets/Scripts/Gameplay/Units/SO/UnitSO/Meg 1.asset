@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Meg 1
   m_EditorClassIdentifier: 
   unitName: Meg 1
+  unitGO: {fileID: 4387482535749053680, guid: f6a97d6aed441c04b8104f0b7a6f01aa, type: 3}
   unitIcon: {fileID: 21300000, guid: 4ab889b81e19baf48a289fc1200db689, type: 3}
   UnitHome: 0
   UnitType: 2
