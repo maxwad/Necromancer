@@ -17,26 +17,18 @@ public class GlobalStorage : MonoBehaviour
 
     public bool isGlobalMode = true;
 
-    // Start is called before the first frame update
     void Awake()
     {
         if (instance == null)
             instance = this;
         else
             Destroy(gameObject);
-
-        //InitializeAll();
     }
 
     public void ChangePlayMode(bool mode)
     {
         isGlobalMode = mode;
         EventManager.OnChangePlayModeEvent(mode);
-
-    }
-    private void InitializeAll()
-    {
-
     }
 
 }

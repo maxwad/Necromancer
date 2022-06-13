@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayersArmyWindow : MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class PlayersArmyWindow : MonoBehaviour
 
     [SerializeField] private Button fightButton;
     [SerializeField] private Button closeWindow;
+    [SerializeField] private TMP_Text fightButtonText;
+    private string toTheBattleText = "Fight!";
+    private string toTheGlobalText = "Escape...";
 
     [HideInInspector] public bool isWindowOpened = false;
 
     private void Awake()
     {
-        fightButton.onClick.AddListener(ToTheBattle);       
+        fightButton.onClick.AddListener(ToTheBattle);
+        fightButtonText.text = toTheBattleText;
         closeWindow.onClick.AddListener(CloseWindow);        
     }
 
@@ -47,9 +52,21 @@ public class PlayersArmyWindow : MonoBehaviour
 
     private void ToTheBattle()
     {
-        fightButton.onClick.RemoveListener(ToTheBattle);
-        
+        fightButton.onClick.RemoveAllListeners();
+        fightButton.onClick.AddListener(ToTheGlobal);
+        fightButtonText.text = toTheGlobalText;
+
         GlobalStorage.instance.battleManager.InitializeBattle(null);
+        CloseWindow();
+    }
+
+    private void ToTheGlobal()
+    {
+        fightButton.onClick.RemoveAllListeners();
+        fightButton.onClick.AddListener(ToTheBattle);
+        fightButtonText.text = toTheBattleText;
+
+        GlobalStorage.instance.battleManager.FinishTheBattle();
         CloseWindow();
     }
 

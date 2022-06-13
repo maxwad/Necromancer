@@ -82,7 +82,7 @@ public class UnitManager : MonoBehaviour
                     if (playersArmy[i] == item.UnitType)
                     {
                         army[i] = item;
-                        Debug.Log(item.unitName + " got to the army");
+                        //Debug.Log(item.unitName + " got to the army");
                     }
                 }
             }

@@ -7,6 +7,10 @@ public class BattleManager : MonoBehaviour
     private GameObject falseEnemyArmy;
     private GameObject enemyArmy;
 
+    private int sizeMapX = 10;
+    private int sizeMapY = 30;
+    private int positionZ = 40; // we should send double size of Z because dividing by 2
+
     private void Start()
     {
         //falseEnemyArmy = ;
@@ -21,18 +25,34 @@ public class BattleManager : MonoBehaviour
         GlobalStorage.instance.ChangePlayMode(false);
     }
 
-    public void ChangePlayer(bool mode)
+    public Vector3Int GetBattleMapSize()
     {
-        Debug.Log("SwitchPlayer");
+        return new Vector3Int(sizeMapX, sizeMapY, positionZ);
     }
 
-    private void OnEnable()
+    public void SetBattleMapSize(int width = 10, int heigth = 10)
     {
-        EventManager.ChangePlayMode += ChangePlayer;
+        sizeMapX = width;
+        sizeMapY = heigth;
     }
 
-    private void OnDisable()
+    public void FinishTheBattle()
     {
-        EventManager.ChangePlayMode -= ChangePlayer;
+        GlobalStorage.instance.ChangePlayMode(true);
     }
+
+    //public void ChangePlayer(bool mode)
+    //{
+    //    Debug.Log("SwitchPlayer");
+    //}
+
+    //private void OnEnable()
+    //{
+    //    EventManager.ChangePlayMode += ChangePlayer;
+    //}
+
+    //private void OnDisable()
+    //{
+    //    EventManager.ChangePlayMode -= ChangePlayer;
+    //}
 }
