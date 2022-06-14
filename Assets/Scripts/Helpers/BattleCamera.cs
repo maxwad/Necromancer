@@ -7,7 +7,7 @@ public class BattleCamera : MonoBehaviour
     private GameObject battlePlayer;
     private Vector3 zOffset = new Vector3(0, 0, 10);
 
-    private void Update()
+    private void LateUpdate()
     {
         if (battlePlayer != null) 
             transform.position = battlePlayer.transform.position - zOffset;

@@ -17,7 +17,7 @@ public class PlayersArmy : MonoBehaviour
     private int firstIndexForReplaceUnit = -1;
     private int secondIndexForReplaceUnit = -1;
 
-    [SerializeField] private GameObject[] playersArmyPositions;
+    [SerializeField] private Vector2[] playersArmyPositions;
     [SerializeField] private GameObject[] realUnitsOnBattlefield = new GameObject[4];
 
     [SerializeField] private BattlePlayerController battlePlayerController;
@@ -88,8 +88,9 @@ public class PlayersArmy : MonoBehaviour
         {
             if (army[i] != null)
             {
-                GameObject unit = Instantiate(army[i].unitGO, playersArmyPositions[i].transform.position, Quaternion.identity);
-                unit.transform.SetParent(playersArmyPositions[i].transform);
+                GameObject unit = Instantiate(army[i].unitGO, (Vector3)playersArmyPositions[i] + battlePlayerController.gameObject.transform.position, Quaternion.identity);
+                unit.transform.SetParent(battlePlayerController.gameObject.transform);
+                //unit.transform.SetParent(playersArmyPositions[i].transform);
                 //unit.GetComponentInChildren<TMP_Text>().text = army[i].quantity.ToString();
                 realUnitsOnBattlefield[i] = unit;
             }

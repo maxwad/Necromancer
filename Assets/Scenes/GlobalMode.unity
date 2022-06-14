@@ -439,7 +439,8 @@ MonoBehaviour:
   boundsBG:
   - {fileID: 11400000, guid: fc5c838471b70fb4d862efc00157022d, type: 2}
   - {fileID: 11400000, guid: 769bb47ddf47ce043814865b096787eb, type: 2}
-  obstacles: []
+  obstaclesPrefab: []
+  obstaclesContainer: {fileID: 0}
 --- !u!1 &216174959 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6955083954490165216, guid: 05adb6a9c168c6d40b8a09c247b6d85e, type: 3}
@@ -521,7 +522,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259490922}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -911,7 +912,7 @@ GameObject:
   - component: {fileID: 500775152}
   - component: {fileID: 500775151}
   - component: {fileID: 500775150}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -965,7 +966,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500775148}
   m_BodyType: 2
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -1437,7 +1438,8 @@ GameObject:
   m_Component:
   - component: {fileID: 632549869}
   - component: {fileID: 632549870}
-  m_Layer: 0
+  - component: {fileID: 632549871}
+  m_Layer: 3
   m_Name: BattlePlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1473,6 +1475,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hero: {fileID: 216174959}
+--- !u!50 &632549871
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632549868}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &665215556 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 854429958478592668, guid: 7b1938e1fdef3da498585098224dc5e0, type: 3}
@@ -1711,7 +1734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1101306501
 Transform:
   m_ObjectHideFlags: 0
@@ -2091,7 +2114,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310374944}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3137,10 +3160,10 @@ MonoBehaviour:
   playersArmyEnums: 030000000400000001000000
   playersArmyWindow: {fileID: 1341323598}
   playersArmyPositions:
-  - {fileID: 1310374944}
-  - {fileID: 1619040023}
-  - {fileID: 1540301002}
-  - {fileID: 259490922}
+  - {x: 0, y: 1}
+  - {x: 1, y: 0}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
   realUnitsOnBattlefield:
   - {fileID: 0}
   - {fileID: 0}
@@ -3321,7 +3344,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540301002}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3457,7 +3480,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619040023}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

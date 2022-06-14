@@ -5,7 +5,9 @@ using TMPro;
 
 public class BattlePlayerController : MonoBehaviour
 {
-    private float speed = 3f;
+    private Rigidbody2D rbPlayer;
+    private float speed = 200f;
+    private float speedBoost = 0;
 
     private Vector2 currentDirection;
     private bool currentFacing = false;
@@ -22,6 +24,7 @@ public class BattlePlayerController : MonoBehaviour
 
     private void Start()
     {
+        rbPlayer = GetComponent<Rigidbody2D>();
         heroSprite = hero.GetComponent<SpriteRenderer>();
         heroAnimator = hero.GetComponent<Animator>();
     }
@@ -33,7 +36,7 @@ public class BattlePlayerController : MonoBehaviour
             float horizontalMovement = Input.GetAxisRaw("Horizontal");
             float verticalMovement = Input.GetAxisRaw("Vertical");
 
-            currentDirection = new Vector2(horizontalMovement, verticalMovement);
+            currentDirection = new Vector2(horizontalMovement, verticalMovement).normalized;
 
             Moving(currentDirection);
             DrawUnit(horizontalMovement);
@@ -43,7 +46,7 @@ public class BattlePlayerController : MonoBehaviour
 
     private void Moving(Vector2 direction)
     {
-        transform.position += (Vector3)direction * Time.deltaTime * speed;
+        rbPlayer.velocity = (Vector3)direction * Time.fixedDeltaTime * (speed + (speed * speedBoost));
     }
 
     private void DrawUnit(float direction)
@@ -65,8 +68,7 @@ public class BattlePlayerController : MonoBehaviour
                 //right sprite order of count label               
                 //ñountLabel[i].sortingOrder = i * 3;
                 //armyCounts[i].sortingOrder = i * 3;
-            }
-                
+            }                
         }
     }
 
@@ -105,14 +107,17 @@ public class BattlePlayerController : MonoBehaviour
                 armyAnimators[i] = null;
                 //ñountLabel[i] = null;
                 //armyCounts[i] = null;
-            }
-
-            
+            }            
         }
     }
 
     public void UpdateArmyCount(Unit[] army)
     {
 
+    }
+
+    public void SetSpeedBoost(float boost)
+    {
+        speedBoost = boost;
     }
 }

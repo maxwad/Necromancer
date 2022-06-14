@@ -7,8 +7,8 @@ public class BattleManager : MonoBehaviour
     private GameObject falseEnemyArmy;
     private GameObject enemyArmy;
 
-    private int sizeMapX = 10;
-    private int sizeMapY = 30;
+    private int sizeMapX = 20;
+    private int sizeMapY = 20;
     private int positionZ = 40; // we should send double size of Z because dividing by 2
 
     private void Start()
