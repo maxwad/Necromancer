@@ -6,12 +6,21 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private PlayersArmyWindow playersArmyWindow;
 
-    [SerializeField] private GameObject globalPlayer;
-    [SerializeField] private GameObject battlePlayer;
+    private GameObject globalPlayer;
+    private GameObject battlePlayer;
     private Vector3 globalPlayerPosition;
 
-    [SerializeField] private GameObject globalMap;
-    [SerializeField] private GameObject battleMap;
+    private GameObject globalMap;
+    private GameObject battleMap;
+
+    private void Start()
+    {
+        globalPlayer = GlobalStorage.instance.globalPlayer;
+        battlePlayer = GlobalStorage.instance.battlePlayer;
+
+        globalMap = GlobalStorage.instance.globalMap;
+        battleMap = GlobalStorage.instance.battleMap;
+    }
 
     private void Update()
     {
@@ -30,7 +39,7 @@ public class PlayerManager : MonoBehaviour
 
             battlePlayer.SetActive(true);
 
-            Vector3Int bounds = new Vector3Int(20, 20, 0); // 10 tiles from each sides
+            Vector3Int bounds = new Vector3Int(40, 40, 0); // 20 tiles from each sides
             Vector3Int startPosition = (GlobalStorage.instance.battleManager.GetBattleMapSize() + bounds ) / 2;
 
             globalPlayerPosition = globalPlayer.transform.position;
@@ -47,6 +56,7 @@ public class PlayerManager : MonoBehaviour
             globalPlayer.transform.position = globalPlayerPosition;
         }
     }
+
 
     private void OnEnable()
     {

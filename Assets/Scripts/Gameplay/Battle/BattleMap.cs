@@ -5,30 +5,78 @@ using UnityEngine.Tilemaps;
 
 public class BattleMap : MonoBehaviour
 {
-    private BattlePlayerController player;
+    [Header("Player")]
+    private GameObject player;
+    private Vector2 playerPosition;
+    private float distanceToUpdateObstacles = 1f;
+    private float radiusToCheckObstacles = 250f;
+    private bool readyToCheckObstacles = false;
 
+
+    [Header("Battle Map")]
     public Tilemap battleBGTilemap;
     private int sizeX;
     private int sizeY;
-    private int widthOfBound = 10;
+    private int widthOfBound = 20;
+    private int freespace = 10;
+    private int spawnZOffset = 20;
     private bool[,] battleArray;
 
     public Tilemap battleBoundsTilemap;
     public List<Tile> mapBG;
     public List<Tile> boundsBG;
 
-    public List<GameObject> obstaclesPrefab;
-    private List<ObstaclesStats> obstaclesStats;
+    [Header("DefenderTowers")]
+    private bool isDefendBattle = true;
+    private int quantityOfTowers = 4;
+    [SerializeField] private GameObject towerContainer;
+    private List<GameObject> towersOnMap = new List<GameObject>();
 
-    public GameObject obstaclesContainer;
+    public GameObject towersPrefab;
+    private BattleObjectStats towerStats;
+
+
+    [Header("Obstacles")]
+    [SerializeField] private GameObject obstaclesContainer;
     private List<GameObject> obstaclesOnMap = new List<GameObject>();
+
+    public List<GameObject> obstaclesPrefabs;
+    private List<BattleObjectStats> obstaclesStats = new List<BattleObjectStats>();   
+    private List<float> obstaclesAngles = new List<float> { 0f, 90f, 180f, 270f};
+
+
+    [Header("Torches")]
+    private int quantityOfTorches = 50;
+    [SerializeField] private GameObject torchesContainer;
+    private List<GameObject> torchesOnMap = new List<GameObject>();
+
+    public GameObject torchPrefab;
+    private BattleObjectStats torchStats;
+
+
+    [Header("Enemy")]
+    private EnemySpawner enemySpawner;
+
 
     private void Start()
     {
-        player = GlobalStorage.instance.player.GetComponentInChildren<BattlePlayerController>();
+        player = GlobalStorage.instance.battlePlayer;
 
-        foreach (var obstacle in obstaclesPrefab)
-            obstaclesStats.Add(obstacle.GetComponent<ObstaclesStats>());
+        towerStats = towersPrefab.GetComponent<BattleObjectStats>();
+        torchStats = torchPrefab.GetComponent<BattleObjectStats>();
+
+        foreach (var obstacle in obstaclesPrefabs)
+            obstaclesStats.Add(obstacle.GetComponent<BattleObjectStats>());
+
+        enemySpawner = GetComponent<EnemySpawner>();
+    }
+
+    private void Update()
+    {
+        if (readyToCheckObstacles == true)
+        {
+            CheckObstaclesOnBattle();
+        }
     }
 
     public void InitializeMap(bool mode)
@@ -37,9 +85,19 @@ public class BattleMap : MonoBehaviour
         {
             GetBattleMapSize();
             DrawTheBackgroundMap();
+            DrawFreeSpaceForPlayer();
+
+            if (isDefendBattle == true) DrawObjects(towersPrefab, towerContainer, towerStats, towersOnMap, quantityOfTowers);
+            //DrawDefendTowers();
+            DrawObstacles();
+            DrawObjects(torchPrefab, torchesContainer, torchStats, torchesOnMap, quantityOfTorches);
+            //MarkFilledCells();
+
+            enemySpawner.ReadyToSpawnEnemy();
         }
         else
         {
+            enemySpawner.StopSpawnEnemy();
             ClearMap();
         }        
     }
@@ -49,9 +107,9 @@ public class BattleMap : MonoBehaviour
         int sizeXWithBound = sizeX + widthOfBound * 2;
         int sizeYWithBound = sizeY + widthOfBound * 2;
 
-        for (int x = 0; x < sizeYWithBound; x++)
+        for (int x = 0; x < sizeXWithBound; x++)
         {
-            for (int y = 0; y < sizeXWithBound; y++)
+            for (int y = 0; y < sizeYWithBound; y++)
             {
                 //draw bounds
                 if ((x < widthOfBound || x >= sizeXWithBound - widthOfBound) || (y < widthOfBound || y >= sizeYWithBound - widthOfBound))
@@ -74,44 +132,296 @@ public class BattleMap : MonoBehaviour
                         currentBoundTile = boundsBG[1];
 
                     battleBoundsTilemap.SetTile(new Vector3Int(x, y, -20), currentBoundTile);
-                    battleArray[y, x] = false;
+                    
+                    battleArray[x, y] = false;
                 }
                 else
                 {
                     battleBGTilemap.SetTile(new Vector3Int(x, y, -20), mapBG[Random.Range(0, mapBG.Count)]);
-                    battleArray[y, x] = true;
+                    battleArray[x, y] = true;
                 }               
             }
         }
+    }
 
-        int falseBox = 0;
-        int trueBox = 0;
+    private void DrawFreeSpaceForPlayer()
+    {
+        int battleMapSizeX = battleArray.GetLength(0);
+        int battleMapSizeY = battleArray.GetLength(1);
 
-        for (int i = 0; i < battleArray.GetLength(0); i++)
+        //free space for player in center of army
+        for (int i = 0; i < battleMapSizeX; i++)
         {
-            for (int j = 0; j < battleArray.GetLength(1); j++)
+            for (int j = 0; j < battleMapSizeY; j++)
             {
-                if (battleArray[i, j] == true)
-                    trueBox++;
-                else
-                    falseBox++;
+                if (((i >= battleMapSizeX / 2 - freespace) && (i <= battleMapSizeX / 2 + freespace))
+                    &&
+                    ((j >= battleMapSizeY / 2 - freespace) && (j <= battleMapSizeY / 2 + freespace)))
+                {
+                    battleArray[i, j] = false;
+                }
             }
         }
+    }
 
-        Debug.Log("False: " + falseBox + "; True = " + trueBox);
+    private void DrawDefendTowers()
+    {
+        int battleMapSizeX = battleArray.GetLength(0);
+        int battleMapSizeY = battleArray.GetLength(1);
+
+        int towerSizeX = towerStats.sizeX;
+        int towerSizeY = towerStats.sizeY;
+        int towerGap = towerStats.gap;
+
+        for (int countTry = 0; countTry < quantityOfTowers; countTry++)
+        {
+            bool isBuilded = false;
+            while (isBuilded == false)
+            {
+                int randomX = Random.Range(0 + widthOfBound + sizeX, battleMapSizeX - widthOfBound - sizeX);
+                int randomY = Random.Range(0 + widthOfBound + sizeY, battleMapSizeY - widthOfBound - sizeY);
+
+                if (battleArray[randomX, randomY] == false) continue;
+
+                //check free space for Tower
+                if (battleArray[randomX + towerSizeX / 2 + towerGap, randomY] == false ||
+                    battleArray[randomX - towerSizeX / 2 - towerGap, randomY] == false ||
+                    battleArray[randomX, randomY + towerSizeY / 2 + towerGap] == false ||
+                    battleArray[randomX, randomY - towerSizeY / 2 - towerGap] == false)
+                {
+                    continue;
+                }
+
+                //check free space inside Tower area
+                bool newTry = false;
+                for (int checkX = -towerSizeX; checkX < towerSizeX / 2; checkX++)
+                {
+                    for (int checkY = -towerSizeY; checkY < towerSizeY / 2; checkY++)
+                    {
+                        if (battleArray[randomX + checkX, randomY + checkY] == false)
+                        {
+                            newTry = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (newTry == true) continue;
+
+                GameObject tower = Instantiate(towersPrefab, new Vector3(randomX, randomY, spawnZOffset), Quaternion.identity);
+                tower.transform.SetParent(towerContainer.transform);
+                towersOnMap.Add(tower);
+
+                battleArray[randomX, randomY] = false;
+
+                //mark filled coordinates as false
+                for (int checkX = -towerSizeX; checkX < towerSizeX / 2 + towerGap; checkX++)
+                {
+                    for (int checkY = -towerSizeY; checkY < towerSizeY / 2 + towerGap; checkY++)
+                    {
+                        if (battleArray[randomX + checkX, randomY + checkY] == true)
+                        {
+                            battleArray[randomX + checkX, randomY + checkY] = false;
+                        }
+                    }
+                }
+
+                isBuilded = true;
+            }
+            
+        }
     }
 
     private void DrawObstacles()
     {
-        for (int x = 0; x < battleArray.GetLength(0); x++)
-        {
-            for (int y = 0; y < battleArray.GetLength(1); y++)
-            {
-                if (true)
-                {
+        int battleMapSizeX = battleArray.GetLength(0);
+        int battleMapSizeY = battleArray.GetLength(1);
 
-                }
+        int randomIndex;
+        float randomAngle;
+        GameObject currentObstacle;
+        BattleObjectStats currentStats;
+        float probability;
+        int obstacleSizeX;
+        int obstacleSizeY;
+        int obstacleTempSize;
+        int obstacleGap;
+
+        void InitializeCurrentObstacle()
+        {
+            randomIndex     = Random.Range(0, obstaclesPrefabs.Count);
+            randomAngle     = obstaclesAngles[Random.Range(0, obstaclesAngles.Count)];
+            currentObstacle = obstaclesPrefabs[randomIndex];
+            currentStats    = obstaclesStats[randomIndex];
+            obstacleSizeX   = currentStats.sizeX;
+            obstacleSizeY   = currentStats.sizeY;
+            probability     = currentStats.probability;
+            obstacleGap     = currentStats.gap;
+
+            if (randomAngle == 90 || randomAngle == 270)
+            {
+                obstacleTempSize = obstacleSizeX;
+                obstacleSizeX = obstacleSizeY;
+                obstacleSizeY = obstacleTempSize;
             }
+        }       
+
+        InitializeCurrentObstacle();
+
+        for (int x = 0; x < battleMapSizeX; x++)
+        {
+            for (int y = 0; y < battleMapSizeY; y++)
+            {
+                if (battleArray[x, y] == false) continue;
+
+                //check out of bounds array
+                if ((x + obstacleSizeX / 2 + obstacleGap >= battleMapSizeX) ||
+                    (x - obstacleSizeX / 2 - obstacleGap < 0) ||
+                    (y + obstacleSizeY / 2 + obstacleGap >= battleMapSizeY) ||
+                    (y - obstacleSizeY / 2 - obstacleGap < 0))
+                {
+                    continue;
+                }
+
+                //check free space for obstacle
+                if (battleArray[x + obstacleSizeX / 2 + obstacleGap, y] == false ||
+                    battleArray[x - obstacleSizeX / 2 - obstacleGap, y] == false ||
+                    battleArray[x, y + obstacleSizeY / 2 + obstacleGap] == false ||
+                    battleArray[x, y - obstacleSizeY / 2 - obstacleGap] == false)                    
+                {
+                    continue;
+                }
+
+                //check free space inside obstacle area
+                bool newTry = false;
+                for (int checkX = -obstacleSizeX; checkX < obstacleSizeX / 2; checkX++)
+                {
+                    for (int checkY = -obstacleSizeY; checkY < obstacleSizeY / 2; checkY++)
+                    {
+                        if (battleArray[x + checkX, y + checkY] == false)
+                        {
+                            newTry = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (newTry == true) continue;
+
+                
+                if (probability >= Random.Range(0, 100))
+                {
+                    GameObject obstacle = Instantiate(currentObstacle, new Vector3(x, y, spawnZOffset), Quaternion.identity);
+                    obstacle.transform.eulerAngles = new Vector3(0, 0, randomAngle);
+                    obstacle.transform.SetParent(obstaclesContainer.transform);
+                    obstacle.SetActive(false);
+                    obstaclesOnMap.Add(obstacle);
+
+                    battleArray[x, y] = false;
+
+                    //mark filled coordinates as false
+                    for (int checkX = -obstacleSizeX; checkX < obstacleSizeX / 2 + obstacleGap; checkX++)
+                    {
+                        for (int checkY = -obstacleSizeY; checkY < obstacleSizeY / 2 + obstacleGap; checkY++)
+                        {
+                            if (battleArray[x + checkX, y + checkY] == true)
+                            {
+                                battleArray[x + checkX, y + checkY] = false;
+                            }
+                        }
+                    }
+
+                    InitializeCurrentObstacle();
+                } 
+            }
+        }
+
+        readyToCheckObstacles = true;        
+    }
+
+    private void DrawObjects(GameObject prefab, GameObject container, BattleObjectStats stats, List<GameObject> objectsOnMap, int quantity)
+    {
+        int battleMapSizeX = battleArray.GetLength(0);
+        int battleMapSizeY = battleArray.GetLength(1);
+
+        int objectSizeX = stats.sizeX;
+        int objectSizeY = stats.sizeY;
+        int objectGap = stats.gap;
+
+        int currentQuantity = objectsOnMap.Count;
+
+        for (int countTry = currentQuantity; countTry < quantity; countTry++)
+        {
+            bool isBuilded = false;
+            while (isBuilded == false)
+            {
+                int randomX = Random.Range(0 + widthOfBound + sizeX, battleMapSizeX - widthOfBound - sizeX);
+                int randomY = Random.Range(0 + widthOfBound + sizeY, battleMapSizeY - widthOfBound - sizeY);
+
+                if (battleArray[randomX, randomY] == false) continue;
+
+                //check free space for Tower
+                if (battleArray[randomX + objectSizeX / 2 + objectGap, randomY] == false ||
+                    battleArray[randomX - objectSizeX / 2 - objectGap, randomY] == false ||
+                    battleArray[randomX, randomY + objectSizeY / 2 + objectGap] == false ||
+                    battleArray[randomX, randomY - objectSizeY / 2 - objectGap] == false)
+                {
+                    continue;
+                }
+
+                //check free space inside Tower area
+                bool newTry = false;
+                for (int checkX = -objectSizeX; checkX < objectSizeX / 2; checkX++)
+                {
+                    for (int checkY = -objectSizeY; checkY < objectSizeY / 2; checkY++)
+                    {
+                        if (battleArray[randomX + checkX, randomY + checkY] == false)
+                        {
+                            newTry = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (newTry == true) continue;
+
+                GameObject obj = Instantiate(prefab, new Vector3(randomX, randomY, spawnZOffset), Quaternion.identity);
+                obj.transform.SetParent(container.transform);
+                objectsOnMap.Add(obj);
+
+                battleArray[randomX, randomY] = false;
+
+                //mark filled coordinates as false
+                for (int checkX = -objectSizeX; checkX < objectSizeX / 2 + objectGap; checkX++)
+                {
+                    for (int checkY = -objectSizeY; checkY < objectSizeY / 2 + objectGap; checkY++)
+                    {
+                        if (battleArray[randomX + checkX, randomY + checkY] == true)
+                        {
+                            battleArray[randomX + checkX, randomY + checkY] = false;
+                        }
+                    }
+                }
+
+                isBuilded = true;
+            }
+
+        }
+
+    }
+
+    private void MarkFilledCells()
+    {
+        //mark all false cells
+        for (int i = 0; i < battleArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < battleArray.GetLength(1); j++)
+                if (battleArray[i, j] == false)
+                {
+                    Vector3Int poz = new Vector3Int(i, j, -20);
+                    battleBGTilemap.SetTileFlags(poz, TileFlags.None);
+                    battleBGTilemap.SetColor(poz, Color.black);
+                }
         }
     }
 
@@ -119,6 +429,43 @@ public class BattleMap : MonoBehaviour
     {
         battleBoundsTilemap.ClearAllTiles();
         battleBGTilemap.ClearAllTiles();
+
+        foreach (Transform child in obstaclesContainer.transform)
+            Destroy(child.gameObject);
+
+        foreach (Transform child in towerContainer.transform)
+            Destroy(child.gameObject);
+
+        foreach (Transform child in torchesContainer.transform)
+            Destroy(child.gameObject);
+
+        for (int i = 0; i < battleArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < battleArray.GetLength(1); j++)
+                battleArray[i, j] = true;
+        }
+
+        readyToCheckObstacles = false;
+        obstaclesOnMap.Clear();
+        towersOnMap.Clear();
+        torchesOnMap.Clear();
+    }
+
+
+    private void CheckObstaclesOnBattle() 
+    {
+        if (Vector2.Distance(player.gameObject.transform.position, playerPosition) >= distanceToUpdateObstacles)
+        {
+            foreach (GameObject obstacle in obstaclesOnMap)
+            {
+                if (Vector2.Distance(obstacle.transform.position, player.gameObject.transform.position) <= radiusToCheckObstacles)
+                    obstacle.SetActive(true);
+                else
+                    obstacle.SetActive(false);
+            }
+
+            playerPosition = player.gameObject.transform.position;
+        }
     }
 
     public void GetBattleMapSize()
@@ -126,6 +473,7 @@ public class BattleMap : MonoBehaviour
         Vector3Int size = GlobalStorage.instance.battleManager.GetBattleMapSize();
         sizeX = size.x;
         sizeY = size.y;
+
         battleArray = new bool[sizeX + 2 * widthOfBound, sizeY + 2 * widthOfBound];
     }
 

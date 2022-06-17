@@ -5,17 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - BattlePlace
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - PlayerTR
   - Water
   - UI
-  - Bounds
-  - Enemy
-  - 
+  - PlayerBounds
+  - EnemyTR
+  - EnemyBounds
   - 
   - 
   - 

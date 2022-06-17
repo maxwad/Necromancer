@@ -5,17 +5,25 @@ using UnityEngine;
 
 public class GlobalStorage : MonoBehaviour
 {
-    public static GlobalStorage instance;
+    [HideInInspector] public static GlobalStorage instance;
 
+    [Header("Managers")]
     public MenuManager menuManager;
     public UnitManager unitManager;
     public UnitBoostManager boostManager;
     public BattleManager battleManager;
     public PlayerManager playerManager;
 
+    [Header("Player")]
     public GameObject player;
+    public GameObject globalPlayer;
+    public GameObject battlePlayer;
 
-    public bool isGlobalMode = true;
+    [Header("Maps")]
+    public GameObject globalMap;
+    public GameObject battleMap;
+
+    [HideInInspector] public bool isGlobalMode = true;
 
     void Awake()
     {
