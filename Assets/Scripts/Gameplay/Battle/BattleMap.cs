@@ -20,7 +20,8 @@ public class BattleMap : MonoBehaviour
     private int widthOfBound = 20;
     private int freespace = 10;
     private int spawnZOffset = 20;
-    private bool[,] battleArray;
+    private int quantityUnsuccessTry = 10000;
+    [HideInInspector] public bool[,] battleArray;
 
     public Tilemap battleBoundsTilemap;
     public List<Tile> mapBG;
@@ -85,13 +86,14 @@ public class BattleMap : MonoBehaviour
         {
             GetBattleMapSize();
             DrawTheBackgroundMap();
-            DrawFreeSpaceForPlayer();
+            DrawFreeSpaceForPlayer(false);
 
             if (isDefendBattle == true) DrawObjects(towersPrefab, towerContainer, towerStats, towersOnMap, quantityOfTowers);
             //DrawDefendTowers();
             DrawObstacles();
             DrawObjects(torchPrefab, torchesContainer, torchStats, torchesOnMap, quantityOfTorches);
-            //MarkFilledCells();
+            DrawFreeSpaceForPlayer(true);
+            MarkFilledCells();
 
             enemySpawner.ReadyToSpawnEnemy();
         }
@@ -138,13 +140,21 @@ public class BattleMap : MonoBehaviour
                 else
                 {
                     battleBGTilemap.SetTile(new Vector3Int(x, y, -20), mapBG[Random.Range(0, mapBG.Count)]);
-                    battleArray[x, y] = true;
+
+                    if ((x == widthOfBound) || (x == sizeXWithBound - widthOfBound - 1) || (y == widthOfBound) || (y == sizeYWithBound - widthOfBound - 1))
+                    {
+                        battleArray[x, y] = false;
+                    }
+                    else
+                    {
+                        battleArray[x, y] = true;
+                    }                    
                 }               
             }
         }
     }
 
-    private void DrawFreeSpaceForPlayer()
+    private void DrawFreeSpaceForPlayer(bool fillMark)
     {
         int battleMapSizeX = battleArray.GetLength(0);
         int battleMapSizeY = battleArray.GetLength(1);
@@ -158,10 +168,12 @@ public class BattleMap : MonoBehaviour
                     &&
                     ((j >= battleMapSizeY / 2 - freespace) && (j <= battleMapSizeY / 2 + freespace)))
                 {
-                    battleArray[i, j] = false;
+                    battleArray[i, j] = fillMark;
                 }
             }
         }
+
+
     }
 
     private void DrawDefendTowers()
@@ -350,11 +362,17 @@ public class BattleMap : MonoBehaviour
 
         int currentQuantity = objectsOnMap.Count;
 
+        int unsuccessTry = quantityUnsuccessTry;
+
         for (int countTry = currentQuantity; countTry < quantity; countTry++)
         {
             bool isBuilded = false;
             while (isBuilded == false)
             {
+                //break the endless cycle
+                unsuccessTry--;
+                if (unsuccessTry == 0) return;
+
                 int randomX = Random.Range(0 + widthOfBound + sizeX, battleMapSizeX - widthOfBound - sizeX);
                 int randomY = Random.Range(0 + widthOfBound + sizeY, battleMapSizeY - widthOfBound - sizeY);
 
