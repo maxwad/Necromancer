@@ -10,19 +10,16 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
     public Image icon;
     public TMP_Text quantity;
     public int index;
-    public bool isOpen;
-    private Image backlight;
+    public Image backlight;
+    private Color visible = new Color(1, 0.45f, 0, 1);
+    private Color unvisible = new Color(1, 0.45f, 0, 0);
     private Unit unitInSlot;
 
     private PlayersArmy playersArmy;
 
-    private void Awake()
-    {
-        backlight = GetComponent<Image>();        
-    }
-
     private void Start()
     {
+        backlight.color = unvisible;
         playersArmy = GlobalStorage.instance.player.GetComponent<PlayersArmy>();
     }
 
@@ -40,19 +37,18 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
             icon.sprite = null;
             quantity.text = null;
         }
-
-        backlight.enabled = false;    
+        backlight.color = unvisible;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        backlight.enabled = !backlight.enabled;
+        backlight.color = backlight.color == unvisible? visible : unvisible;
         playersArmy.UnitsReplacementUI(index);
     }
 
     public void ResetSelecting()
     {
-        backlight.enabled = false;
+        backlight.color = unvisible;
         playersArmy.ResetReplaceIndexes();
     }
 

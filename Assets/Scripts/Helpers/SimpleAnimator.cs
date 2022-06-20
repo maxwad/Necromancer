@@ -27,6 +27,10 @@ public class SimpleAnimator : MonoBehaviour
             {
                 yield return waitTime;
                 image.sprite = item;
+                if (gameObject.CompareTag(TagManager.T_ENEMY) == true)
+                {
+                    image.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100);
+                }                
             }
         }    
     }

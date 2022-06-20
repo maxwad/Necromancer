@@ -112,7 +112,7 @@ public class EnemySpawner : MonoBehaviour
     private Vector3 GetSpawnPosition()
     {
         Vector3 randomPosition = Vector3.zero;
-        bool finded = false;
+        //bool finded = false;
         int randomIndex;
 
         randomIndex = Random.Range(0, spawnPositions.Count);
@@ -159,8 +159,6 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
-
-
 
         //Debug.Log(new Vector3(Mathf.RoundToInt(tempX), Mathf.RoundToInt(tempY), randomPosition.z));
         return new Vector3(tempX, tempY, randomPosition.z);

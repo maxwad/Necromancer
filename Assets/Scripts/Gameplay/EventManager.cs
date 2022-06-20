@@ -3,17 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static NameManager;
 
 public static class EventManager
 {
     #region UNITS
     //----------- UNITS----------------
 
+    //calls when we had finished to create all units
+    public delegate void AllUnitsIsReadyEvent();
+    public static event AllUnitsIsReadyEvent AllUnitsIsReady;
+    public static void OnAllUnitsIsReadyEvent() => AllUnitsIsReady?.Invoke();
+
     //calls when we had finished to create an army of heroes
     public delegate void PlayersArmyIsReadyEvent(Unit[] army);
     public static event PlayersArmyIsReadyEvent PlayersArmyIsReady;
     public static void OnPlayersArmyIsReadyEvent(Unit[] army) => PlayersArmyIsReady?.Invoke(army);
 
+    //calls when we lose 1 unit from squad
+    public delegate void WeLostOneUnitEvent(UnitsTypes unitType, int quantity);
+    public static event WeLostOneUnitEvent WeLostOneUnit;
+    public static void OnWeLostOneUnitEvent(UnitsTypes unitType, int quantity) => WeLostOneUnit?.Invoke(unitType, quantity);
 
     #endregion
 

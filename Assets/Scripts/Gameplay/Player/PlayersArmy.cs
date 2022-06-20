@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,25 +17,22 @@ public class PlayersArmy : MonoBehaviour
     private int secondIndexForReplaceUnit = -1;
 
     [SerializeField] private Vector2[] playersArmyPositions;
-    [SerializeField] private GameObject[] realUnitsOnBattlefield = new GameObject[4];
+    private GameObject[] realUnitsOnBattlefield = new GameObject[4];
 
-    [SerializeField] private BattlePlayerController battlePlayerController;
+    [SerializeField] private BattleArmyController battleArmyController;
 
-    private void Start()
+    private void  InitializeArmy()
     {
         unitManager = GlobalStorage.instance.unitManager;
-
         playersArmy = unitManager.GetUnitsForPlayersArmy(playersArmyEnums);
 
-        //Debug.Log("»того в армии:");
         foreach (var item in playersArmy)
         {
             if (item != null)
             {
-                item.quantity = 4;
-                item.commonHealth = item.quantity * item.health;
-                //Debug.Log(item.unitName + " по цене " + item.coinsPrice + " с общим здоровьем в " + item.commonHealth + " единиц.");                
-            }           
+                item.quantity = Random.Range(1, 10);
+                item.commonHealth = item.quantity * item.health;              
+            }
         }
 
         EventManager.OnPlayersArmyIsReadyEvent(playersArmy);
@@ -60,8 +56,8 @@ public class PlayersArmy : MonoBehaviour
             playersArmy[firstIndexForReplaceUnit] = playersArmy[secondIndexForReplaceUnit];
             playersArmy[secondIndexForReplaceUnit] = oldUnit;
 
-            playersArmyWindow.CreateArmyScheme(playersArmy);
             CreateArmyOnBattlefield(playersArmy);
+
             ResetReplaceIndexes();
         }
     }
@@ -74,38 +70,84 @@ public class PlayersArmy : MonoBehaviour
 
     private void CreateArmyOnBattlefield(Unit[] army)
     {
-        //clear units
+        int currentArmyCount = 0;
+        //check units
         for (int i = 0; i < realUnitsOnBattlefield.Length; i++)
         {
             if (realUnitsOnBattlefield[i] != null)
             {
-                Destroy(realUnitsOnBattlefield[i]);
+                currentArmyCount++;
             }
         }
 
-        //create new units
-        for (int i = 0; i < army.Length; i++)
+        //create new units if army on battlefield is empty
+        if (currentArmyCount == 0)
         {
-            if (army[i] != null)
+            for (int i = 0; i < army.Length; i++)
             {
-                GameObject unit = Instantiate(army[i].unitGO, (Vector3)playersArmyPositions[i] + battlePlayerController.gameObject.transform.position, Quaternion.identity);
-                unit.transform.SetParent(battlePlayerController.gameObject.transform);
-                //unit.transform.SetParent(playersArmyPositions[i].transform);
-                //unit.GetComponentInChildren<TMP_Text>().text = army[i].quantity.ToString();
-                realUnitsOnBattlefield[i] = unit;
+                if (army[i] != null)
+                {
+                    GameObject unit = Instantiate(army[i].unitGO, (Vector3)playersArmyPositions[i] + battleArmyController.gameObject.transform.position, Quaternion.identity);
+                    unit.transform.SetParent(battleArmyController.gameObject.transform);
+                    unit.GetComponentInChildren<TMP_Text>().text = army[i].quantity.ToString();
+                    unit.GetComponent<UnitController>().Initilize(army[i]);
+                    realUnitsOnBattlefield[i] = unit;
+                }
             }
         }
+        //replacement units if army on battlefield is ready
+        else
+        {
+            if (firstIndexForReplaceUnit != -1 && secondIndexForReplaceUnit != -1)
+            {
+                GameObject firstUnit = realUnitsOnBattlefield[firstIndexForReplaceUnit];
+                realUnitsOnBattlefield[firstIndexForReplaceUnit] = realUnitsOnBattlefield[secondIndexForReplaceUnit];
+                realUnitsOnBattlefield[secondIndexForReplaceUnit] = firstUnit;
 
-        battlePlayerController.GetArmy(realUnitsOnBattlefield);
+                if (realUnitsOnBattlefield[firstIndexForReplaceUnit] != null)
+                    realUnitsOnBattlefield[firstIndexForReplaceUnit].transform.position = (Vector3)playersArmyPositions[firstIndexForReplaceUnit] + battleArmyController.gameObject.transform.position;
+
+                if (realUnitsOnBattlefield[secondIndexForReplaceUnit] != null)
+                    realUnitsOnBattlefield[secondIndexForReplaceUnit].transform.position = (Vector3)playersArmyPositions[secondIndexForReplaceUnit] + battleArmyController.gameObject.transform.position;
+            }            
+        }
+
+        playersArmyWindow.CreateArmyScheme(playersArmy);
+        battleArmyController.GetArmy(realUnitsOnBattlefield);
+    }
+
+
+    public void UpgradeArmy(UnitsTypes unitType, int quantity)
+    {
+        for (int i = 0; i < playersArmy.Length; i++)
+        {
+            if (playersArmy[i]?.UnitType == unitType)
+            {
+                if (quantity == 0)
+                {
+                    playersArmy[i] = null;
+                }
+                else 
+                {
+                    playersArmy[i].quantity = quantity;
+                }                
+                EventManager.OnPlayersArmyIsReadyEvent(playersArmy);
+                break;
+            }
+        }
     }
 
     private void OnEnable()
     {
+        EventManager.AllUnitsIsReady += InitializeArmy;
         EventManager.PlayersArmyIsReady += CreateArmyOnBattlefield;
+        EventManager.WeLostOneUnit += UpgradeArmy;
     }
 
     private void OnDisable()
     {
+        EventManager.AllUnitsIsReady -= InitializeArmy;
         EventManager.PlayersArmyIsReady -= CreateArmyOnBattlefield;
+        EventManager.WeLostOneUnit -= UpgradeArmy;
     }
 }

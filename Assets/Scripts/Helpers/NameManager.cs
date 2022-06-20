@@ -40,4 +40,11 @@ public static class NameManager
         Monk_lvl2,
         Monk_lvl3
     }
+
+    public enum EnemiesTypes
+    {
+        Goblin,
+        Zombie,
+        Samurai
+    }
 }

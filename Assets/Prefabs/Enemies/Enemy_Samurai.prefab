@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 3475246053339312778}
   - component: {fileID: 7373041339029599471}
   m_Layer: 7
-  m_Name: Enemy_Goblin
+  m_Name: Enemy_Samurai
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ SpriteRenderer:
   m_SortingLayerID: -1653435041
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: 5043434008398718162, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
+  m_Sprite: {fileID: -624852670993730243, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -186,14 +186,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteList:
-  - {fileID: 5043434008398718162, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
-  - {fileID: -881453506478290302, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
-  - {fileID: -6172706160373402721, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
-  - {fileID: 6053393502974856296, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
-  - {fileID: 1137097281097646080, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
-  - {fileID: 8448821242722923538, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
-  - {fileID: -3235715034938012979, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
-  - {fileID: -8600864548895425153, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
+  - {fileID: -624852670993730243, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
+  - {fileID: 7860173383290973817, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
+  - {fileID: 7430619803007130150, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
+  - {fileID: -44079383644333388, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
+  - {fileID: 4128625400871813134, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
+  - {fileID: 7741947005142267866, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
+  - {fileID: -5394547552113891582, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
+  - {fileID: 6304538966316349749, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
   framerate: 0.1
 --- !u!114 &3475246053339312778
 MonoBehaviour:

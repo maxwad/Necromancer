@@ -67,6 +67,8 @@ public class UnitManager : MonoBehaviour
         //накладываем эффекты на все базовые юниты
         foreach (var item in allCurrentBaseUnitsByTypes)
             allCurrentBoostUnitsByTypes.Add(boostManager.AddBonusStatsToUnit(item));
+
+        EventManager.OnAllUnitsIsReadyEvent();
     }
 
     public Unit[] GetUnitsForPlayersArmy(UnitsTypes[] playersArmy)
