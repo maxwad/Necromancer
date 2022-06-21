@@ -605,6 +605,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4a35fe5c7c56b4dba7332c2095e30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allEnemiesSO:
+  - {fileID: 11400000, guid: 5b9f9e5c7b7e6a44f93b30ab237049b7, type: 2}
+  - {fileID: 11400000, guid: 5a9d109b0c407f241a25f8ee6bd74a97, type: 2}
+  - {fileID: 11400000, guid: 7c9ef1d9e5adab841a83c3270065dd58, type: 2}
+  finalEnemiesListGO: []
 --- !u!4 &188711026
 Transform:
   m_ObjectHideFlags: 0
@@ -659,19 +664,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6955083954490165247, guid: 05adb6a9c168c6d40b8a09c247b6d85e, type: 3}
   m_PrefabInstance: {fileID: 6955083954424993423}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &216174964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 216174959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b435c74908bc8c4ab1d5d617e619064, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 500
 --- !u!1 &237329947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,11 +1787,11 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 632549868}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 5
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -2810,7 +2802,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   falsEnemyArmy:
   - {fileID: 7361037799684881175, guid: 504121e5e11b7f742a5700149b1ee9cb, type: 3}
-  falseEnemiesQuantity: c8000000
+  - {fileID: 7361037799684881175, guid: 64dc7639b5bc0314eb0eef2aeae2a4ef, type: 3}
+  - {fileID: 7361037799684881175, guid: 450c1a3f9d2ce384f98a7d9f14f50bf4, type: 3}
+  falseEnemiesQuantity: 640000006400000064000000
+  allEnemiesList: []
+  enemiesTypes: 
   enemySpawner: {fileID: 184540782}
 --- !u!1 &1399891722
 GameObject:

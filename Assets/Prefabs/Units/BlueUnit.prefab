@@ -181,12 +181,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4387482535749053693}
   - component: {fileID: 4387482535749053694}
-  - component: {fileID: 6630356074778358334}
+  - component: {fileID: 1826165883621287710}
   - component: {fileID: 4387482535749053695}
   - component: {fileID: 7249096022432771614}
   m_Layer: 3
   m_Name: BlueUnit
-  m_TagString: Untagged
+  m_TagString: Squad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -259,8 +259,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &6630356074778358334
-CapsuleCollider2D:
+--- !u!58 &1826165883621287710
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -269,12 +269,12 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.118713856, y: 0.04065755}
-  m_Size: {x: 0.49539185, y: 0.8479009}
-  m_Direction: 0
+  m_Offset: {x: 0.09297967, y: -0.06113732}
+  serializedVersion: 2
+  m_Radius: 0.33423257
 --- !u!95 &4387482535749053695
 Animator:
   serializedVersion: 3
@@ -318,7 +318,6 @@ MonoBehaviour:
   unitAbility: 0
   attackTool: {fileID: 0}
   quantity: 0
-  commonHealth: 0
 --- !u!1 &5107229841397021102
 GameObject:
   m_ObjectHideFlags: 0

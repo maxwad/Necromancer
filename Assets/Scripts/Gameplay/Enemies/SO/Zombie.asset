@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af00e5f0857c3345a0d62138f725e96, type: 3}
   m_Name: Zombie
   m_EditorClassIdentifier: 
-  unitName: Zombie
+  enemyName: Zombie
   EnemiesType: 1
-  unitGO: {fileID: 7361037799684881175, guid: 64dc7639b5bc0314eb0eef2aeae2a4ef, type: 3}
-  unitIcon: {fileID: -4865580889072910247, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  enemyGO: {fileID: 7361037799684881175, guid: 64dc7639b5bc0314eb0eef2aeae2a4ef, type: 3}
+  enemyIcon: {fileID: -4865580889072910247, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   health: 200
   physicAttack: 1
   physicDefence: 1
@@ -23,9 +23,12 @@ MonoBehaviour:
   magicDefence: 2
   speedAttack: 1
   size: 1
+  EnemyAbility: 0
+  attackTool: {fileID: 0}
   coinsPrice: 100
   foodPrice: 100
   woodPrice: 100
   ironPrice: 100
   stonePrice: 100
   magicPrice: 100
+  exp: 30

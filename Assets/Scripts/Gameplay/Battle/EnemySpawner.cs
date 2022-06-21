@@ -111,23 +111,8 @@ public class EnemySpawner : MonoBehaviour
 
     private Vector3 GetSpawnPosition()
     {
-        Vector3 randomPosition = Vector3.zero;
-        //bool finded = false;
-        int randomIndex;
-
-        randomIndex = Random.Range(0, spawnPositions.Count);
-        randomPosition = spawnPositions[randomIndex].transform.position;
-
-        //while (finded == false)
-        //{
-        //    randomIndex = Random.Range(0, spawnPositions.Count);
-
-        //    if (spawnPositions[randomIndex].transform.localScale.z == 1)
-        //    {
-        //        randomPosition = spawnPositions[randomIndex].transform.position;
-        //        finded = true;
-        //    }
-        //}
+        int randomIndex = Random.Range(0, spawnPositions.Count);
+        Vector3 randomPosition = spawnPositions[randomIndex].transform.position;
 
         int tempX = Mathf.RoundToInt(Random.Range((randomPosition.x - spawnOffset) * 10, (randomPosition.x + spawnOffset + 1) * 10) / 10);
         int tempY = Mathf.RoundToInt(Random.Range((randomPosition.y - spawnOffset) * 10, (randomPosition.y + spawnOffset + 1) * 10) / 10);
@@ -160,7 +145,11 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        //Debug.Log(new Vector3(Mathf.RoundToInt(tempX), Mathf.RoundToInt(tempY), randomPosition.z));
         return new Vector3(tempX, tempY, randomPosition.z);
+    }
+
+    public void GetEnemiesList()
+    {
+
     }
 }

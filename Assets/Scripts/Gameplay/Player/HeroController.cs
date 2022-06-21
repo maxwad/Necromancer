@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static NameManager;
 
-public class HeroOnBattleField : MonoBehaviour
+public class HeroController : MonoBehaviour
 {
     [SerializeField] private float health = 500f;
     //[SerializeField] private float magicAttack = 1f;
@@ -17,39 +17,60 @@ public class HeroOnBattleField : MonoBehaviour
 
     //[SerializeField] private GameObject attackTool;
 
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     private bool isDead = false;
 
     private SpriteRenderer unitSprite;
     private Color normalColor;
     private Color damageColor = Color.red;
 
+    [SerializeField] private SpriteRenderer healthBar;
+
     private void Start()
     {
         currentHealth = health;
         unitSprite = GetComponent<SpriteRenderer>();
         normalColor = unitSprite.color;
-    }
 
-    private void OnTriggerStay2D(Collider2D collision)
+        UpdateHealthBar();
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    //private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
+        if (collision.gameObject.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
         {
             unitSprite.color = damageColor;
-
-            currentHealth--;
-
-            if (currentHealth <= 0)
-                Dead();
         }
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
+    //private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
+        if (collision.gameObject.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
         {
             unitSprite.color = normalColor;
         }
+    }
+
+    public void TakeDamage(float physicalDamage, float magicDamage)
+    {
+        //TODO: we need to create some damage formula
+        float damage = physicalDamage + magicDamage;
+        currentHealth -= damage;
+        UpdateHealthBar();
+
+        if (currentHealth <= 0)
+        {
+            Dead();
+        }
+    }
+
+    private void UpdateHealthBar()
+    {
+        healthBar.transform.localScale = new Vector3(
+            currentHealth / health, 
+            healthBar.transform.localScale.y, 
+            healthBar.transform.localScale.z
+            );
     }
 
     private void Dead()

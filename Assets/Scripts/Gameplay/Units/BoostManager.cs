@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitBoostManager : MonoBehaviour
+public class BoostManager : MonoBehaviour
 {
     //common effects (0..1)
 
@@ -26,5 +26,11 @@ public class UnitBoostManager : MonoBehaviour
     {
         //some code
         return unit;
+    }
+
+    public Enemy AddBonusStatsToEnemy(Enemy enemy)
+    {
+        //some code
+        return enemy;
     }
 }

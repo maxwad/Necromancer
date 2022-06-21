@@ -56,7 +56,8 @@ public class PlayersArmyWindow : MonoBehaviour
         fightButton.onClick.AddListener(ToTheGlobal);
         fightButtonText.text = toTheGlobalText;
 
-        GlobalStorage.instance.battleManager.InitializeBattle(null);
+        GlobalStorage.instance.battleManager.InitializeBattle();
+        //TODO: may be here we need to give info about army future battle to the battle manager
         CloseWindow();
     }
 
@@ -95,5 +96,7 @@ public class PlayersArmyWindow : MonoBehaviour
         isWindowOpened = false;
         if (GlobalStorage.instance.isGlobalMode == false)
             MenuManager.instance.MiniPauseOff();
+
+        //TODO: here we should clear info about canceled battle
     }
 }

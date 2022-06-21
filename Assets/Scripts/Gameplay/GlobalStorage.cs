@@ -10,7 +10,7 @@ public class GlobalStorage : MonoBehaviour
     [Header("Managers")]
     public MenuManager menuManager;
     public UnitManager unitManager;
-    public UnitBoostManager boostManager;
+    public BoostManager boostManager;
     public BattleManager battleManager;
     public PlayerManager playerManager;
 

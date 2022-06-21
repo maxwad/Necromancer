@@ -58,10 +58,10 @@ GameObject:
   - component: {fileID: 7361037799684881173}
   - component: {fileID: 7361037799684881172}
   - component: {fileID: 4715077514128948217}
-  - component: {fileID: -2659998240129407158}
+  - component: {fileID: -1670172381933618853}
   - component: {fileID: 7361037799684881162}
-  - component: {fileID: 3475246053339312778}
   - component: {fileID: 7373041339029599471}
+  - component: {fileID: 3298909431190015597}
   m_Layer: 7
   m_Name: Enemy_Zombie
   m_TagString: Enemy
@@ -148,7 +148,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 5
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -157,8 +157,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &-2659998240129407158
-CapsuleCollider2D:
+--- !u!58 &-1670172381933618853
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -167,12 +167,12 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.32998997, y: -0.024625575}
-  m_Size: {x: 2.2442513, y: 3.702114}
-  m_Direction: 0
+  m_Offset: {x: -0.058463134, y: -0.4982544}
+  serializedVersion: 2
+  m_Radius: 1.348091
 --- !u!114 &7361037799684881162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,18 +197,6 @@ MonoBehaviour:
   - {fileID: 4836760467912430716, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   - {fileID: 6453412123980407896, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   framerate: 0.1
---- !u!114 &3475246053339312778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361037799684881175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fd3a5d906517c64982875233da123f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7373041339029599471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,3 +209,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b8f7f03e319b04f92e94876660061b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3298909431190015597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361037799684881175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01d8168c13be6f343809ffef6f497f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemiesType: 1
+  health: 200
+  magicAttack: 2
+  physicAttack: 1
+  magicDefence: 2
+  physicDefence: 1
+  speedAttack: 1
+  size: 1
+  EnemyAbility: 0
+  attackTool: {fileID: 0}
+  exp: 30

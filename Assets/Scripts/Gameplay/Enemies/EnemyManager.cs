@@ -4,15 +4,47 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public List<EnemySO> allEnemiesSO;
+
+    public List<Enemy> allEnemiesBase = new List<Enemy>();
+    public List<Enemy> allBoostEnemies = new List<Enemy>();
+    public List<GameObject> finalEnemiesListGO = new List<GameObject>();
+
+    private BoostManager boostManager;
+
+    private void Start()
     {
-        
+        boostManager = GlobalStorage.instance.boostManager;
+
+        GetAllEnemiesBase();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void GetAllEnemiesBase()
     {
-        
+        foreach (var item in allEnemiesSO)
+            allEnemiesBase.Add(new Enemy(item));
+
+        GetAllEnemiesBoost();
     }
+
+    private void GetAllEnemiesBoost()
+    {
+        foreach (Enemy item in allEnemiesBase)
+            allBoostEnemies.Add(boostManager.AddBonusStatsToEnemy(item));
+
+        GetFinalEnemiesList();
+    }
+
+    private void GetFinalEnemiesList()
+    {
+        foreach (Enemy item in allBoostEnemies)
+        {
+            GameObject enemy = item.enemyGO;
+            enemy.GetComponent<EnemyController>().Initialize(item);
+            finalEnemiesListGO.Add(enemy);            
+        }
+
+        GlobalStorage.instance.battleManager.SetAllEnemiesList(finalEnemiesListGO);
+    }
+
 }

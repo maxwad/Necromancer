@@ -1,6 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static NameManager;
 
 public class BattleManager : MonoBehaviour
 {
@@ -8,8 +9,11 @@ public class BattleManager : MonoBehaviour
     public List<GameObject> falsEnemyArmy;
     public List<int> falseEnemiesQuantity;
 
-    private List<GameObject> enemyArmy = new List<GameObject>();
+    public List<GameObject> allEnemiesList = new List<GameObject>();
+
+    public EnemiesTypes[] enemiesTypes;
     private List<int> enemiesQuantity = new List<int>();
+    private List<GameObject> enemiesArmy = new List<GameObject>();
 
     private int sizeMapX = 50;
     private int sizeMapY = 50;
@@ -22,18 +26,40 @@ public class BattleManager : MonoBehaviour
         //falseEnemyArmy = ;
     }
 
-    public void InitializeBattle(GameObject realEnemyArmy)
+    public void SetAllEnemiesList(List<GameObject> enemies)
+    {
+        allEnemiesList = enemies;
+    }
+
+    //this info should give object of battle
+    public void GetCurrentEnemiesArmy(EnemiesTypes[] enemyType, List<int> quantity)
+    {
+        foreach (EnemiesTypes itemType in enemyType)
+        {
+            for (int i = 0; i < allEnemiesList.Count; i++)
+            {
+                Enemy enemy = allEnemiesList[i].GetComponent<Enemy>();
+                if (enemy.EnemiesType == itemType)
+                {
+                    enemiesArmy.Add(allEnemiesList[i]);
+                    enemiesQuantity.Add(quantity[i]);
+                }
+            }            
+        }
+    }
+
+    public void InitializeBattle()
     {
         GlobalStorage.instance.ChangePlayMode(false);
 
         //for testing!
-        if (enemyArmy.Count == 0)
+        if (enemiesArmy.Count == 0)
         {
-            enemyArmy = falsEnemyArmy;
+            enemiesArmy = falsEnemyArmy;
             enemiesQuantity = falseEnemiesQuantity;
         }
 
-        enemySpawner.Initialize(enemyArmy, enemiesQuantity);
+        enemySpawner.Initialize(enemiesArmy, enemiesQuantity);
     }
 
     public Vector3Int GetBattleMapSize()
@@ -41,6 +67,7 @@ public class BattleManager : MonoBehaviour
         return new Vector3Int(sizeMapX, sizeMapY, positionZ);
     }
 
+    //this info should give object of battle
     public void SetBattleMapSize(int width = 10, int heigth = 10)
     {
         sizeMapX = width;
@@ -51,16 +78,10 @@ public class BattleManager : MonoBehaviour
     {
         GlobalStorage.instance.ChangePlayMode(true);
     }
-
-    public void SetEnemyArmy(List<GameObject> army, List<int> quantity)
-    {
-        enemyArmy = army;
-        enemiesQuantity = quantity;
-    }
     
     public void ClearEnemyArmy()
     {
-        enemyArmy.Clear();
+        enemiesArmy.Clear();
         enemiesQuantity.Clear();
     }
 

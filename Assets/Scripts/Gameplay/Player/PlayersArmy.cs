@@ -30,7 +30,7 @@ public class PlayersArmy : MonoBehaviour
         {
             if (item != null)
             {
-                item.quantity = Random.Range(1, 10);
+                item.quantity = Random.Range(4, 10);
                 item.commonHealth = item.quantity * item.health;              
             }
         }

@@ -13,7 +13,7 @@ public class UnitManager : MonoBehaviour
     public List<Unit> allCurrentBaseUnitsByTypes = new List<Unit>();
     public List<Unit> allCurrentBoostUnitsByTypes = new List<Unit>();
 
-    private UnitBoostManager boostManager;
+    private BoostManager boostManager;
 
     private void Start()
     {

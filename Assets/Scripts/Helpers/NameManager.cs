@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,5 +46,10 @@ public static class NameManager
         Goblin,
         Zombie,
         Samurai
+    }
+
+    public enum EnemyAbilities 
+    { 
+        Empty
     }
 }

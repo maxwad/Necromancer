@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af00e5f0857c3345a0d62138f725e96, type: 3}
   m_Name: Goblin
   m_EditorClassIdentifier: 
-  unitName: Goblin
+  enemyName: Goblin
   EnemiesType: 0
-  unitGO: {fileID: 7361037799684881175, guid: 504121e5e11b7f742a5700149b1ee9cb, type: 3}
-  unitIcon: {fileID: 5043434008398718162, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
+  enemyGO: {fileID: 7361037799684881175, guid: 504121e5e11b7f742a5700149b1ee9cb, type: 3}
+  enemyIcon: {fileID: 5043434008398718162, guid: c227e5c1c8fb0014691c2f81edb9282b, type: 3}
   health: 300
   physicAttack: 2
   physicDefence: 2
@@ -23,9 +23,12 @@ MonoBehaviour:
   magicDefence: 1
   speedAttack: 1
   size: 1
+  EnemyAbility: 0
+  attackTool: {fileID: 0}
   coinsPrice: 300
   foodPrice: 300
   woodPrice: 300
   ironPrice: 300
   stonePrice: 300
   magicPrice: 300
+  exp: 10

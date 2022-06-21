@@ -54,36 +54,50 @@ public class UnitController : MonoBehaviour
         quantity      = unit.quantity;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
+    //{
+        
+    //}
+    //private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
+        if (collision.gameObject.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
         {
-            unitSprite.color = damageColor;
-
-            currentHealth--;
-
-            if (currentHealth <= 0 && quantity > 1)
-            {
-                quantity--;
-                currentHealth = health;
-                UpdateArmy();
-            }
-
-            if (quantity <= 1 && currentHealth <= 0)
-            {
-                quantity--;
-                UpdateArmy();
-                Dead();
-            }
-
+            unitSprite.color = damageColor;   
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
+    //{
+        
+    //}
+    //private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
+        if (collision.gameObject.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
         {
             unitSprite.color = normalColor;
+        }
+    }
+
+    public void TakeDamage(float physicalDamage, float magicDamage)
+    {
+        //TODO: we need to create some damage formula
+        float damage = physicalDamage + magicDamage;
+        currentHealth -= damage;
+
+        Debug.Log("Hit SQUAD by " + damage);
+
+        if (currentHealth <= 0 && quantity > 1)
+        {
+            quantity--;
+            currentHealth = health;
+            UpdateArmy();
+        }
+
+        if (quantity <= 1 && currentHealth <= 0)
+        {
+            quantity--;
+            UpdateArmy();
+            Dead();
         }
     }
 

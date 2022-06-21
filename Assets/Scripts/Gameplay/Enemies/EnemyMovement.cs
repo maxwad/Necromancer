@@ -8,7 +8,7 @@ public class EnemyMovement : MonoBehaviour
     private Rigidbody2D rbEnemy;
     private SpriteRenderer sprite;
 
-    private float speed = 90f;
+    private float speed = 1.5f;
     private float speedBoost = 0;
 
 
@@ -31,7 +31,8 @@ public class EnemyMovement : MonoBehaviour
             sprite.flipX = true;
         else
             sprite.flipX = false;
-
-        rbEnemy.velocity = (player.transform.position - transform.position).normalized * Time.fixedDeltaTime * (speed + (speed * speedBoost));
+        
+        rbEnemy.AddForce((player.transform.position - transform.position).normalized * Time.fixedDeltaTime * 2 * (speed + (speed * speedBoost)), ForceMode2D.Impulse);
+        rbEnemy.velocity = Vector3.ClampMagnitude(rbEnemy.velocity, speed + (speed * speedBoost));  
     }
 }

@@ -7,10 +7,10 @@ using static NameManager;
 
 public class EnemySO : ScriptableObject
 {
-    public string unitName;
+    public string enemyName;
     public EnemiesTypes EnemiesType;
-    public GameObject unitGO;
-    public Sprite unitIcon;
+    public GameObject enemyGO;
+    public Sprite enemyIcon;
 
     //battle parameters
     public float health;
@@ -21,6 +21,10 @@ public class EnemySO : ScriptableObject
     public float speedAttack;
     public float size;
 
+    public EnemyAbilities EnemyAbility;
+
+    public GameObject attackTool;
+
     //cost parameters
     public int coinsPrice;
     public int foodPrice;
@@ -28,4 +32,7 @@ public class EnemySO : ScriptableObject
     public int ironPrice;
     public int stonePrice;
     public int magicPrice;
+
+    //expirience parameters
+    public int exp;
 }
