@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 2524514074596592808}
   - component: {fileID: 4387482535749053695}
   - component: {fileID: 799962671044028896}
+  - component: {fileID: 6935887092173954149}
   m_Layer: 3
   m_Name: BlackUnit
   m_TagString: Squad
@@ -194,6 +195,22 @@ MonoBehaviour:
   unitAbility: 0
   attackTool: {fileID: 0}
   quantity: 0
+  damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
+--- !u!114 &6935887092173954149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4387482535749053680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b09d7ddb7d36c1489f2f160c70a18e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 0
+  level: 0
+  unitAbility: 0
 --- !u!1 &5672359223180536961
 GameObject:
   m_ObjectHideFlags: 0

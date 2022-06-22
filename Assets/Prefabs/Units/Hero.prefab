@@ -185,6 +185,7 @@ MonoBehaviour:
   health: 500
   currentHealth: 0
   healthBar: {fileID: 4183452908567873976}
+  damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
 --- !u!1 &7035051583508418664
 GameObject:
   m_ObjectHideFlags: 0

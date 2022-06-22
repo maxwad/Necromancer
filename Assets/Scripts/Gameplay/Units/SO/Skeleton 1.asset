@@ -22,11 +22,11 @@ MonoBehaviour:
   physicDefence: 2
   magicAttack: 1
   magicDefence: 1
-  speedAttack: 0.5
+  speedAttack: 1
   size: 1
   level: 1
   UnitAbility: 9
-  attackTool: {fileID: 0}
+  attackTool: {fileID: 394755954311998102, guid: aaa8f49f3f3fb474080b0b787f2ae961, type: 3}
   coinsPrice: 746
   foodPrice: 876
   woodPrice: 687

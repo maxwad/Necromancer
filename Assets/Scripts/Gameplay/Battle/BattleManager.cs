@@ -10,8 +10,6 @@ public class BattleManager : MonoBehaviour
     public List<int> falseEnemiesQuantity;
 
     public List<GameObject> allEnemiesList = new List<GameObject>();
-
-    public EnemiesTypes[] enemiesTypes;
     private List<int> enemiesQuantity = new List<int>();
     private List<GameObject> enemiesArmy = new List<GameObject>();
 

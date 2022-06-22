@@ -230,3 +230,4 @@ MonoBehaviour:
   EnemyAbility: 0
   attackTool: {fileID: 0}
   exp: 10
+  damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}

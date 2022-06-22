@@ -318,6 +318,7 @@ MonoBehaviour:
   unitAbility: 0
   attackTool: {fileID: 0}
   quantity: 0
+  damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
 --- !u!1 &5107229841397021102
 GameObject:
   m_ObjectHideFlags: 0

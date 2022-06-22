@@ -1743,7 +1743,7 @@ GameObject:
   - component: {fileID: 632549869}
   - component: {fileID: 632549870}
   - component: {fileID: 632549871}
-  m_Layer: 3
+  m_Layer: 4
   m_Name: BattlePlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2806,7 +2806,6 @@ MonoBehaviour:
   - {fileID: 7361037799684881175, guid: 450c1a3f9d2ce384f98a7d9f14f50bf4, type: 3}
   falseEnemiesQuantity: 640000006400000064000000
   allEnemiesList: []
-  enemiesTypes: 
   enemySpawner: {fileID: 184540782}
 --- !u!1 &1399891722
 GameObject:
