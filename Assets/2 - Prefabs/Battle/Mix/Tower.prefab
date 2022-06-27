@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8914104296081387613}
   - component: {fileID: 3818754646086343520}
   - component: {fileID: 6563604551024970522}
+  - component: {fileID: 2981710023388569542}
   m_Layer: 0
   m_Name: Tower
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,3 +118,23 @@ MonoBehaviour:
   sizeY: 4
   gap: 2
   probability: 100
+--- !u!114 &2981710023388569542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914104296081387614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b86444e567abd744bf54d8258deb7fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFromPool: 0
+  isImmortal: 0
+  health: 19
+  damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
+  deathPrefab: {fileID: 5129068117508607062, guid: 494278796b523b243972145a26dde814, type: 3}
+  typeOfObject: 4
+  bonusTypes: 00000000
+  bonusesPropabilities: 64000000

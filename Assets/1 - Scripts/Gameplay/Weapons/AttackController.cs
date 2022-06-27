@@ -8,7 +8,7 @@ public class AttackController : MonoBehaviour
     private GameObject weapon;
 
     private UnitController unitController;
-    private WeaponStats weaponStats;
+    private WeaponController weaponStats;
 
     [SerializeField] private float size;
     [SerializeField] private float level;
@@ -24,7 +24,8 @@ public class AttackController : MonoBehaviour
         unitController = GetComponent<UnitController>();
         sprite = GetComponent<SpriteRenderer>();
 
-        GetStartParameterOnce();
+        level = unitController.level;
+        unitAbility = unitController.unitAbility;
 
         if (attack != null) StopCoroutine(attack);
 
@@ -38,40 +39,7 @@ public class AttackController : MonoBehaviour
             StopCoroutine(attack);
             attack = StartCoroutine(Attack());
         }
-
     }
-
-    private void Update()
-    {
-        GetParametersPeriodically();
-    }
-
-
-    #region Set Weapon Parameter
-    private void GetStartParameterOnce()
-    {
-        CreateWeapon(unitController.attackTool);
-
-        level = unitController.level;
-        unitAbility = unitController.unitAbility;
-
-        weaponStats = weapon.GetComponent<WeaponStats>();
-    }
-
-    private void GetParametersPeriodically()
-    {
-        size = unitController.size;
-
-        weaponStats.SetAttackParameters(unitController.magicAttack, unitController.physicAttack);
-    }
-
-    private void CreateWeapon(GameObject prefab)
-    {
-        weapon = Instantiate(prefab, transform.position, Quaternion.identity);
-        weapon.transform.SetParent(transform);
-    }
-
-    #endregion
 
     private IEnumerator Attack()
     {
@@ -81,13 +49,19 @@ public class AttackController : MonoBehaviour
         {
             yield return new WaitForSeconds(unitController.speedAttack);
 
+            weapon = Instantiate(unitController.attackTool, transform.position, Quaternion.identity);
+            weapon.transform.SetParent(transform);
+
             if (sprite.flipX == true)
                 weapon.transform.eulerAngles = new Vector3(weapon.transform.eulerAngles.x, 180, weapon.transform.eulerAngles.x);
             else
                 weapon.transform.eulerAngles = new Vector3(weapon.transform.eulerAngles.x, 0, weapon.transform.eulerAngles.x);
 
+            weaponStats = weapon.GetComponent<WeaponController>();
+            weaponStats.SetAttackParameters(unitController.magicAttack, unitController.physicAttack);
+            size = unitController.size;
+
             weapon.transform.localScale = new Vector3(size, size, size);
-            weapon.SetActive(true);
         }
 
     }

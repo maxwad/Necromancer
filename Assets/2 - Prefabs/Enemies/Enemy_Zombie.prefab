@@ -196,6 +196,7 @@ MonoBehaviour:
   - {fileID: -8540936824289033575, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   - {fileID: 4836760467912430716, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   - {fileID: 6453412123980407896, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  actionAfterAnimation: 0
   framerate: 0.1
 --- !u!114 &7373041339029599471
 MonoBehaviour:
@@ -222,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesType: 1
-  health: 200
+  health: 25
   magicAttack: 2
   physicAttack: 1
   magicDefence: 2
@@ -233,3 +234,5 @@ MonoBehaviour:
   attackTool: {fileID: 0}
   exp: 30
   damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
+  deathPrefab: {fileID: 3877275003630577787, guid: 8e2dbf07adabe6f458d623574390b341, type: 3}
+  bonusType: 3

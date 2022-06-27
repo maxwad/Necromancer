@@ -10,11 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1686677917275653698}
   - component: {fileID: 1686677917275653699}
+  - component: {fileID: -4788801574905055520}
   - component: {fileID: 1686677917275653700}
   - component: {fileID: 5354112208776984294}
+  - component: {fileID: 911038315745079904}
   m_Layer: 0
   m_Name: Torch
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,6 +87,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!70 &-4788801574905055520
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686677917275653701}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0010993084, y: -0.053314768}
+  m_Size: {x: 0.107094765, y: 0.4433709}
+  m_Direction: 0
 --- !u!114 &1686677917275653700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +125,7 @@ MonoBehaviour:
   - {fileID: 2483307524810053647, guid: 625f0374ff3f8cd46b564f4cee03d2ff, type: 3}
   - {fileID: 2428121689872686496, guid: 625f0374ff3f8cd46b564f4cee03d2ff, type: 3}
   - {fileID: -3630689362949786647, guid: 625f0374ff3f8cd46b564f4cee03d2ff, type: 3}
+  actionAfterAnimation: 0
   framerate: 0.07
 --- !u!114 &5354112208776984294
 MonoBehaviour:
@@ -124,3 +143,23 @@ MonoBehaviour:
   sizeY: 2
   gap: 1
   probability: 100
+--- !u!114 &911038315745079904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686677917275653701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b86444e567abd744bf54d8258deb7fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFromPool: 1
+  isImmortal: 0
+  health: 10
+  damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
+  deathPrefab: {fileID: 2389708433616454076, guid: 340d686e91f01964187d4a5f275c3bcb, type: 3}
+  typeOfObject: 3
+  bonusTypes: 000000000100000002000000
+  bonusesPropabilities: 050000000f0000002d000000

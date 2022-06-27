@@ -6,6 +6,7 @@ public class EnemyMovement : MonoBehaviour
 {
     private GameObject player;
     private Rigidbody2D rbEnemy;
+    private Collider2D collEnemy;
     private SpriteRenderer sprite;
 
     private float speed = 1f;
@@ -17,6 +18,7 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         player = GlobalStorage.instance.battlePlayer;
+        collEnemy = GetComponent<Collider2D>();
         rbEnemy = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
     }
@@ -36,5 +38,16 @@ public class EnemyMovement : MonoBehaviour
         
         rbEnemy.AddForce((player.transform.position - transform.position).normalized * Time.fixedDeltaTime * acceleration * (speed + (speed * speedBoost)), ForceMode2D.Impulse);
         rbEnemy.velocity = Vector3.ClampMagnitude(rbEnemy.velocity, speed + (speed * speedBoost));  
+    }
+
+
+    private void OnBecameVisible()
+    {
+        collEnemy.enabled = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        collEnemy.enabled = false;
     }
 }

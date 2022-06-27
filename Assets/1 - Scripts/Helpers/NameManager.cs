@@ -57,6 +57,33 @@ public static class NameManager
     {
         Enemy,
         DamageText,
-        Bonus
+        BonusExp,
+        Torch
+    }
+
+    public enum AfterAnimation
+    {
+        Nothing,
+        Destroy,
+        SetDisable
+    }
+
+    public enum SenderTypes
+    {
+        Enemy,
+        EnemyBoss,
+        Obstacle,
+        Torch,
+        Tower
+    }
+
+    public enum BonusType
+    {
+        Health,
+        Mana,
+        Gold,
+        Exp,
+        Other,
+        Nothing
     }
 }

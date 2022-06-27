@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponStats : MonoBehaviour
+public class WeaponController : MonoBehaviour
 {
     [SerializeField] private float magicAttack;
     [SerializeField] private float physicAttack;
@@ -21,24 +21,29 @@ public class WeaponStats : MonoBehaviour
         currentLifeTime = 0;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         currentLifeTime += Time.deltaTime;
 
-        if (currentLifeTime >= lifeTime) gameObject.SetActive(false);
+        if (currentLifeTime >= lifeTime) {
+            Destroy(gameObject);
+        } 
 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if (collision.CompareTag(TagManager.T_ENEMY) == true)
         {
             collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
         }
 
-        if (collision.CompareTag(TagManager.T_BONUSBOX) == true)
+        if (collision.CompareTag(TagManager.T_OBSTACLE) == true)
         {
-
+            collision.gameObject.GetComponent<HealthObjectStats>().TakeDamage(physicAttack, magicAttack);
         }
     }
+
+
 }

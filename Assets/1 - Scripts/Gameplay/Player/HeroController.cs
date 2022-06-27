@@ -26,6 +26,8 @@ public class HeroController : MonoBehaviour
     private Color damageColor = Color.red;
     private float blinkTime = 0.1f;
 
+    [SerializeField] private GameObject deathPrefab;
+
     [SerializeField] private SpriteRenderer healthBar;
 
     [SerializeField] GameObject damageNote;
@@ -93,6 +95,8 @@ public class HeroController : MonoBehaviour
     {
         isDead = true;
         Debug.Log("HERO IS DEAD");
+        GameObject death = Instantiate(deathPrefab, transform.position, Quaternion.identity);
+        death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
         gameObject.SetActive(false);
     }
 }

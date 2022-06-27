@@ -31,13 +31,18 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject damageNote;
     private Color colorDamage = Color.red;
 
+    [SerializeField] private GameObject deathPrefab;
+
     private HeroController hero;
     private Rigidbody2D rbEnemy;
     private float pushForce = 10000f;
 
+    public BonusType bonusType;
+
     private void Start()
     {
         rbEnemy = GetComponent<Rigidbody2D>();
+
         currentHealth = health;
         delayAttack = speedAttack;
         enemySprite = GetComponent<SpriteRenderer>();
@@ -133,7 +138,15 @@ public class EnemyController : MonoBehaviour
     private void Dead()
     {
         currentHealth = health;
+        GameObject death = Instantiate(deathPrefab, transform.position, Quaternion.identity);
+        death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
+        CreateBonus();
         gameObject.SetActive(false);
+    }
+
+    private void CreateBonus()
+    {
+        GlobalStorage.instance.bonusManager.CreateBonus(bonusType, transform.position);
     }
 
 }

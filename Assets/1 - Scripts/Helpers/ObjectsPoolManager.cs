@@ -11,12 +11,14 @@ public class ObjectsPoolManager : MonoBehaviour
     //prefabs for Instantiating    
     public List<GameObject> enemyPrefabsList = new List<GameObject>();
     public GameObject damageText;
-    public GameObject bonusSmall;
+    public GameObject torch;
+    public GameObject bonusExp;
 
     //storages for created objects
     private Dictionary<EnemiesTypes, List<GameObject>> enemiesDict = new Dictionary<EnemiesTypes, List<GameObject>>();
     private List<GameObject> damageTextList = new List<GameObject>();
-    private List<GameObject> bonusSmallList = new List<GameObject>();
+    private List<GameObject> torchesList = new List<GameObject>();
+    private List<GameObject> bonusExpList = new List<GameObject>();
 
 
     private int elementsCount = 10;
@@ -54,6 +56,19 @@ public class ObjectsPoolManager : MonoBehaviour
         {
             damageTextList.Add(CreateObject(damageText));
         }
+
+        //creating List with tourches
+        for (int i = 0; i < elementsCount; i++)
+        {
+            torchesList.Add(CreateObject(torch));
+        }
+
+        //creating List with bonusExp
+        for (int i = 0; i < elementsCount; i++)
+        {
+            bonusExpList.Add(CreateObject(bonusExp));
+        }
+
     }
 
     private GameObject CreateObject(GameObject prefab)
@@ -77,8 +92,12 @@ public class ObjectsPoolManager : MonoBehaviour
             case ObjectPool.DamageText:
                 currentObjectsList = damageTextList;
                 break;
-            case ObjectPool.Bonus:
-                currentObjectsList = bonusSmallList;
+            case ObjectPool.Torch:
+                currentObjectsList = torchesList;
+                break;
+
+            case ObjectPool.BonusExp:
+                currentObjectsList = bonusExpList;
                 break;
 
         }
@@ -106,8 +125,10 @@ public class ObjectsPoolManager : MonoBehaviour
     }
 
     //TODO: check later how many objects we have in pull after few battle
+    //if it's too match - clear it to initial value
     private void AllObjectsFalse()
     {
+        //clear enemy after battle
         for (int x = 0; x < enemyPrefabsList.Count; x++)
         {
             EnemiesTypes type = enemyPrefabsList[x].GetComponent<EnemyController>().enemiesType;
@@ -119,9 +140,22 @@ public class ObjectsPoolManager : MonoBehaviour
             }
         }
 
+        //clear damageText after battle
         for (int i = 0; i < damageTextList.Count; i++)
         {
             damageTextList[i].SetActive(false);
+        }
+
+        //clear torches after battle
+        for (int i = 0; i < torchesList.Count; i++)
+        {
+            torchesList[i].SetActive(false);
+        }
+
+        //clear bonusExp after battle
+        for (int i = 0; i < bonusExpList.Count; i++)
+        {
+            bonusExpList[i].SetActive(false);
         }
     }
 

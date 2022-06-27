@@ -30,6 +30,8 @@ public class UnitController : MonoBehaviour
     private Color damageColor = Color.red;
     private float blinkTime = 0.1f;
 
+    [SerializeField] private GameObject deathPrefab;
+
     [SerializeField] GameObject damageNote;
     private Color colorDamage = Color.yellow;
 
@@ -108,6 +110,8 @@ public class UnitController : MonoBehaviour
     private void Dead()
     {
         isDead = true;
+        GameObject death =  Instantiate(deathPrefab, transform.position, Quaternion.identity);
+        death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
         Destroy(gameObject);
     }
 

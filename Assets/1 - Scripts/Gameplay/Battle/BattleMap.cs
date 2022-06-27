@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static NameManager;
 
 public class BattleMap : MonoBehaviour
 {
     [Header("Player")]
     private GameObject player;
     private Vector2 playerPosition;
+    private int playerRadiusGap = 15; //always less than bounds size! 
     private float distanceToUpdateObstacles = 1f;
     private float radiusToCheckObstacles = 250f;
     private bool readyToCheckObstacles = false;
@@ -18,7 +20,6 @@ public class BattleMap : MonoBehaviour
     private int sizeX;
     private int sizeY;
     private int widthOfBound = 20;
-    private int freespace = 10;
     private int spawnZOffset = 20;
     private int quantityUnsuccessTry = 10000;
     [HideInInspector] public bool[,] battleArray;
@@ -28,7 +29,7 @@ public class BattleMap : MonoBehaviour
     public List<Tile> boundsBG;
 
     [Header("DefenderTowers")]
-    private bool isDefendBattle = false;
+    private bool isDefendBattle = true;
     private int quantityOfTowers = 4;
     [SerializeField] private GameObject towerContainer;
     private List<GameObject> towersOnMap = new List<GameObject>();
@@ -47,7 +48,9 @@ public class BattleMap : MonoBehaviour
 
 
     [Header("Torches")]
-    private int quantityOfTorches = 50;
+    private int torchQuotePerSomeCells = 1;
+    private int someCells = 500;
+    private int quantityOfTorches;
     [SerializeField] private GameObject torchesContainer;
     private List<GameObject> torchesOnMap = new List<GameObject>();
 
@@ -86,14 +89,11 @@ public class BattleMap : MonoBehaviour
         {
             GetBattleMapSize();
             DrawTheBackgroundMap();
-            DrawFreeSpaceForPlayer(false);
 
             if (isDefendBattle == true) DrawObjects(towersPrefab, towerContainer, towerStats, towersOnMap, quantityOfTowers);
-            //DrawDefendTowers();
             DrawObstacles();
-            DrawObjects(torchPrefab, torchesContainer, torchStats, torchesOnMap, quantityOfTorches);
-            DrawFreeSpaceForPlayer(true);
-            //MarkFilledCells();
+            DrawObjects(torchPrefab, null, torchStats, torchesOnMap, quantityOfTorches);
+            MarkFilledCells();
 
             enemySpawner.ReadyToSpawnEnemy();
         }
@@ -154,94 +154,27 @@ public class BattleMap : MonoBehaviour
         }
     }
 
-    private void DrawFreeSpaceForPlayer(bool fillMark)
+    private bool CheckPlayerPosition(int checkX, int checkY)
     {
-        int battleMapSizeX = battleArray.GetLength(0);
-        int battleMapSizeY = battleArray.GetLength(1);
+        bool canICreateObjectHere = true;
 
-        //free space for player in center of army
-        for (int i = 0; i < battleMapSizeX; i++)
+        int playerPositionX = (int)player.transform.position.x;
+        int playerPositionY = (int)player.transform.position.y;
+
+        //check player position and desire position
+        for (int x = playerPositionX - playerRadiusGap; x < playerPositionX + playerRadiusGap; x++)
         {
-            for (int j = 0; j < battleMapSizeY; j++)
+            for (int y = playerPositionY - playerRadiusGap; y < playerPositionY + playerRadiusGap; y++)
             {
-                if (((i >= battleMapSizeX / 2 - freespace) && (i <= battleMapSizeX / 2 + freespace))
-                    &&
-                    ((j >= battleMapSizeY / 2 - freespace) && (j <= battleMapSizeY / 2 + freespace)))
+                if (checkX == x && checkY == y)
                 {
-                    battleArray[i, j] = fillMark;
-                }
+                    canICreateObjectHere = false;
+                    break;
+                }                
             }
         }
 
-
-    }
-
-    private void DrawDefendTowers()
-    {
-        int battleMapSizeX = battleArray.GetLength(0);
-        int battleMapSizeY = battleArray.GetLength(1);
-
-        int towerSizeX = towerStats.sizeX;
-        int towerSizeY = towerStats.sizeY;
-        int towerGap = towerStats.gap;
-
-        for (int countTry = 0; countTry < quantityOfTowers; countTry++)
-        {
-            bool isBuilded = false;
-            while (isBuilded == false)
-            {
-                int randomX = Random.Range(0 + widthOfBound + sizeX, battleMapSizeX - widthOfBound - sizeX);
-                int randomY = Random.Range(0 + widthOfBound + sizeY, battleMapSizeY - widthOfBound - sizeY);
-
-                if (battleArray[randomX, randomY] == false) continue;
-
-                //check free space for Tower
-                if (battleArray[randomX + towerSizeX / 2 + towerGap, randomY] == false ||
-                    battleArray[randomX - towerSizeX / 2 - towerGap, randomY] == false ||
-                    battleArray[randomX, randomY + towerSizeY / 2 + towerGap] == false ||
-                    battleArray[randomX, randomY - towerSizeY / 2 - towerGap] == false)
-                {
-                    continue;
-                }
-
-                //check free space inside Tower area
-                bool newTry = false;
-                for (int checkX = -towerSizeX; checkX < towerSizeX / 2; checkX++)
-                {
-                    for (int checkY = -towerSizeY; checkY < towerSizeY / 2; checkY++)
-                    {
-                        if (battleArray[randomX + checkX, randomY + checkY] == false)
-                        {
-                            newTry = true;
-                            continue;
-                        }
-                    }
-                }
-
-                if (newTry == true) continue;
-
-                GameObject tower = Instantiate(towersPrefab, new Vector3(randomX, randomY, spawnZOffset), Quaternion.identity);
-                tower.transform.SetParent(towerContainer.transform);
-                towersOnMap.Add(tower);
-
-                battleArray[randomX, randomY] = false;
-
-                //mark filled coordinates as false
-                for (int checkX = -towerSizeX; checkX < towerSizeX / 2 + towerGap; checkX++)
-                {
-                    for (int checkY = -towerSizeY; checkY < towerSizeY / 2 + towerGap; checkY++)
-                    {
-                        if (battleArray[randomX + checkX, randomY + checkY] == true)
-                        {
-                            battleArray[randomX + checkX, randomY + checkY] = false;
-                        }
-                    }
-                }
-
-                isBuilded = true;
-            }
-            
-        }
+        return canICreateObjectHere;
     }
 
     private void DrawObstacles()
@@ -295,6 +228,10 @@ public class BattleMap : MonoBehaviour
                     continue;
                 }
 
+                //check player area
+                if (CheckPlayerPosition(x, y) == false) continue;
+
+
                 //check free space for obstacle
                 if (battleArray[x + obstacleSizeX / 2 + obstacleGap, y] == false ||
                     battleArray[x - obstacleSizeX / 2 - obstacleGap, y] == false ||
@@ -329,19 +266,7 @@ public class BattleMap : MonoBehaviour
                     obstacle.SetActive(false);
                     obstaclesOnMap.Add(obstacle);
 
-                    battleArray[x, y] = false;
-
-                    //mark filled coordinates as false
-                    for (int checkX = -obstacleSizeX; checkX < obstacleSizeX / 2 + obstacleGap; checkX++)
-                    {
-                        for (int checkY = -obstacleSizeY; checkY < obstacleSizeY / 2 + obstacleGap; checkY++)
-                        {
-                            if (battleArray[x + checkX, y + checkY] == true)
-                            {
-                                battleArray[x + checkX, y + checkY] = false;
-                            }
-                        }
-                    }
+                    FillCells(x, y, obstacleSizeX, obstacleSizeY, obstacleGap, false);
 
                     InitializeCurrentObstacle();
                 } 
@@ -378,7 +303,10 @@ public class BattleMap : MonoBehaviour
 
                 if (battleArray[randomX, randomY] == false) continue;
 
-                //check free space for Tower
+                //check player area
+                if (CheckPlayerPosition(randomX, randomY) == false) continue;
+
+                //check free space for object
                 if (battleArray[randomX + objectSizeX / 2 + objectGap, randomY] == false ||
                     battleArray[randomX - objectSizeX / 2 - objectGap, randomY] == false ||
                     battleArray[randomX, randomY + objectSizeY / 2 + objectGap] == false ||
@@ -387,7 +315,7 @@ public class BattleMap : MonoBehaviour
                     continue;
                 }
 
-                //check free space inside Tower area
+                //check free space inside object area
                 bool newTry = false;
                 for (int checkX = -objectSizeX; checkX < objectSizeX / 2; checkX++)
                 {
@@ -403,23 +331,23 @@ public class BattleMap : MonoBehaviour
 
                 if (newTry == true) continue;
 
-                GameObject obj = Instantiate(prefab, new Vector3(randomX, randomY, spawnZOffset), Quaternion.identity);
-                obj.transform.SetParent(container.transform);
+                GameObject obj;
+
+                if (prefab.GetComponent<HealthObjectStats>().isFromPool == true)
+                {
+                    obj = GlobalStorage.instance.objectsPoolManager.GetObjectFromPool(ObjectPool.Torch);
+                    obj.transform.position = new Vector3(randomX, randomY, spawnZOffset);
+                    obj.SetActive(true);
+                }
+                else
+                {
+                    obj = Instantiate(prefab, new Vector3(randomX, randomY, spawnZOffset), Quaternion.identity);
+                    if (container != null) obj.transform.SetParent(container.transform);
+                }
+                
                 objectsOnMap.Add(obj);
 
-                battleArray[randomX, randomY] = false;
-
-                //mark filled coordinates as false
-                for (int checkX = -objectSizeX; checkX < objectSizeX / 2 + objectGap; checkX++)
-                {
-                    for (int checkY = -objectSizeY; checkY < objectSizeY / 2 + objectGap; checkY++)
-                    {
-                        if (battleArray[randomX + checkX, randomY + checkY] == true)
-                        {
-                            battleArray[randomX + checkX, randomY + checkY] = false;
-                        }
-                    }
-                }
+                FillCells(randomX, randomY, objectSizeX, objectSizeY, objectGap, false);                
 
                 isBuilded = true;
             }
@@ -433,13 +361,16 @@ public class BattleMap : MonoBehaviour
         //mark all false cells
         for (int i = 0; i < battleArray.GetLength(0); i++)
         {
-            for (int j = 0; j < battleArray.GetLength(1); j++)
+            for (int j = 0; j < battleArray.GetLength(1); j++) 
+            {
+                Vector3Int poz = new Vector3Int(i, j, -20);
+                battleBGTilemap.SetTileFlags(poz, TileFlags.None);
+
                 if (battleArray[i, j] == false)
-                {
-                    Vector3Int poz = new Vector3Int(i, j, -20);
-                    battleBGTilemap.SetTileFlags(poz, TileFlags.None);
                     battleBGTilemap.SetColor(poz, Color.black);
-                }
+                else
+                    battleBGTilemap.SetColor(poz, Color.white);
+            }                
         }
     }
 
@@ -471,7 +402,24 @@ public class BattleMap : MonoBehaviour
         EventManager.OnEndOfBattleEvent();
     }
 
+    private void FillCells(int xPos, int yPos, int sizeX, int sizeY, int gap, bool value)
+    {
+        battleArray[xPos, yPos] = false;
 
+        //mark filled coordinates as false
+        for (int checkX = -sizeX; checkX < sizeX / 2 + gap; checkX++)
+        {
+            for (int checkY = -sizeY; checkY < sizeY / 2 + gap; checkY++)
+            {
+                if (battleArray[xPos + checkX, yPos + checkY] == !value)
+                {
+                    battleArray[xPos + checkX, yPos + checkY] = value;
+                }
+            }
+        }
+    }
+
+    //Enable or disable obstacles on map in dependent of distance to player
     private void CheckObstaclesOnBattle() 
     {
         if (Vector2.Distance(player.gameObject.transform.position, playerPosition) >= distanceToUpdateObstacles)
@@ -495,15 +443,56 @@ public class BattleMap : MonoBehaviour
         sizeY = size.y;
 
         battleArray = new bool[sizeX + 2 * widthOfBound, sizeY + 2 * widthOfBound];
+
+        //player in the middle on the map
+        player.transform.position = new Vector3 ((sizeX + 2 * widthOfBound) / 2, (sizeY + 2 * widthOfBound) / 2, spawnZOffset);
+
+        quantityOfTorches = (sizeX * sizeY * torchQuotePerSomeCells) / someCells;
+    }
+
+    private void CreateNewObjectOnTheMap(GameObject obj)
+    {
+
+    }
+
+    private void ClearSpaceUnderObject(GameObject obj)
+    {
+        BattleObjectStats objectSpaceStats = obj.GetComponent<BattleObjectStats>();
+
+        FillCells(
+            (int)obj.transform.position.x, (int)obj.transform.position.y, 
+            objectSpaceStats.sizeX, objectSpaceStats.sizeY, 
+            objectSpaceStats.gap, 
+            true);
+
+        HealthObjectStats objHealthStats = obj.GetComponent<HealthObjectStats>();
+
+        if (objHealthStats.typeOfObject == SenderTypes.Torch) 
+        {
+            torchesOnMap.Remove(obj);
+            obj.SetActive(false);
+
+            DrawObjects(torchPrefab, null, objectSpaceStats, torchesOnMap, quantityOfTorches);
+        }
+
+        if (objHealthStats.typeOfObject == SenderTypes.Tower)
+        {
+            towersOnMap.Remove(obj);
+            Destroy(obj);
+        }
+
+        MarkFilledCells();
     }
 
     private void OnEnable()
     {
         EventManager.ChangePlayer += InitializeMap;
+        EventManager.ObstacleDestroyed += ClearSpaceUnderObject;
     }
 
     private void OnDisable()
     {
         EventManager.ChangePlayer -= InitializeMap;
+        EventManager.ObstacleDestroyed -= ClearSpaceUnderObject;
     }
 }

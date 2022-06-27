@@ -195,6 +195,7 @@ MonoBehaviour:
   unitAbility: 0
   attackTool: {fileID: 0}
   quantity: 0
+  deathPrefab: {fileID: 3877275003630577787, guid: 8e2dbf07adabe6f458d623574390b341, type: 3}
   damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
 --- !u!114 &6935887092173954149
 MonoBehaviour:

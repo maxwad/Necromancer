@@ -68,7 +68,6 @@ public class BattleArmyController : MonoBehaviour
                 armySprites[i].flipX = currentFacing;
 
                 //right sprite order of units
-                //armySprites[i].sortingOrder = i * 3;
                 armySprites[i].sortingOrder = -Mathf.RoundToInt(army[i].transform.position.y * 100);
                 //right sprite order of count label               
                 ñountLabel[i].sortingOrder = -Mathf.RoundToInt(army[i].transform.position.y * 100);

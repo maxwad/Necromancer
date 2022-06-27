@@ -14,6 +14,7 @@ public class GlobalStorage : MonoBehaviour
     public BattleManager battleManager;
     public PlayerManager playerManager;
     public ObjectsPoolManager objectsPoolManager;
+    public BonusManager bonusManager;
 
     [Header("Player")]
     public GameObject player;
@@ -23,6 +24,11 @@ public class GlobalStorage : MonoBehaviour
     [Header("Maps")]
     public GameObject globalMap;
     public GameObject battleMap;
+
+
+    [Header("Containers")]
+    public GameObject effectsContainer;
+    public GameObject bonusesContainer;
 
     [HideInInspector] public bool isGlobalMode = true;
 

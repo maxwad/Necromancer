@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static NameManager;
 
 public class SimpleAnimator : MonoBehaviour
 {
     public List<Sprite> spriteList;
+    public AfterAnimation actionAfterAnimation;
     private SpriteRenderer image;
     public float framerate = 0.01f;
     private WaitForSeconds waitTime;
@@ -33,7 +35,29 @@ public class SimpleAnimator : MonoBehaviour
                     image.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100);
                 }                
             }
+
+            if (actionAfterAnimation == AfterAnimation.Destroy)
+            {
+                DestroyObject();
+                break;
+            }
+
+            if (actionAfterAnimation == AfterAnimation.SetDisable)
+            {
+                DisableObject();
+                break;
+            }
         }    
+    }
+
+    private void DestroyObject()
+    {
+        Destroy(gameObject);
+    }
+
+    private void DisableObject()
+    {
+        gameObject.SetActive(false);
     }
 
 }

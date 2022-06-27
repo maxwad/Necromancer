@@ -10,7 +10,8 @@ public class DamageText : MonoBehaviour
     private float bigWaitTime = 0.5f;
     private WaitForSeconds smallWait;
     private WaitForSeconds bigWait;
-    private Vector3 damageNoteStartOffset = new Vector3(0, 0.5f, 0);
+    private Vector3 damageNoteStartOffsetStandart = new Vector3(0, 0.7f, 0);
+    private Vector3 damageNoteStartOffset;
     private Vector3 damageNoteScaleOffset;
     private Vector3 damageNotePositionOffset;
 
@@ -27,7 +28,7 @@ public class DamageText : MonoBehaviour
         textColor = color;
 
         float randomOffset = Random.Range(-40, 30) * 0.01f;
-        damageNoteStartOffset += new Vector3(0, randomOffset, 0);
+        damageNoteStartOffset = damageNoteStartOffsetStandart + new Vector3(0, randomOffset, 0);
 
         transform.position += damageNoteStartOffset;
         transform.localScale = Vector3.one;
@@ -69,6 +70,8 @@ public class DamageText : MonoBehaviour
             yield return smallWait;
         }
 
+        //reset offset
+        damageNoteStartOffset = damageNoteStartOffsetStandart;
         gameObject.SetActive(false);
         //TODO: change to set gameObject false
     }

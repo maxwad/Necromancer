@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 7240786212073462507}
   - component: {fileID: 7841266511912988775}
   - component: {fileID: 7826173694563497893}
+  - component: {fileID: -3222188546336999785}
   m_Layer: 7
   m_Name: AreaHeroObstacle_2
   m_TagString: Obstacle
@@ -333,3 +334,23 @@ MonoBehaviour:
   sizeY: 2
   gap: 2
   probability: 3
+--- !u!114 &-3222188546336999785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8988573053142969190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b86444e567abd744bf54d8258deb7fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFromPool: 0
+  isImmortal: 1
+  health: 10
+  damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
+  deathPrefab: {fileID: 2389708433616454076, guid: 340d686e91f01964187d4a5f275c3bcb, type: 3}
+  typeOfObject: 2
+  bonusTypes: 05000000
+  bonusesPropabilities: 64000000
