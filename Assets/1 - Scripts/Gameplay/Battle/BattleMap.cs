@@ -51,7 +51,6 @@ public class BattleMap : MonoBehaviour
     private int torchQuotePerSomeCells = 1;
     private int someCells = 500;
     private int quantityOfTorches;
-    [SerializeField] private GameObject torchesContainer;
     private List<GameObject> torchesOnMap = new List<GameObject>();
 
     public GameObject torchPrefab;
@@ -379,13 +378,12 @@ public class BattleMap : MonoBehaviour
         battleBoundsTilemap.ClearAllTiles();
         battleBGTilemap.ClearAllTiles();
 
+        //objects from pool have ObjectPoolManager as a parent!
+
         foreach (Transform child in obstaclesContainer.transform)
             Destroy(child.gameObject);
 
         foreach (Transform child in towerContainer.transform)
-            Destroy(child.gameObject);
-
-        foreach (Transform child in torchesContainer.transform)
             Destroy(child.gameObject);
 
         for (int i = 0; i < battleArray.GetLength(0); i++)

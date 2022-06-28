@@ -10,11 +10,11 @@ public class EnemyManager : MonoBehaviour
     public List<Enemy> allBoostEnemies = new List<Enemy>();
     public List<GameObject> finalEnemiesListGO = new List<GameObject>();
 
-    private BoostManager boostManager;
+    private UnitBoostManager boostManager;
 
     private void Start()
     {
-        boostManager = GlobalStorage.instance.boostManager;
+        boostManager = GlobalStorage.instance.unitBoostManager;
 
         GetAllEnemiesBase();
     }

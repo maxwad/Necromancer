@@ -86,4 +86,26 @@ public static class NameManager
         Other,
         Nothing
     }
+
+    public enum ResourceType
+    {
+        Gold,
+        Food,
+        Stone,
+        Wood,
+        Iron,
+        Magic,
+        Nothing
+    }
+
+    public enum PlayersStats
+    {
+        Level,
+        Health,
+        Mana,
+        Speed,
+        SearchRadius,
+        Defence,
+        Regeneration
+    }
 }

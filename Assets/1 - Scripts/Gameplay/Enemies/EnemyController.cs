@@ -31,7 +31,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject damageNote;
     private Color colorDamage = Color.red;
 
-    [SerializeField] private GameObject deathPrefab;
+    [SerializeField] private GameObject deathPrefab; 
 
     private HeroController hero;
     private Rigidbody2D rbEnemy;
@@ -95,25 +95,27 @@ public class EnemyController : MonoBehaviour
                     delayAttack = speedAttack;
                 }
             }
-        }            
+        }   
                
     }
 
     public void TakeDamage(float physicalDamage, float magicDamage, Vector3 forceDirection)
     {
-        enemySprite.color = damageColor;
-        Invoke("ColorBack", blinkTime);
+        if(currentHealth > 0)
+        {
+            enemySprite.color = damageColor;
+            Invoke("ColorBack", blinkTime);
 
-        //TODO: we need to create some damage formula
-        float damage = physicalDamage + magicDamage;
-        currentHealth -= damage;
+            //TODO: we need to create some damage formula
+            float damage = physicalDamage + magicDamage;
+            currentHealth -= damage;
 
-        ShowDamage(damage, colorDamage);
+            ShowDamage(damage, colorDamage);
 
-        if (forceDirection != Vector3.zero) PushMe(forceDirection);
+            if(forceDirection != Vector3.zero) PushMe(forceDirection);
 
-        if (currentHealth <= 0) Dead();
-   
+            if(currentHealth <= 0) Dead();
+        }   
     }
 
     private void ColorBack()
@@ -136,11 +138,12 @@ public class EnemyController : MonoBehaviour
     }
 
     private void Dead()
-    {
+    {        
         currentHealth = health;
         GameObject death = Instantiate(deathPrefab, transform.position, Quaternion.identity);
         death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
         CreateBonus();
+        EventManager.OnEnemyDestroyedEvent(gameObject);
         gameObject.SetActive(false);
     }
 

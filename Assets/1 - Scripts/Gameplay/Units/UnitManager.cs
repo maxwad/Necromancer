@@ -13,11 +13,11 @@ public class UnitManager : MonoBehaviour
     public List<Unit> allCurrentBaseUnitsByTypes = new List<Unit>();
     public List<Unit> allCurrentBoostUnitsByTypes = new List<Unit>();
 
-    private BoostManager boostManager;
+    private UnitBoostManager boostManager;
 
     private void Start()
     {
-        boostManager = GlobalStorage.instance.boostManager;
+        boostManager = GlobalStorage.instance.unitBoostManager;
 
         StartCreatingPlayersArmy();
     }

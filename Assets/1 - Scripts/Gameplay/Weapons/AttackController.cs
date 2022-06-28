@@ -27,8 +27,8 @@ public class AttackController : MonoBehaviour
         level = unitController.level;
         unitAbility = unitController.unitAbility;
 
+        startAttackDelay = Random.Range(startAttackDelay * 10 - startAttackDelay, startAttackDelay * 10 + startAttackDelay) / 10;
         if (attack != null) StopCoroutine(attack);
-
         attack = StartCoroutine(Attack());
     }
 
@@ -37,6 +37,7 @@ public class AttackController : MonoBehaviour
         if (attack != null)
         {
             StopCoroutine(attack);
+            startAttackDelay = Random.Range(startAttackDelay * 10 - startAttackDelay, startAttackDelay * 10 + startAttackDelay) / 10;
             attack = StartCoroutine(Attack());
         }
     }

@@ -6,7 +6,16 @@ using static NameManager;
 
 public class HeroController : MonoBehaviour
 {
-    [SerializeField] private float health = 500f;
+    [SerializeField] private float maxHealthBase = 500f;
+    [SerializeField] private float maxCurrentHealth;
+    [SerializeField] private float healthBoost = 0;
+    [SerializeField] private float currentHealth;
+
+    [SerializeField] private float maxManaBase = 50f;
+    [SerializeField] private float maxCurrentMana;
+    [SerializeField] private float manaBoost = 0;
+    [SerializeField] private float currentMana;
+
     //[SerializeField] private float magicAttack = 1f;
     //[SerializeField] private float physicAttack = 1f;
     //[SerializeField] private float magicDefence = 1f;
@@ -18,7 +27,9 @@ public class HeroController : MonoBehaviour
 
     //[SerializeField] private GameObject attackTool;
 
-    [SerializeField] private float currentHealth;
+    private float searchRadius = 2f;
+    private float boostSearchRadius = 0;
+
     private bool isDead = false;
 
     private SpriteRenderer unitSprite;
@@ -35,11 +46,45 @@ public class HeroController : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = health;
+        ResetStartParameters();
         unitSprite = GetComponent<SpriteRenderer>();
         normalColor = unitSprite.color;
 
         UpdateHealthBar();
+    }
+
+    private void Update()
+    {
+        CheckBonuses();
+    }
+
+    private void ResetStartParameters()
+    {
+        maxCurrentHealth = maxHealthBase + (maxHealthBase * healthBoost);
+        currentHealth = maxCurrentHealth;
+
+        maxCurrentMana = maxManaBase + (maxManaBase * manaBoost);
+        currentMana = maxCurrentMana; 
+    }
+
+    private void LoadParameters()
+    {
+
+    }
+
+    private void CheckBonuses()
+    {
+        float radius = searchRadius + (boostSearchRadius * searchRadius);
+        Collider2D[] findedObjects = Physics2D.OverlapCircleAll(transform.position, radius);
+
+        foreach(var col in findedObjects)
+        {
+            BonusController bonus = col.GetComponent<BonusController>();
+            if(bonus != null)
+            {
+                bonus.ActivatateBonus();
+            }
+        }
     }
 
     #region DAMAGE
@@ -75,7 +120,7 @@ public class HeroController : MonoBehaviour
     private void UpdateHealthBar()
     {
         healthBar.transform.localScale = new Vector3(
-            currentHealth / health, 
+            currentHealth / maxCurrentHealth, 
             healthBar.transform.localScale.y, 
             healthBar.transform.localScale.z
             );
@@ -98,5 +143,44 @@ public class HeroController : MonoBehaviour
         GameObject death = Instantiate(deathPrefab, transform.position, Quaternion.identity);
         death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
         gameObject.SetActive(false);
+    }
+
+    private void AddHealth(BonusType type, float value)
+    {
+        if(type == BonusType.Health && isDead == false)
+        {
+
+            if(currentHealth + value > maxCurrentHealth)
+                currentHealth = maxCurrentHealth;
+            else
+                currentHealth += value;
+
+            UpdateHealthBar();
+        }
+    }
+
+    private void AddMana(BonusType type, float value)
+    {
+        if(type == BonusType.Mana && isDead == false)
+        {
+            if(currentMana + value > maxCurrentMana)
+                currentMana = maxCurrentMana;
+            else
+                currentMana += value;
+
+            Debug.Log("Mana = " + currentMana);
+        }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.BonusPickedUp += AddHealth;
+        EventManager.BonusPickedUp += AddMana;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.BonusPickedUp -= AddHealth;
+        EventManager.BonusPickedUp -= AddMana;
     }
 }

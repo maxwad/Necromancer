@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoostManager : MonoBehaviour
+public class UnitBoostManager : MonoBehaviour
 {
     //common effects (0..1)
 

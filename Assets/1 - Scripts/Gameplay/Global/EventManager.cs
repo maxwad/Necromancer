@@ -66,6 +66,34 @@ public static class EventManager
     public static event ChangePlayerEvent ChangePlayer;
     public static void OnChangePlayerEvent(bool mode) => ChangePlayer?.Invoke(mode);
 
+
+
+    //calls when we get some boost
+    //
+    //SUBSCRIBERS:
+    // - PlayerStats
+    //
+    //ACTIVATION:
+    // - PlayerBoostManager
+    //
+    public delegate void GetPlayerBoostEvent(PlayersStats stats, float value);
+    public static event GetPlayerBoostEvent GetPlayerBoost;
+    public static void OnGetPlayerBoostEvent(PlayersStats stats, float value) => GetPlayerBoost?.Invoke(stats, value);
+
+
+
+    //calls when we need update some stat of player
+    //
+    //SUBSCRIBERS:
+    // 
+    //
+    //ACTIVATION:
+    // - PlayerStats
+    //
+    public delegate void GetPlayerStatEvent(PlayersStats stats, float value);
+    public static event GetPlayerStatEvent GetPlayerStat;
+    public static void OnGetPlayerStatEvent(PlayersStats stats, float value) => GetPlayerStat?.Invoke(stats, value);
+
     #endregion
 
 
@@ -85,7 +113,7 @@ public static class EventManager
 
 
 
-    //calls when we finish or crash the battle
+    //calls when we destroy obstacle
     //
     //SUBSCRIBERS:
     // - BattleMap
@@ -98,7 +126,20 @@ public static class EventManager
     public static void OnObstacleDestroyedEvent(GameObject objectOnMap) => ObstacleDestroyed?.Invoke(objectOnMap);
 
 
+    //calls when we destroy enemy
+    //
+    //SUBSCRIBERS:
+    // - BattleMap
+    //
+    //ACTIVATION:
+    // - EnemyController
+    //
+    public delegate void EnemyDestroyedEvent(GameObject objectOnMap);
+    public static event EnemyDestroyedEvent EnemyDestroyed;
+    public static void OnEnemyDestroyedEvent(GameObject objectOnMap) => EnemyDestroyed?.Invoke(objectOnMap);
+
     #endregion
+
 
     #region Bonuses
 
@@ -115,6 +156,23 @@ public static class EventManager
     public static void OnBonusPickedUpEvent(BonusType type, float value) => BonusPickedUp?.Invoke(type, value);
 
     #endregion
+
+
+    #region Resourses
+
+    //calls when we pick up some resourses
+    //
+    //SUBSCRIBERS:
+    // - ResourcesManager
+    //
+    //ACTIVATION:
+    // - 
+    //
+    public delegate void ResourcePickedUpEvent(ResourceType type, float value);
+    public static event ResourcePickedUpEvent ResourcePickedUp;
+    public static void OnResourcePickedUpEvent(ResourceType type, float value) => ResourcePickedUp?.Invoke(type, value);
+    #endregion
+
 
     #region OTHER
     //calls when we switch between global mode and battle mode

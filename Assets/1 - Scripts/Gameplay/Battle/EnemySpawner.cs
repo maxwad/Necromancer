@@ -46,8 +46,8 @@ public class EnemySpawner : MonoBehaviour
         if (enemiesOnTheMap.Count > enemySlowCount) waitNextEnemy = waitNextEnemySlow;
 
         if (enemiesOnTheMap.Count > enemyTooSlowCount) waitNextEnemy = waitNextEnemyStop;
-
     }
+
     public void ReadyToSpawnEnemy()
     {
         canISpawn = true;
@@ -58,9 +58,6 @@ public class EnemySpawner : MonoBehaviour
     public void StopSpawnEnemy()
     {
         canISpawn = false;
-        //foreach (Transform child in enemiesContainer.transform)
-        //    Destroy(child.gameObject);
-
         enemiesOnTheMap.Clear();
     }
 
@@ -157,8 +154,18 @@ public class EnemySpawner : MonoBehaviour
         return new Vector3(tempX, tempY, randomPosition.z);
     }
 
-    public void GetEnemiesList()
+    public void UpdateEnemiesList(GameObject enemy)
     {
+        enemiesOnTheMap.Remove(enemy);
+    }
 
+    private void OnEnable()
+    {
+        EventManager.EnemyDestroyed += UpdateEnemiesList;
+    }
+
+    private void OnDisable ()
+    {
+        EventManager.EnemyDestroyed -= UpdateEnemiesList;
     }
 }

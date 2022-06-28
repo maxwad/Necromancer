@@ -8,10 +8,8 @@ public class PlayerManager : MonoBehaviour
 
     private GameObject globalPlayer;
     private GameObject battlePlayer;
-    private Vector3 globalPlayerPosition;
 
     private GameObject globalMap;
-    private GameObject battleMap;
 
     private void Start()
     {
@@ -19,7 +17,6 @@ public class PlayerManager : MonoBehaviour
         battlePlayer = GlobalStorage.instance.battlePlayer;
 
         globalMap = GlobalStorage.instance.globalMap;
-        battleMap = GlobalStorage.instance.battleMap;
     }
 
     private void Update()
@@ -38,12 +35,6 @@ public class PlayerManager : MonoBehaviour
             globalMap.SetActive(false);
 
             battlePlayer.SetActive(true);
-
-            //Vector3Int bounds = new Vector3Int(40, 40, 0); // 20 tiles from each sides
-            //Vector3Int startPosition = (GlobalStorage.instance.battleManager.GetBattleMapSize() + bounds ) / 2;
-
-            //globalPlayerPosition = globalPlayer.transform.position;
-            //battlePlayer.transform.position = (Vector3)startPosition;
         }
         else
         {
@@ -52,8 +43,6 @@ public class PlayerManager : MonoBehaviour
 
             battlePlayer.SetActive(false);
             //battleMap we turn off in BattleMap script, because we should clear it first!
-
-            //globalPlayer.transform.position = globalPlayerPosition;
         }
     }
 
