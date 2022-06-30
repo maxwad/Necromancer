@@ -113,6 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c479702a8af2bd644bced6f5038108f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonusType: 4
+  bonusType: 5
   value: 0
   isFromPoolObject: 0

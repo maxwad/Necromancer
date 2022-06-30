@@ -9,7 +9,7 @@ public class BonusManager : MonoBehaviour
     [SerializeField] private GameObject health;
     [SerializeField] private GameObject mana;
     [SerializeField] private GameObject gold;
-    [SerializeField] private GameObject exp;
+    [SerializeField] private GameObject tempExp;
 
     private GameObject currentBonus;
 
@@ -29,8 +29,8 @@ public class BonusManager : MonoBehaviour
                 currentBonus = gold;
                 break;
 
-            case BonusType.Exp:
-                currentBonus = exp;
+            case BonusType.TempExp:
+                currentBonus = tempExp;
                 break;
 
             case BonusType.Other:

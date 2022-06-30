@@ -10,14 +10,18 @@ public class EnemySpawner : MonoBehaviour
     //[SerializeField] private GameObject enemiesContainer;
     private List<GameObject> enemiesOnTheMap = new List<GameObject>();
 
+    [Space]
     [SerializeField] private List<GameObject> spawnPositions;
 
+    [Space]
     private bool canISpawn = false;
     private int enemySlowCount = 100;
     private int enemyTooSlowCount = 150;
     private float spawnOffset = 5f;
+
+    [Space]
     private Coroutine spawnCoroutine;
-    private float waitNextEnemyTimeFast = 0.2f;
+    private float waitNextEnemyTimeFast = 0.1f;
     private float waitNextEnemyTimeSlow = 0.5f;
     private float waitNextEnemyTimeStop = 2f;
     private WaitForSeconds waitNextEnemyFast;
@@ -157,7 +161,7 @@ public class EnemySpawner : MonoBehaviour
     public void UpdateEnemiesList(GameObject enemy)
     {
         enemiesOnTheMap.Remove(enemy);
-    }
+    }     
 
     private void OnEnable()
     {

@@ -13,6 +13,7 @@ public class GlobalStorage : MonoBehaviour
     public UnitBoostManager unitBoostManager;
     public PlayerBoostManager playerBoostManager;
     public BattleManager battleManager;
+    public BattleUIManager battleIUManager;
     public PlayerManager playerManager;
     public ObjectsPoolManager objectsPoolManager;
     public BonusManager bonusManager;
@@ -34,6 +35,7 @@ public class GlobalStorage : MonoBehaviour
     public GameObject bonusesContainer;
 
     [HideInInspector] public bool isGlobalMode = true;
+    [HideInInspector] public bool isEnoughTempExp = false;
 
     void Awake()
     {
@@ -49,4 +51,18 @@ public class GlobalStorage : MonoBehaviour
         EventManager.OnChangePlayModeEvent(mode);
     }
 
+    private void ExpEnough(bool mode)
+    {
+        isEnoughTempExp = mode;
+    }
+
+    private void OnEnable()
+    {
+        EventManager.ExpEnough += ExpEnough;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.ExpEnough -= ExpEnough;
+    }
 }

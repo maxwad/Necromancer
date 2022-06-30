@@ -82,6 +82,7 @@ public static class NameManager
         Health,
         Mana,
         Gold,
+        TempExp,
         Exp,
         Other,
         Nothing

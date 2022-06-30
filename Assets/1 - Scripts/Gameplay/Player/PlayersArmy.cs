@@ -12,13 +12,16 @@ public class PlayersArmy : MonoBehaviour
     [SerializeField] private UnitsTypes[] playersArmyEnums;
     [SerializeField] private Unit[] playersArmy = new Unit[4];
 
+    [Space]
     [SerializeField] private PlayersArmyWindow playersArmyWindow;
     private int firstIndexForReplaceUnit = -1;
     private int secondIndexForReplaceUnit = -1;
 
+    [Space]
     [SerializeField] private Vector2[] playersArmyPositions;
     private GameObject[] realUnitsOnBattlefield = new GameObject[4];
 
+    [Space]
     [SerializeField] private BattleArmyController battleArmyController;
 
     private void  InitializeArmy()

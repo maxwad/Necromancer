@@ -7,8 +7,7 @@ using static NameManager;
 public class BattleArmyController : MonoBehaviour
 {
     private Rigidbody2D rbPlayer;
-    private float speed = 200f;
-    private float speedBoost = 0;
+    private float speed = 0;
 
     private Vector2 currentDirection;
     private bool currentFacing = false;
@@ -49,7 +48,7 @@ public class BattleArmyController : MonoBehaviour
 
     private void Moving(Vector2 direction)
     {
-        rbPlayer.velocity = (Vector3)direction * Time.fixedDeltaTime * (speed + (speed * speedBoost));
+        rbPlayer.velocity = (Vector3)direction * Time.fixedDeltaTime * speed;
     }
 
     private void DrawUnit(float direction)
@@ -129,18 +128,20 @@ public class BattleArmyController : MonoBehaviour
         }
     }
 
-    public void SetSpeedBoost(float boost)
+    private void UpgradeSpeed(PlayersStats stats, float value)
     {
-        speedBoost = boost;
+        if(stats == PlayersStats.Speed) speed = value;
     }
 
     private void OnEnable()
     {
         EventManager.WeLostOneUnit += UpdateArmyCount;
+        EventManager.UpgradePlayerStat += UpgradeSpeed;
     }
 
     private void OnDisable()
     {
         EventManager.WeLostOneUnit -= UpdateArmyCount;
+        EventManager.UpgradePlayerStat -= UpgradeSpeed;
     }
 }

@@ -6,32 +6,32 @@ using static NameManager;
 
 public class HeroController : MonoBehaviour
 {
-    [SerializeField] private float maxHealthBase = 500f;
+    [Header("Level up system")]
+    [SerializeField] private float currentTempLevel;
+    [SerializeField] public float currentMaxLevel;
+
+    [SerializeField] private float standartTempExpRate = 10;
+    [SerializeField] private float levelMultiplierRate = 1;
+    [SerializeField] private float currentTempExpGoal;
+    [SerializeField] private float currentTempExp;
+    private bool isLevelUpComplete = false;
+
+    [Header("Characteristics")]
     [SerializeField] private float maxCurrentHealth;
-    [SerializeField] private float healthBoost = 0;
     [SerializeField] private float currentHealth;
 
-    [SerializeField] private float maxManaBase = 50f;
     [SerializeField] private float maxCurrentMana;
-    [SerializeField] private float manaBoost = 0;
     [SerializeField] private float currentMana;
 
-    //[SerializeField] private float magicAttack = 1f;
-    //[SerializeField] private float physicAttack = 1f;
-    //[SerializeField] private float magicDefence = 1f;
-    //[SerializeField] private float physicDefence = 1f;
-    //[SerializeField] private float speedAttack = 1f;
-    //[SerializeField] private float size = 1f;
-    //[SerializeField] private float level = 1f;
-    //[SerializeField] private UnitsAbilities unitAbility;
+    [SerializeField] private float searchRadius = 2f;
 
-    //[SerializeField] private GameObject attackTool;
+    [SerializeField] private float defence = 1f;
 
-    private float searchRadius = 2f;
-    private float boostSearchRadius = 0;
+    [SerializeField] private float regeneration = 1f;
 
+    [Space]
     private bool isDead = false;
-
+    [Space]
     private SpriteRenderer unitSprite;
     private Color normalColor;
     private Color damageColor = Color.red;
@@ -39,51 +39,99 @@ public class HeroController : MonoBehaviour
 
     [SerializeField] private GameObject deathPrefab;
 
+    [Space]
     [SerializeField] private SpriteRenderer healthBar;
 
+    [Space]
+    private BattleUIManager battleUIManager;
+    private bool isFigthingStarted = false;
+    private Coroutine autoLevelUp;
+    private float autoLevelUpTime = 5f;
+    private WaitForSeconds dalayTime;
+
+    [Space]
     [SerializeField] GameObject damageNote;
     private Color colorDamage = new Color(1f, 0.45f, 0.03f, 1);
 
     private void Start()
     {
-        ResetStartParameters();
         unitSprite = GetComponent<SpriteRenderer>();
         normalColor = unitSprite.color;
 
-        UpdateHealthBar();
+        currentHealth = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Health);
+        currentMana = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Mana);
+        currentMaxLevel = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Level);
+
+        battleUIManager = GlobalStorage.instance.battleIUManager;
+
+        dalayTime = new WaitForSeconds(autoLevelUpTime);
+
+        UpgradeTempExpGoal();
     }
 
     private void Update()
     {
-        CheckBonuses();
+        SearchBonuses();
     }
 
-    private void ResetStartParameters()
+    private void UpgradeTempExpGoal()
     {
-        maxCurrentHealth = maxHealthBase + (maxHealthBase * healthBoost);
-        currentHealth = maxCurrentHealth;
+        float summExp;
+        float totalSummExp = 0;
 
-        maxCurrentMana = maxManaBase + (maxManaBase * manaBoost);
-        currentMana = maxCurrentMana; 
+        for(int i = 1; i <= currentTempLevel + 1; i++)
+        {
+            summExp = (standartTempExpRate * levelMultiplierRate) * i + totalSummExp;
+            totalSummExp += summExp;
+        }
+
+        currentTempExpGoal = totalSummExp;
     }
 
-    private void LoadParameters()
+    private void UpgradeParameters(PlayersStats stats, float value)
     {
+        switch(stats)
+        {
+            case PlayersStats.Level:
+                currentMaxLevel = value;
+                break;
+
+            case PlayersStats.Health:
+                maxCurrentHealth = value;
+                UpdateHealthBar();
+                break;
+
+            case PlayersStats.Mana:
+                maxCurrentMana = value;
+                break;
+
+            case PlayersStats.SearchRadius:
+                searchRadius = value;
+                break;
+
+            case PlayersStats.Defence:
+                defence = value;
+                break;
+
+            case PlayersStats.Regeneration:
+                regeneration = value;
+                break;
+
+            default:
+                break;
+        }
 
     }
 
-    private void CheckBonuses()
+    private void SearchBonuses()
     {
-        float radius = searchRadius + (boostSearchRadius * searchRadius);
-        Collider2D[] findedObjects = Physics2D.OverlapCircleAll(transform.position, radius);
+        Collider2D[] findedObjects = Physics2D.OverlapCircleAll(transform.position, searchRadius);
 
         foreach(var col in findedObjects)
         {
             BonusController bonus = col.GetComponent<BonusController>();
-            if(bonus != null)
-            {
-                bonus.ActivatateBonus();
-            }
+
+            if(bonus != null) bonus.ActivatateBonus();
         }
     }
 
@@ -172,15 +220,86 @@ public class HeroController : MonoBehaviour
         }
     }
 
+    private void AddTempExp(BonusType type, float value)
+    {
+        if(type == BonusType.TempExp && isDead == false && isLevelUpComplete == false)
+        {
+            value *= (currentTempLevel == 0 ? 1 : currentTempLevel);
+            currentTempExp += value;
+
+            battleUIManager.UpgradeScale(currentTempExpGoal, value);
+
+            if(currentTempExp >= currentTempExpGoal)
+            {
+                if(currentTempLevel < currentMaxLevel)
+                {
+                    battleUIManager.TempLevelUp(currentTempLevel);
+                    currentTempLevel++;
+
+                    EventManager.OnUpgradeTempLevelEvent(currentTempLevel);
+                    if(currentTempLevel != currentMaxLevel)
+                    {
+                        currentTempExp = 0;
+                        UpgradeTempExpGoal();
+                    }
+                    else
+                    {
+                        isLevelUpComplete = true;
+                        EventManager.OnExpEnoughEvent(true);
+                    }
+                }                
+            }
+        }
+
+        if(isFigthingStarted == false)
+        {
+            isFigthingStarted = true;
+            autoLevelUp = StartCoroutine(AutoLevelUp());
+        }
+    }
+
+    private IEnumerator AutoLevelUp()
+    {
+        while(isFigthingStarted == true)
+        {
+            yield return dalayTime;
+            AddTempExp(BonusType.TempExp, (currentTempLevel == 0 ? 1 : currentTempLevel));
+        }        
+    }
+
+    private void ResetTempLevel(bool mode)
+    {
+        currentTempLevel = 0;
+        currentTempExp = 0;
+        isLevelUpComplete = false;
+        isFigthingStarted = false;
+        if(autoLevelUp != null) StopCoroutine(autoLevelUp);
+
+        if(mode == false)
+        {
+            currentMaxLevel = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Level);
+            EventManager.OnExpEnoughEvent(false);
+            UpgradeTempExpGoal();
+        }
+    }
+
     private void OnEnable()
     {
+        ResetTempLevel(false);
+
         EventManager.BonusPickedUp += AddHealth;
         EventManager.BonusPickedUp += AddMana;
+        EventManager.BonusPickedUp += AddTempExp;
+        EventManager.UpgradePlayerStat += UpgradeParameters;
+        EventManager.ChangePlayer += ResetTempLevel;
     }
 
     private void OnDisable()
     {
         EventManager.BonusPickedUp -= AddHealth;
         EventManager.BonusPickedUp -= AddMana;
+        EventManager.BonusPickedUp -= AddTempExp;
+        EventManager.UpgradePlayerStat -= UpgradeParameters;
+        EventManager.ChangePlayer -= ResetTempLevel;
     }
 }

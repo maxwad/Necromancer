@@ -58,6 +58,9 @@ public static class EventManager
     //SUBSCRIBERS:
     // - BattleMap
     // - PlayerManager
+    // - PlayerStats
+    // - BattleUIManager
+    // - HeroController
     //
     //ACTIVATION:
     // - CameraManager
@@ -85,14 +88,29 @@ public static class EventManager
     //calls when we need update some stat of player
     //
     //SUBSCRIBERS:
-    // 
+    // - HeroController
+    // - BattleArmyController
     //
     //ACTIVATION:
     // - PlayerStats
     //
-    public delegate void GetPlayerStatEvent(PlayersStats stats, float value);
-    public static event GetPlayerStatEvent GetPlayerStat;
-    public static void OnGetPlayerStatEvent(PlayersStats stats, float value) => GetPlayerStat?.Invoke(stats, value);
+    public delegate void UpgradePlayerStatEvent(PlayersStats stats, float value);
+    public static event UpgradePlayerStatEvent UpgradePlayerStat;
+    public static void OnUpgradePlayerStatEvent(PlayersStats stats, float value) => UpgradePlayerStat?.Invoke(stats, value);
+
+
+
+    //calls when we get new temp level
+    //
+    //SUBSCRIBERS:
+    //
+    //ACTIVATION:
+    // - HeroController
+    //
+    public delegate void UpgradeTempLevelEvent(float value);
+    public static event UpgradeTempLevelEvent UpgradeTempLevel;
+    public static void OnUpgradeTempLevelEvent(float value) => UpgradeTempLevel?.Invoke(value);
+
 
     #endregion
 
@@ -138,6 +156,18 @@ public static class EventManager
     public static event EnemyDestroyedEvent EnemyDestroyed;
     public static void OnEnemyDestroyedEvent(GameObject objectOnMap) => EnemyDestroyed?.Invoke(objectOnMap);
 
+
+    //calls when we rich max level in the battle
+    //
+    //SUBSCRIBERS:
+    // - GlobalStorage
+    //
+    //ACTIVATION:
+    // - HeroController
+    //
+    public delegate void ExpEnoughEvent(bool mode);
+    public static event ExpEnoughEvent ExpEnough;
+    public static void OnExpEnoughEvent(bool mode) => ExpEnough?.Invoke(mode);
     #endregion
 
 
@@ -176,6 +206,7 @@ public static class EventManager
 
     #region OTHER
     //calls when we switch between global mode and battle mode
+    //IT USES ONCE! Don't subscribe any script more!
     //
     //SUBSCRIBERS:
     // - CameraManager
