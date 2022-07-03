@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFromPool: 0
   isImmortal: 0
-  health: 19
+  health: 100
   damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
   deathPrefab: {fileID: 5129068117508607062, guid: 494278796b523b243972145a26dde814, type: 3}
   typeOfObject: 4

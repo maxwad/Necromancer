@@ -28,6 +28,11 @@ public class AttackController : MonoBehaviour
         unitAbility = unitController.unitAbility;
 
         startAttackDelay = Random.Range(startAttackDelay * 10 - startAttackDelay, startAttackDelay * 10 + startAttackDelay) / 10;
+
+        weapon = Instantiate(unitController.attackTool, transform.position, Quaternion.identity);
+        weapon.transform.SetParent(transform);
+        weapon.gameObject.SetActive(false);
+
         if (attack != null) StopCoroutine(attack);
         attack = StartCoroutine(Attack());
     }
@@ -50,8 +55,9 @@ public class AttackController : MonoBehaviour
         {
             yield return new WaitForSeconds(unitController.speedAttack);
 
-            weapon = Instantiate(unitController.attackTool, transform.position, Quaternion.identity);
-            weapon.transform.SetParent(transform);
+            //weapon = Instantiate(unitController.attackTool, transform.position, Quaternion.identity);
+            //weapon.transform.SetParent(transform);
+            weapon.gameObject.SetActive(true);
 
             if (sprite.flipX == true)
                 weapon.transform.eulerAngles = new Vector3(weapon.transform.eulerAngles.x, 180, weapon.transform.eulerAngles.x);

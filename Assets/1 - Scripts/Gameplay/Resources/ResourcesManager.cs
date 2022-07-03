@@ -5,7 +5,7 @@ using static NameManager;
 
 public class ResourcesManager : MonoBehaviour
 {
-    public float Gold { private set; get; } = 1000;
+    public float Gold { private set; get; } = 100;
     public float Food { private set; get; } = 100;
     public float Stone { private set; get; } = 10;
     public float Wood { private set; get; } = 10;
@@ -13,6 +13,12 @@ public class ResourcesManager : MonoBehaviour
     public float Magic { private set; get; } = 0;
 
 
+    private void Update()
+    {
+        //just for testing
+        if(Input.GetKeyDown(KeyCode.KeypadEnter) == true)
+            DecreaseResource(ResourceType.Gold, 10);
+    }
 
     private void AddResource(ResourceType type, float value)
     {
@@ -20,6 +26,7 @@ public class ResourcesManager : MonoBehaviour
         {
             case ResourceType.Gold:
                 Gold += value;
+                EventManager.OnUpgradeGoldEvent(Gold);
                 break;
 
             case ResourceType.Food:
@@ -49,11 +56,12 @@ public class ResourcesManager : MonoBehaviour
         }
     }
 
-    private void AddGoldAsBonus(BonusType type, float value)
+    private void AddResourceAsBonus(BonusType type, float value)
     {
         if(type == BonusType.Gold)
         {
             Gold += value;
+            EventManager.OnUpgradeGoldEvent(Gold);
         }
     }
 
@@ -65,6 +73,7 @@ public class ResourcesManager : MonoBehaviour
             {
                 case ResourceType.Gold:
                     Gold -= value;
+                    EventManager.OnUpgradeGoldEvent(Gold);
                     return true;
 
                 case ResourceType.Food:
@@ -131,18 +140,18 @@ public class ResourcesManager : MonoBehaviour
                 break;
         }
 
-        return true;
+        return false;
     }
 
     private void OnEnable()
     {
-        EventManager.BonusPickedUp += AddGoldAsBonus;
+        EventManager.BonusPickedUp += AddResourceAsBonus;
         EventManager.ResourcePickedUp += AddResource;
     }
 
     private void OnDisable()
     {
-        EventManager.BonusPickedUp -= AddGoldAsBonus;
+        EventManager.BonusPickedUp -= AddResourceAsBonus;
         EventManager.ResourcePickedUp -= AddResource;
     }
 }

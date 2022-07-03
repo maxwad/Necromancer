@@ -26,7 +26,8 @@ public class WeaponController : MonoBehaviour
         currentLifeTime += Time.deltaTime;
 
         if (currentLifeTime >= lifeTime) {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         } 
 
     }

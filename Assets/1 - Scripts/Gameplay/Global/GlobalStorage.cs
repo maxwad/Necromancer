@@ -18,6 +18,7 @@ public class GlobalStorage : MonoBehaviour
     public ObjectsPoolManager objectsPoolManager;
     public BonusManager bonusManager;
     public ResourcesManager resourcesManager;
+    public InfirmaryManager infirmaryManager;
 
     [Header("Player")]
     public GameObject player;

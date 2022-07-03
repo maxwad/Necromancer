@@ -1,68 +1,73 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static NameManager;
 
 public class PlayerBoostManager : MonoBehaviour
 {
-    private float levelBoost = 0;
+    private struct Boost
+    {
+        public SenderTypes senderType;
+        public float value;
 
-    private float healthBoost = 0;
+        public Boost(SenderTypes type, float boostValue)
+        {
+            senderType = type;
+            value = boostValue;
+        }
+    }
 
-    private float manaBoost = 0;
+    private Dictionary<PlayersStats, List<Boost>> allBoostDict = new Dictionary<PlayersStats, List<Boost>>();
 
-    private float searchRadiusBoost = 0;
+    private void Start()
+    {
+        Initialize();
+    }
 
-    private float speedBoost = 0;
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            float value = (float)UnityEngine.Random.Range(10, 30) / 100;
+            ChangeBoost(true, SenderTypes.Tower, PlayersStats.Health, value);
+        }
+    }
 
-    private float defenceBoost = 0;
-
-    private float regenerationBoost = 0;
-
-    private void ChangeBoost(PlayersStats stats, float value)
+    private void ChangeBoost(bool mode, SenderTypes sender, PlayersStats stats, float value)
     {
         float newValue = 0;
-        switch(stats)
+
+        List<Boost> currentBoostList = allBoostDict[stats];
+
+        if(mode == true)
         {
-            case PlayersStats.Level:
-                levelBoost += value;
-                newValue = levelBoost;
-                break;
+            currentBoostList.Add(new Boost(sender, value));
+        }
+        else
+        {
+            foreach(var item in currentBoostList)
+            {
+                if(item.senderType == sender)
+                {
+                    currentBoostList.Remove(item);
+                    break;
+                }
+            }
+        }
 
-            case PlayersStats.Health:
-                healthBoost += value;
-                newValue = healthBoost;
-                break;
-
-            case PlayersStats.Mana:
-                manaBoost += value;
-                newValue = manaBoost;
-                break;
-
-            case PlayersStats.Speed:
-                speedBoost += value;
-                newValue = speedBoost;
-                break;
-
-            case PlayersStats.SearchRadius:
-                searchRadiusBoost += value;
-                newValue = searchRadiusBoost;
-                break;
-
-            case PlayersStats.Defence:
-                defenceBoost += value;
-                newValue = defenceBoost;
-                break;
-
-            case PlayersStats.Regeneration:
-                regenerationBoost += value;
-                newValue = regenerationBoost;
-                break;
-
-            default:
-                break;
+        foreach(var item in currentBoostList)
+        {
+            newValue += item.value;
         }
 
         EventManager.OnGetPlayerBoostEvent(stats, newValue);
+    }
+
+    private void Initialize()
+    {
+        foreach(PlayersStats itemStat in Enum.GetValues(typeof(PlayersStats)))
+        {
+            allBoostDict.Add(itemStat, new List<Boost>());
+        }
     }
 }

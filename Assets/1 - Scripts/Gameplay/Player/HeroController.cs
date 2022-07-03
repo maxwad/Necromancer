@@ -21,13 +21,15 @@ public class HeroController : MonoBehaviour
     [SerializeField] private float currentHealth;
 
     [SerializeField] private float maxCurrentMana;
-    [SerializeField] private float currentMana;
+    public float currentMana;
 
-    [SerializeField] private float searchRadius = 2f;
+    [SerializeField] private float searchRadius;
 
-    [SerializeField] private float defence = 1f;
+    [SerializeField] private float defence;
 
-    [SerializeField] private float regeneration = 1f;
+    [SerializeField] private float luck;
+
+    private PlayerStats playerStatsScript;
 
     [Space]
     private bool isDead = false;
@@ -58,9 +60,14 @@ public class HeroController : MonoBehaviour
         unitSprite = GetComponent<SpriteRenderer>();
         normalColor = unitSprite.color;
 
-        currentHealth = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Health);
-        currentMana = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Mana);
-        currentMaxLevel = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Level);
+        //ATTENTION! It happens when game starts and NEVER AGAIN!
+        playerStatsScript = GlobalStorage.instance.player.GetComponent<PlayerStats>();
+        currentMaxLevel   = playerStatsScript.GetStartParameter(PlayersStats.Level);
+        currentHealth     = playerStatsScript.GetStartParameter(PlayersStats.Health);
+        searchRadius      = playerStatsScript.GetStartParameter(PlayersStats.SearchRadius);
+        currentMana       = playerStatsScript.GetStartParameter(PlayersStats.Mana);
+        defence           = playerStatsScript.GetStartParameter(PlayersStats.Defence);
+        luck              = playerStatsScript.GetStartParameter(PlayersStats.Luck);
 
         battleUIManager = GlobalStorage.instance.battleIUManager;
 
@@ -72,6 +79,11 @@ public class HeroController : MonoBehaviour
     private void Update()
     {
         SearchBonuses();
+
+        if(Input.GetKeyDown(KeyCode.Space) == true)
+        {
+            SpendMana(7);
+        }
     }
 
     private void UpgradeTempExpGoal()
@@ -103,6 +115,7 @@ public class HeroController : MonoBehaviour
 
             case PlayersStats.Mana:
                 maxCurrentMana = value;
+                EventManager.OnUpgradeManaEvent(maxCurrentMana, currentMana);
                 break;
 
             case PlayersStats.SearchRadius:
@@ -113,8 +126,8 @@ public class HeroController : MonoBehaviour
                 defence = value;
                 break;
 
-            case PlayersStats.Regeneration:
-                regeneration = value;
+            case PlayersStats.Luck:
+                luck = value;
                 break;
 
             default:
@@ -203,6 +216,7 @@ public class HeroController : MonoBehaviour
             else
                 currentHealth += value;
 
+            //TODO: Call some event
             UpdateHealthBar();
         }
     }
@@ -216,7 +230,19 @@ public class HeroController : MonoBehaviour
             else
                 currentMana += value;
 
-            Debug.Log("Mana = " + currentMana);
+            EventManager.OnUpgradeManaEvent(maxCurrentMana, currentMana);
+        }
+    }
+
+    private void SpendMana(float value)
+    {
+        if(isDead == false)
+        {
+            if(value <= currentMana)
+            {
+                currentMana -= value;
+                EventManager.OnUpgradeManaEvent(maxCurrentMana, currentMana);
+            }
         }
     }
 

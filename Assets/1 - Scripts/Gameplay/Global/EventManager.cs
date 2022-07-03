@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static NameManager;
+using static UnityEditor.Experimental.GraphView.Port;
 
 public static class EventManager
 {
@@ -41,13 +42,28 @@ public static class EventManager
     //SUBSCRIBERS:
     // - PlayersArmy
     // - BattleArmyController
-    //
+    // - InfirmaryManager
+    // 
     //ACTIVATION:
     // - UnitController
     //
     public delegate void WeLostOneUnitEvent(UnitsTypes unitType, int quantity);
     public static event WeLostOneUnitEvent WeLostOneUnit;
     public static void OnWeLostOneUnitEvent(UnitsTypes unitType, int quantity) => WeLostOneUnit?.Invoke(unitType, quantity);
+
+
+
+    //calls when we need to update UI from Infirmary
+    //
+    //SUBSCRIBERS:
+    // - BattleUIManager
+    // 
+    //ACTIVATION:
+    // - InfirmaryManager
+    //
+    public delegate void UpdateInfirmaryUIEvent(UnitsTypes unitType, float quantity, float capacity);
+    public static event UpdateInfirmaryUIEvent UpdateInfirmaryUI;
+    public static void OnUpdateInfirmaryUIEvent(UnitsTypes unitType, float quantity, float capacity) => UpdateInfirmaryUI?.Invoke(unitType, quantity, capacity);
 
     #endregion
 
@@ -90,6 +106,7 @@ public static class EventManager
     //SUBSCRIBERS:
     // - HeroController
     // - BattleArmyController
+    // - InfirmaryManager
     //
     //ACTIVATION:
     // - PlayerStats
@@ -112,6 +129,32 @@ public static class EventManager
     public static void OnUpgradeTempLevelEvent(float value) => UpgradeTempLevel?.Invoke(value);
 
 
+
+    //calls when we change Mana
+    //
+    //SUBSCRIBERS:
+    // - BattleUIManager
+    //
+    //ACTIVATION:
+    // - HeroController
+    //
+    public delegate void UpgradeManaEvent(float maxValue, float currentValue);
+    public static event UpgradeManaEvent UpgradeMana;
+    public static void OnUpgradeManaEvent(float maxValue, float currentValue) => UpgradeMana?.Invoke(maxValue, currentValue);
+
+
+
+    //calls when we change Gold
+    //
+    //SUBSCRIBERS:
+    // - BattleUIManager
+    //
+    //ACTIVATION:
+    // - ResourcesManager
+    //
+    public delegate void UpgradeGoldEvent(float currentValue);
+    public static event UpgradeGoldEvent UpgradeGold;
+    public static void OnUpgradeGoldEvent(float currentValue) => UpgradeGold?.Invoke(currentValue);
     #endregion
 
 

@@ -107,6 +107,24 @@ public static class NameManager
         Speed,
         SearchRadius,
         Defence,
-        Regeneration
+        Infirmary,
+        Luck,
+
+        MovementDistance,
+        HealthRegeneration,
+        RadiusView,
+        ExtraResourcesProduce,
+        ExtraReward,
+
+        Spell,
+        NegativeCell,
+        MedicAltar,
+
+        MedicTry,
+        EnemyView,
+        Portal,
+        ExtraResourcesReward,
+        ManaRegeneration,
+        HeroArmyToEnemy
     }
 }
