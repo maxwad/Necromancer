@@ -18,7 +18,7 @@ public class BonusController : MonoBehaviour
 
     private void Start()
     {
-        player = GlobalStorage.instance.hero;
+        player = GlobalStorage.instance.hero.gameObject;
         currentInertion = inertion;
     }
 

@@ -82,7 +82,7 @@ public class HeroController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space) == true)
         {
-            SpendMana(7);
+            SpendMana(-1);
         }
     }
 
@@ -221,7 +221,7 @@ public class HeroController : MonoBehaviour
         }
     }
 
-    private void AddMana(BonusType type, float value)
+    public void AddMana(BonusType type, float value)
     {
         if(type == BonusType.Mana && isDead == false)
         {
@@ -234,7 +234,7 @@ public class HeroController : MonoBehaviour
         }
     }
 
-    private void SpendMana(float value)
+    public void SpendMana(float value)
     {
         if(isDead == false)
         {

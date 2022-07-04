@@ -127,4 +127,28 @@ public static class NameManager
         ManaRegeneration,
         HeroArmyToEnemy
     }
+
+    public enum Spells
+    {
+        SpeedUp,
+        AttackUp,
+        DoubleCrit,
+        Shurikens,
+        GoAway,
+        AllBonuses,
+        Healing,
+        ExtraExp,
+        WeaponSize,
+        Maning,
+        Immortal,
+        EnemiesStop,
+        DestroyEnemies,
+        ExpToGold,
+        ResurrectUnit
+    }
+
+    public enum BoostSender
+    {
+        Spell
+    }
 }

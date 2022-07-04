@@ -19,12 +19,13 @@ public class GlobalStorage : MonoBehaviour
     public BonusManager bonusManager;
     public ResourcesManager resourcesManager;
     public InfirmaryManager infirmaryManager;
+    public SpellManager spellManager;
 
     [Header("Player")]
     public GameObject player;
     public GameObject globalPlayer;
     public GameObject battlePlayer;
-    public GameObject hero;
+    public HeroController hero;
 
     [Header("Maps")]
     public GameObject globalMap;

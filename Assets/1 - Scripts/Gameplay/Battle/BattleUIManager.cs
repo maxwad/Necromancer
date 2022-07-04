@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static NameManager;
@@ -39,6 +41,13 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TMP_Text goldInfo;
     private float currentGoldCount;
 
+    [Header("Spells")]
+    [SerializeField] private Button buttonSpell;
+    private List<SpellStat> currentSpells = new List<SpellStat>();
+    [SerializeField] private GameObject spellButtonContainer;
+    private List<Button> currentSpellsButtons = new List<Button>();
+
+
     public void Inizialize(bool mode)
     {
         uiCanvas.gameObject.SetActive(!mode);
@@ -53,9 +62,6 @@ public class BattleUIManager : MonoBehaviour
     {
         levelList.Clear();
 
-        foreach(Transform child in currentTempLevelWrapper.transform)
-            Destroy(child.gameObject);
-
         FillRigthTempLevelScale();
 
         FillInfirmary();
@@ -63,11 +69,15 @@ public class BattleUIManager : MonoBehaviour
         FillMana();
 
         FillGold();
+
+        FillSpells(-1);
     }
 
     #region TempExp
     private void FillRigthTempLevelScale()
     {
+        foreach(Transform child in currentTempLevelWrapper.transform)
+            Destroy(child.gameObject);
 
         heigthCurrentScaleWrapper = currentScaleValueWrapper.rect.height;
         currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
@@ -152,7 +162,7 @@ public class BattleUIManager : MonoBehaviour
         if(max == 0)
         {
             currentMaxManaCount = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Mana);
-            currentManaCount = GlobalStorage.instance.hero.GetComponent<HeroController>().currentMana;
+            currentManaCount = GlobalStorage.instance.hero.currentMana;
         }
         else
         {
@@ -174,7 +184,6 @@ public class BattleUIManager : MonoBehaviour
 
     #endregion
 
-
     #region Gold
     private void FillGold(float current = 0)
     {
@@ -193,6 +202,48 @@ public class BattleUIManager : MonoBehaviour
     private void UpdateGoldUI(float currentValue)
     {
         FillGold(currentValue);
+    }
+
+    #endregion
+
+    #region Spells 
+
+    private void FillSpells(int numberOfSpell)
+    {
+        currentSpells = GlobalStorage.instance.spellManager.GetCurrentSpells();
+
+        if(numberOfSpell == -1)
+        {
+            foreach(Transform child in spellButtonContainer.transform)
+                Destroy(child.gameObject);
+
+            currentSpellsButtons.Clear();
+
+            foreach(var spell in currentSpells)
+            {
+                Button button = Instantiate(buttonSpell);
+                button.GetComponent<SpellButtonController>().SetSpellOnButton(spell);
+                button.GetComponent<SpellButtonController>().InitializeButton();
+                currentSpellsButtons.Add(button);
+                button.transform.SetParent(spellButtonContainer.transform);
+            }
+        }
+        else
+        {
+            for(int i = 0; i < currentSpells.Count; i++)
+            {
+                if(i == numberOfSpell)
+                {
+                    Button button = Instantiate(buttonSpell);
+                    button.GetComponent<SpellButtonController>().SetSpellOnButton(currentSpells[i]);
+                    button.GetComponent<SpellButtonController>().InitializeButton();
+                    currentSpellsButtons.Add(button);
+                    button.transform.SetParent(spellButtonContainer.transform);
+
+                    break;
+                }
+            }
+        }        
     }
 
     #endregion

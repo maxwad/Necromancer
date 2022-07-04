@@ -26,14 +26,14 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] private float infarmaryBase = 5f;
 
+    [SerializeField] private float luckBase = 0.03f;
+
 
     [Header("Global Parameters")]
     [Space]
     [SerializeField] private float movementDistanceBase = 10f;
 
     [SerializeField] private float radiusViewBase = 10;
-
-    [SerializeField] private float luckBase = 0.03f;
 
     //[SerializeField] private float extraResourcesProduceBase = 0;
 
