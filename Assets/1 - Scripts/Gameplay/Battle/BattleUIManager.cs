@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static NameManager;
@@ -148,7 +146,7 @@ public class BattleUIManager : MonoBehaviour
 
     }
 
-    private void UpdateInfirmaryUI(UnitsTypes unitType, float quantity, float capacity)
+    private void UpdateInfirmaryUI(float quantity, float capacity)
     {
         FillInfirmary(capacity, quantity);
     }

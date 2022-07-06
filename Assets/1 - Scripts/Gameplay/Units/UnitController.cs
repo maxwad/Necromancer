@@ -24,6 +24,7 @@ public class UnitController : MonoBehaviour
     private float currentHealth;
 
     private bool isDead = false;
+    private bool isImmortal = false;
 
     private SpriteRenderer unitSprite;
     private Color normalColor;
@@ -67,6 +68,8 @@ public class UnitController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(TagManager.T_ENEMY) == true && isDead != true)
         {
+            if(isImmortal == true) return;
+
             unitSprite.color = damageColor;
             Invoke("ColorBack", blinkTime);
         }
@@ -79,6 +82,8 @@ public class UnitController : MonoBehaviour
 
     public void TakeDamage(float physicalDamage, float magicDamage)
     {
+        if(isImmortal == true) return;
+
         //TODO: we need to create some damage formula
         float damage = physicalDamage + magicDamage;
         currentHealth -= damage;
@@ -115,6 +120,11 @@ public class UnitController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void MakeMeImmortal(bool mode)
+    {
+        isImmortal = mode;
+    }
+
     #endregion
 
 
@@ -135,4 +145,14 @@ public class UnitController : MonoBehaviour
     }
 
     #endregion
+
+    private void OnEnable()
+    {
+        EventManager.SpellImmortal += MakeMeImmortal;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.SpellImmortal -= MakeMeImmortal;
+    }
 }

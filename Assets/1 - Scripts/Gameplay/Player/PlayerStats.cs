@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviour
     #region Battle Parameters
 
     [Header("Battle Parameters")]
-    [SerializeField] private float levelBase = 1;
+    [SerializeField] private float levelBase = 5;
 
     [SerializeField] private float healthBase = 500f;
 
@@ -241,21 +241,21 @@ public class PlayerStats : MonoBehaviour
         Stat currentStat = allStatsDict[stat];
         currentStat.SetNewBoost(value);
 
-        EventManager.OnUpgradePlayerStatEvent(stat, currentStat.maxValue);
+        EventManager.OnSetStartPlayerStatEvent(stat, currentStat.maxValue);
     }
 
 
     private void SendStartParemeters(bool mode)
     {
         //we need to delay sending because not all scripts subscribed on event in call moment.
-        if(mode == false) Invoke("SendStartParameters", 0.1f);
+        if(mode == false) Invoke("SendingParameters", 0.1f);
     }
 
 
-    private void SendStartParameters()
+    private void SendingParameters()
     {
         foreach(PlayersStats itemStat in Enum.GetValues(typeof(PlayersStats)))
-            EventManager.OnUpgradePlayerStatEvent(itemStat, allStatsDict[itemStat].maxValue);
+            EventManager.OnSetStartPlayerStatEvent(itemStat, allStatsDict[itemStat].maxValue);
     }
 
 
@@ -268,13 +268,13 @@ public class PlayerStats : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.GetPlayerBoost += UpdateBoost;
+        EventManager.SetBoostToStat += UpdateBoost;
         EventManager.ChangePlayer += SendStartParemeters;
     }
 
     private void OnDisable()
     {
-        EventManager.GetPlayerBoost -= UpdateBoost;
+        EventManager.SetBoostToStat -= UpdateBoost;
         EventManager.ChangePlayer -= SendStartParemeters;
     }
 }

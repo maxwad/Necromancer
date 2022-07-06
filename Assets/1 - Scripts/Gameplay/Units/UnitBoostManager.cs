@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static NameManager;
 
 public class UnitBoostManager : MonoBehaviour
 {
@@ -32,5 +33,20 @@ public class UnitBoostManager : MonoBehaviour
     {
         //some code
         return enemy;
+    }
+
+    private void SetBoost(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Kosar)
+    {
+        Debug.Log("We set " + addBoost + " to " + stat + " boost = " + value);
+    }
+
+    private void OnEnable()
+    {
+        EventManager.BoostUnitStat += SetBoost;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.BoostUnitStat -= SetBoost;
     }
 }

@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 11
-  manaCost: 10
+  manaCost: 1
   value: 0
-  actionTime: 10
-  reloading: 100
+  actionTime: 5
+  reloading: 5
   icon: {fileID: -1254149515004799959, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
   description: Stop all enemies for 10 seconds.

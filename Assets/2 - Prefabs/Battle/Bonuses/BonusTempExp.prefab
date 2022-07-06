@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3906939543600408266}
   - component: {fileID: 4449071221621892315}
   m_Layer: 0
-  m_Name: BonusExp
+  m_Name: BonusTempExp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,5 +114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonusType: 3
+  baseValue: 1
   value: 1
   isFromPoolObject: 1

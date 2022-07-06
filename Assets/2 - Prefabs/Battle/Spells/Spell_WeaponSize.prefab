@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 8
-  manaCost: 20
+  manaCost: 1
   value: 0.2
-  actionTime: 30
-  reloading: 200
+  actionTime: 10
+  reloading: 5
   icon: {fileID: -5365382889195923796, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
   description: Increase weapon size by 20% for 30 seconds.

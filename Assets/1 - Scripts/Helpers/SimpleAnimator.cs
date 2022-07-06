@@ -12,8 +12,12 @@ public class SimpleAnimator : MonoBehaviour
     private WaitForSeconds waitTime;
     private Coroutine animating;
 
+    private bool stopAnimation = false;
+
     private void OnEnable()
     {
+        stopAnimation = false;
+
         image = GetComponent<SpriteRenderer>();
         if (animating != null) StopCoroutine(animating);
 
@@ -29,11 +33,15 @@ public class SimpleAnimator : MonoBehaviour
             foreach (Sprite item in spriteList)
             {
                 yield return waitTime;
-                image.sprite = item;
-                if (gameObject.CompareTag(TagManager.T_ENEMY) == true)
+
+                if(stopAnimation == false)
                 {
-                    image.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100);
-                }                
+                    image.sprite = item;
+                    if(gameObject.CompareTag(TagManager.T_ENEMY) == true)
+                    {
+                        image.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100);
+                    }
+                }                             
             }
 
             if (actionAfterAnimation == AfterAnimation.Destroy)
@@ -48,6 +56,11 @@ public class SimpleAnimator : MonoBehaviour
                 break;
             }
         }    
+    }
+
+    public void StopAnimation(bool mode)
+    {
+        stopAnimation = mode;
     }
 
     private void DestroyObject()

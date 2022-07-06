@@ -7,12 +7,12 @@ public class PlayerBoostManager : MonoBehaviour
 {
     private struct Boost
     {
-        public SenderTypes senderType;
+        public BoostSender sender;
         public float value;
 
-        public Boost(SenderTypes type, float boostValue)
+        public Boost(BoostSender boostSender, float boostValue)
         {
-            senderType = type;
+            sender = boostSender;
             value = boostValue;
         }
     }
@@ -29,14 +29,13 @@ public class PlayerBoostManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             float value = (float)UnityEngine.Random.Range(10, 30) / 100;
-            ChangeBoost(true, SenderTypes.Tower, PlayersStats.Health, value);
+            ChangeBoost(true, BoostSender.Spell, PlayersStats.Health, value);
         }
     }
 
-    private void ChangeBoost(bool mode, SenderTypes sender, PlayersStats stats, float value)
+    private void ChangeBoost(bool mode, BoostSender sender, PlayersStats stats, float value)
     {
-        float newValue = 0;
-
+        float newBoostValue = 0;
         List<Boost> currentBoostList = allBoostDict[stats];
 
         if(mode == true)
@@ -47,7 +46,7 @@ public class PlayerBoostManager : MonoBehaviour
         {
             foreach(var item in currentBoostList)
             {
-                if(item.senderType == sender)
+                if(item.sender == sender)
                 {
                     currentBoostList.Remove(item);
                     break;
@@ -57,10 +56,10 @@ public class PlayerBoostManager : MonoBehaviour
 
         foreach(var item in currentBoostList)
         {
-            newValue += item.value;
+            newBoostValue += item.value;
         }
 
-        EventManager.OnGetPlayerBoostEvent(stats, newValue);
+        EventManager.OnSetBoostToStatEvent(stats, newBoostValue);
     }
 
     private void Initialize()
@@ -69,5 +68,15 @@ public class PlayerBoostManager : MonoBehaviour
         {
             allBoostDict.Add(itemStat, new List<Boost>());
         }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.BoostStat += ChangeBoost;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.BoostStat -= ChangeBoost;
     }
 }

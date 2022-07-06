@@ -448,11 +448,6 @@ public class BattleMap : MonoBehaviour
         quantityOfTorches = (sizeX * sizeY * torchQuotePerSomeCells) / someCells;
     }
 
-    private void CreateNewObjectOnTheMap(GameObject obj)
-    {
-
-    }
-
     private void ClearSpaceUnderObject(GameObject obj)
     {
         BattleObjectStats objectSpaceStats = obj.GetComponent<BattleObjectStats>();
@@ -465,7 +460,7 @@ public class BattleMap : MonoBehaviour
 
         HealthObjectStats objHealthStats = obj.GetComponent<HealthObjectStats>();
 
-        if (objHealthStats.typeOfObject == SenderTypes.Torch) 
+        if (objHealthStats.typeOfObject == ObstacleTypes.Torch) 
         {
             torchesOnMap.Remove(obj);
             obj.SetActive(false);
@@ -473,7 +468,7 @@ public class BattleMap : MonoBehaviour
             DrawObjects(torchPrefab, null, objectSpaceStats, torchesOnMap, quantityOfTorches);
         }
 
-        if (objHealthStats.typeOfObject == SenderTypes.Tower)
+        if (objHealthStats.typeOfObject == ObstacleTypes.Tower)
         {
             towersOnMap.Remove(obj);
             Destroy(obj);

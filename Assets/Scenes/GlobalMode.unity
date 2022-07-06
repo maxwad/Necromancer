@@ -717,6 +717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3470230bca2f63241981642ebd7c572c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemiesOnTheMap: []
   spawnPositions:
   - {fileID: 1093596357}
   - {fileID: 2084364502}
@@ -1205,6 +1206,7 @@ MonoBehaviour:
   damageText: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
   torch: {fileID: 1686677917275653701, guid: ea66054369e383a4cb3d2a358ebc03cf, type: 3}
   bonusExp: {fileID: 310659111504139924, guid: 9f0f39d1a8a4fd943964590262e4aa38, type: 3}
+  bonusGold: {fileID: 310659111504139924, guid: 0a1026284e31c914da223730dcc6a428, type: 3}
 --- !u!4 &301475500
 Transform:
   m_ObjectHideFlags: 0
@@ -1454,6 +1456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6605139e7018645a0e13ce92921aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shuriken: {fileID: 2060906316251044882, guid: 93e7a52fbeb903747bbb314f2c906ebb, type: 3}
+  kickAssCircle: {fileID: 8824745895110673697, guid: 24af7b08308a95d46a71867747b2a73e, type: 3}
 --- !u!1 &500775148
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,7 +3234,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1073271419
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5189,7 +5193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018e4d036c668314597e1aae43354d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelBase: 1
+  levelBase: 5
   healthBase: 500
   manaBase: 20
   searchRadiusBase: 2
@@ -5805,10 +5809,10 @@ RectTransform:
   m_Father: {fileID: 1441077237}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.999985, y: 0}
+  m_SizeDelta: {x: 1960, y: 1100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1663813754
 MonoBehaviour:
@@ -6581,6 +6585,7 @@ MonoBehaviour:
   mana: {fileID: 310659111504139924, guid: e64c397c04e759d439d94edda7c417a4, type: 3}
   gold: {fileID: 310659111504139924, guid: 0a1026284e31c914da223730dcc6a428, type: 3}
   tempExp: {fileID: 310659111504139924, guid: 9f0f39d1a8a4fd943964590262e4aa38, type: 3}
+  bonusesOnTheMap: []
 --- !u!4 &1945469601
 Transform:
   m_ObjectHideFlags: 0

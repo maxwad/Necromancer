@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -10,10 +11,11 @@ public class EnemyMovement : MonoBehaviour
     private SpriteRenderer sprite;
 
     private float speed = 1f;
+
     //for playmode: 10, for editor: 3
     private float acceleration = 10f;
-    private float speedBoost = 0;
 
+    private bool canIMove = true;
 
     void Start()
     {
@@ -26,7 +28,10 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        Moving();
+        if(canIMove == true)
+            Moving();
+        else
+            rbEnemy.velocity = Vector2.zero;
     }
 
     private void Moving()
@@ -35,11 +40,19 @@ public class EnemyMovement : MonoBehaviour
             sprite.flipX = true;
         else
             sprite.flipX = false;
-        
-        rbEnemy.AddForce((player.transform.position - transform.position).normalized * Time.fixedDeltaTime * acceleration * (speed + (speed * speedBoost)), ForceMode2D.Impulse);
-        rbEnemy.velocity = Vector3.ClampMagnitude(rbEnemy.velocity, speed + (speed * speedBoost));  
+
+        rbEnemy.AddForce((player.transform.position - transform.position).normalized
+        * Time.fixedDeltaTime * acceleration * speed,
+        ForceMode2D.Impulse);       
+
+        rbEnemy.velocity = Vector3.ClampMagnitude(rbEnemy.velocity, speed);
     }
 
+    public void MakeMeFixed(bool mode)
+    {
+        canIMove = !mode;
+        gameObject.GetComponent<SimpleAnimator>().StopAnimation(mode);
+    }
 
     private void OnBecameVisible()
     {

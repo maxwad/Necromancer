@@ -128,20 +128,27 @@ public class BattleArmyController : MonoBehaviour
         }
     }
 
+    private void SetStartSpeed(PlayersStats stats, float value)
+    {        
+        if(stats == PlayersStats.Speed) speed = value;
+    }
+
     private void UpgradeSpeed(PlayersStats stats, float value)
     {
-        if(stats == PlayersStats.Speed) speed = value;
+        if(stats == PlayersStats.Speed) speed = value;        
     }
 
     private void OnEnable()
     {
         EventManager.WeLostOneUnit += UpdateArmyCount;
-        EventManager.UpgradePlayerStat += UpgradeSpeed;
+        EventManager.SetStartPlayerStat += SetStartSpeed;
+        EventManager.NewBoostedStat += UpgradeSpeed;
     }
 
     private void OnDisable()
     {
         EventManager.WeLostOneUnit -= UpdateArmyCount;
-        EventManager.UpgradePlayerStat -= UpgradeSpeed;
+        EventManager.SetStartPlayerStat -= SetStartSpeed;
+        EventManager.NewBoostedStat -= UpgradeSpeed;
     }
 }

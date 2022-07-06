@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 6
-  manaCost: 20
-  value: 0.1
+  manaCost: 1
+  value: 0.2
   actionTime: 0
-  reloading: 200
-  icon: {fileID: -5067258766746448811, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Heal the hero by 10%.
+  reloading: 1
+  icon: {fileID: 5097700250158239051, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
+  description: Heal the hero by 20%.

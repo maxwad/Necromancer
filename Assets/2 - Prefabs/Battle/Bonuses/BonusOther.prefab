@@ -114,5 +114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonusType: 5
+  baseValue: 1
   value: 0
   isFromPoolObject: 0

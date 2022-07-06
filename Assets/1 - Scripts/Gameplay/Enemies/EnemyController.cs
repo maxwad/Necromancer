@@ -23,6 +23,7 @@ public class EnemyController : MonoBehaviour
     private float currentHealth;
     private float delayAttack;
 
+    private float maxDamage = 500;
     private SpriteRenderer enemySprite;
     private Color normalColor;
     private Color damageColor = Color.black;
@@ -35,7 +36,7 @@ public class EnemyController : MonoBehaviour
 
     private HeroController hero;
     private Rigidbody2D rbEnemy;
-    private float pushForce = 10000f;
+    private float pushForce = 4000f;
 
     public BonusType bonusType;
     private BonusType alternativeBonusType = BonusType.Gold;
@@ -43,6 +44,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         rbEnemy = GetComponent<Rigidbody2D>();
+        hero = GlobalStorage.instance.hero;
 
         currentHealth = health;
         delayAttack = speedAttack;
@@ -83,8 +85,8 @@ public class EnemyController : MonoBehaviour
             {                    
                 if (obj.collider.gameObject.CompareTag(TagManager.T_PLAYER) == true)
                 {
-                    if (hero == null)
-                        hero = obj.collider.gameObject.GetComponent<HeroController>();
+                    //if (hero == null)
+                    //    hero = obj.collider.gameObject.GetComponent<HeroController>();
 
                     hero.TakeDamage(physicAttack, magicAttack);
                     delayAttack = speedAttack;
@@ -113,10 +115,16 @@ public class EnemyController : MonoBehaviour
 
             ShowDamage(damage, colorDamage);
 
-            if(forceDirection != Vector3.zero) PushMe(forceDirection);
+            if(forceDirection != Vector3.zero) PushMe(forceDirection, pushForce);
 
             if(currentHealth <= 0) Dead();
         }   
+    }
+
+    public void Kill()
+    {
+        float damage = currentHealth > maxDamage ? maxDamage : currentHealth;
+        TakeDamage(damage, damage, Vector3.zero);
     }
 
     private void ColorBack()
@@ -124,10 +132,10 @@ public class EnemyController : MonoBehaviour
         enemySprite.color = normalColor;
     }
 
-    private void PushMe(Vector3 direction)
+    private void PushMe(Vector3 direction, float force)
     {
-        Vector3 force = (transform.position - direction).normalized * pushForce;
-        rbEnemy.AddForce(force, ForceMode2D.Impulse);
+        Vector3 kickForce = (transform.position - direction).normalized * force;
+        rbEnemy.AddForce(kickForce, ForceMode2D.Force);
     }
 
     private void ShowDamage(float damageValue, Color colorDamage)
@@ -145,6 +153,9 @@ public class EnemyController : MonoBehaviour
         death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
         CreateBonus();
         EventManager.OnEnemyDestroyedEvent(gameObject);
+
+        //reset enemy before death
+        gameObject.GetComponent<EnemyMovement>().MakeMeFixed(false);
         gameObject.SetActive(false);
     }
 

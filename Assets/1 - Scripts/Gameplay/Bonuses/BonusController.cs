@@ -6,8 +6,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BonusController : MonoBehaviour
 {
-    [SerializeField] private BonusType bonusType;
-    [SerializeField] private float value;
+    public BonusType bonusType;
+    [SerializeField] private float baseValue;
+    public float value;
     public bool isFromPoolObject = false;
 
     private GameObject player;
@@ -18,8 +19,8 @@ public class BonusController : MonoBehaviour
 
     private void Start()
     {
-        player = GlobalStorage.instance.hero.gameObject;
         currentInertion = inertion;
+        value = baseValue;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,7 +28,6 @@ public class BonusController : MonoBehaviour
         if (collision.CompareTag(TagManager.T_PLAYER))
         {
             EventManager.OnBonusPickedUpEvent(bonusType, value);
-            isActivate = false;
             DestroyMe();
         }
     }
@@ -44,6 +44,7 @@ public class BonusController : MonoBehaviour
 
     private IEnumerator ToThePlayer()
     {
+        player = GlobalStorage.instance.hero.gameObject;
         while(player.activeInHierarchy == true && isActivate == true)
         {
             float step = (speed + currentInertion) * Time.deltaTime;
@@ -54,8 +55,11 @@ public class BonusController : MonoBehaviour
         }
     }
 
-    private void DestroyMe()
+    public void DestroyMe()
     {
+        isActivate = false;
+        GlobalStorage.instance.bonusManager.bonusesOnTheMap.Remove(gameObject);
+
         if (isFromPoolObject == true)
         {
             currentInertion = inertion;
@@ -65,6 +69,11 @@ public class BonusController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void BoostBonusValue(float boost)
+    {
+        value = baseValue + (baseValue * boost);
     }
 
     private void OnEnable()

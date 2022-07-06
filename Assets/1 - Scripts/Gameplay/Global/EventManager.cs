@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static NameManager;
-using static UnityEditor.Experimental.GraphView.Port;
 
 public static class EventManager
 {
@@ -61,10 +60,51 @@ public static class EventManager
     //ACTIVATION:
     // - InfirmaryManager
     //
-    public delegate void UpdateInfirmaryUIEvent(UnitsTypes unitType, float quantity, float capacity);
+    public delegate void UpdateInfirmaryUIEvent( float quantity, float capacity);
     public static event UpdateInfirmaryUIEvent UpdateInfirmaryUI;
-    public static void OnUpdateInfirmaryUIEvent(UnitsTypes unitType, float quantity, float capacity) => UpdateInfirmaryUI?.Invoke(unitType, quantity, capacity);
+    public static void OnUpdateInfirmaryUIEvent(float quantity, float capacity) => UpdateInfirmaryUI?.Invoke(quantity, capacity);
 
+
+
+    //calls when need to resurrect unit from Infirmary
+    //
+    //SUBSCRIBERS:
+    // - InfirmaryManager
+    // 
+    //ACTIVATION:
+    // - SpellLibrary
+    //
+    public delegate void RemoveUnitFromInfirmaryEvent(bool mode, bool order, float quantity);
+    public static event RemoveUnitFromInfirmaryEvent RemoveUnitFromInfirmary;
+    public static void OnRemoveUnitFromInfirmaryEvent(bool mode, bool order, float quantity) => RemoveUnitFromInfirmary?.Invoke(mode, order, quantity);
+
+
+
+    //calls when need to add resurrected unit to hero's army
+    //
+    //SUBSCRIBERS:
+    // - ...
+    // 
+    //ACTIVATION:
+    // - InfirmaryManager
+    //
+    public delegate void ResurrectUnitEvent(UnitsTypes unitType);
+    public static event ResurrectUnitEvent ResurrectUnit;
+    public static void OnResurrectUnitEvent(UnitsTypes unitType) => ResurrectUnit?.Invoke(unitType);
+
+
+
+    // 1 unit boost system: calls when we boost some stat of unit from anywhere
+    //
+    //SUBSCRIBERS:
+    // - UnitBoostManager
+    //
+    //ACTIVATION:
+    // - SpellLibrary
+    //
+    public delegate void BoostUnitStatEvent(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Kosar);
+    public static event BoostUnitStatEvent BoostUnitStat;
+    public static void OnBoostUnitStatEvent(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Kosar) => BoostUnitStat?.Invoke(boostAll, addBoost, sender, stat, value, types);
     #endregion
 
 
@@ -77,6 +117,8 @@ public static class EventManager
     // - PlayerStats
     // - BattleUIManager
     // - HeroController
+    // - SpellLibrary
+    // - BonusManager
     //
     //ACTIVATION:
     // - CameraManager
@@ -87,7 +129,21 @@ public static class EventManager
 
 
 
-    //calls when we get some boost
+    // 1 player boost system: calls when we boost some stat from anywhere
+    //
+    //SUBSCRIBERS:
+    // - PlayerBoostManager
+    //
+    //ACTIVATION:
+    // - SpellLibrary
+    //
+    public delegate void BoostStatEvent(bool mode, BoostSender sender, PlayersStats stat, float value);
+    public static event BoostStatEvent BoostStat;
+    public static void OnBoostStatEvent(bool mode, BoostSender sender, PlayersStats stat, float value) => BoostStat?.Invoke(mode, sender, stat, value);
+
+
+
+    // 2 player boost system: give common boost to PlayerStats
     //
     //SUBSCRIBERS:
     // - PlayerStats
@@ -95,11 +151,22 @@ public static class EventManager
     //ACTIVATION:
     // - PlayerBoostManager
     //
-    public delegate void GetPlayerBoostEvent(PlayersStats stats, float value);
-    public static event GetPlayerBoostEvent GetPlayerBoost;
-    public static void OnGetPlayerBoostEvent(PlayersStats stats, float value) => GetPlayerBoost?.Invoke(stats, value);
+    public delegate void SetBoostToStatEvent(PlayersStats stats, float value);
+    public static event SetBoostToStatEvent SetBoostToStat;
+    public static void OnSetBoostToStatEvent(PlayersStats stats, float value) => SetBoostToStat?.Invoke(stats, value);
 
 
+    // 3 player boost system: give new boosted stats to listeners
+    //
+    //SUBSCRIBERS:
+    // - BattleArmyController
+    //
+    //ACTIVATION:
+    // - PlayerStats
+    //
+    public delegate void NewBoostedStatEvent(PlayersStats stats, float value);
+    public static event NewBoostedStatEvent NewBoostedStat;
+    public static void OnNewBoostedStatEvent(PlayersStats stats, float value) => NewBoostedStat?.Invoke(stats, value);
 
     //calls when we need update some stat of player
     //
@@ -111,9 +178,9 @@ public static class EventManager
     //ACTIVATION:
     // - PlayerStats
     //
-    public delegate void UpgradePlayerStatEvent(PlayersStats stats, float value);
-    public static event UpgradePlayerStatEvent UpgradePlayerStat;
-    public static void OnUpgradePlayerStatEvent(PlayersStats stats, float value) => UpgradePlayerStat?.Invoke(stats, value);
+    public delegate void SetStartPlayerStatEvent(PlayersStats stats, float value);
+    public static event SetStartPlayerStatEvent SetStartPlayerStat;
+    public static void OnSetStartPlayerStatEvent(PlayersStats stats, float value) => SetStartPlayerStat?.Invoke(stats, value);
 
 
 
@@ -219,10 +286,12 @@ public static class EventManager
     //calls when we pick up some bonus
     //
     //SUBSCRIBERS:
-    // - BonusController
+    // - HeroController
+    // - ResourcesManager
     //
     //ACTIVATION:
-    // - BattleMap
+    // - BonusController
+    // - SpellLibrary
     //
     public delegate void BonusPickedUpEvent(BonusType type, float value);
     public static event BonusPickedUpEvent BonusPickedUp;
@@ -260,6 +329,19 @@ public static class EventManager
     public delegate void ChangePlayModeEvent(bool mode);
     public static event ChangePlayModeEvent ChangePlayMode;
     public static void OnChangePlayModeEvent(bool mode) => ChangePlayMode?.Invoke(mode);
+
+
+    //calls when we create spell Immortal
+    //
+    //SUBSCRIBERS:
+    // - UnitController
+    //
+    //ACTIVATION:
+    // - SpellLibrary
+    //
+    public delegate void SpellImmortalEvent(bool mode);
+    public static event SpellImmortalEvent SpellImmortal;
+    public static void OnSpellImmortalEvent(bool mode) => SpellImmortal?.Invoke(mode);
 
     #endregion
 }

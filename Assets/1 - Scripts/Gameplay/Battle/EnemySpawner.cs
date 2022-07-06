@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     private List<GameObject> enemiesList;
     private List<int> enemiesQuantityList;
     //[SerializeField] private GameObject enemiesContainer;
-    private List<GameObject> enemiesOnTheMap = new List<GameObject>();
+    public List<GameObject> enemiesOnTheMap = new List<GameObject>();
 
     [Space]
     [SerializeField] private List<GameObject> spawnPositions;

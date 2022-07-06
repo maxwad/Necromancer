@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using static NameManager;
+using Antlr.Runtime.Misc;
 
 public class HeroController : MonoBehaviour
 {
@@ -82,7 +83,7 @@ public class HeroController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space) == true)
         {
-            SpendMana(-1);
+            SpendMana(-5);
         }
     }
 
@@ -100,9 +101,9 @@ public class HeroController : MonoBehaviour
         currentTempExpGoal = totalSummExp;
     }
 
-    private void UpgradeParameters(PlayersStats stats, float value)
+    private void SetStartParameters(PlayersStats stat, float value)
     {
-        switch(stats)
+        switch(stat)
         {
             case PlayersStats.Level:
                 currentMaxLevel = value;
@@ -133,7 +134,11 @@ public class HeroController : MonoBehaviour
             default:
                 break;
         }
+    }
 
+    private void UpgradeStat(PlayersStats stat, float value)
+    {
+        SetStartParameters(stat, value);
     }
 
     private void SearchBonuses()
@@ -210,6 +215,8 @@ public class HeroController : MonoBehaviour
     {
         if(type == BonusType.Health && isDead == false)
         {
+            // if we wont to add not value but percent
+            if(value < 1) value = maxCurrentHealth * value;
 
             if(currentHealth + value > maxCurrentHealth)
                 currentHealth = maxCurrentHealth;
@@ -225,6 +232,9 @@ public class HeroController : MonoBehaviour
     {
         if(type == BonusType.Mana && isDead == false)
         {
+            // if we wont to add not value but percent
+            if(value < 1) value = maxCurrentMana * value;
+
             if(currentMana + value > maxCurrentMana)
                 currentMana = maxCurrentMana;
             else
@@ -316,7 +326,8 @@ public class HeroController : MonoBehaviour
         EventManager.BonusPickedUp += AddHealth;
         EventManager.BonusPickedUp += AddMana;
         EventManager.BonusPickedUp += AddTempExp;
-        EventManager.UpgradePlayerStat += UpgradeParameters;
+        EventManager.SetStartPlayerStat += SetStartParameters;
+        EventManager.NewBoostedStat += UpgradeStat;
         EventManager.ChangePlayer += ResetTempLevel;
     }
 
@@ -325,7 +336,8 @@ public class HeroController : MonoBehaviour
         EventManager.BonusPickedUp -= AddHealth;
         EventManager.BonusPickedUp -= AddMana;
         EventManager.BonusPickedUp -= AddTempExp;
-        EventManager.UpgradePlayerStat -= UpgradeParameters;
+        EventManager.SetStartPlayerStat -= SetStartParameters;
+        EventManager.NewBoostedStat -= UpgradeStat;
         EventManager.ChangePlayer -= ResetTempLevel;
     }
 }

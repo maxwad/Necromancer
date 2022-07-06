@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 0
-  manaCost: 10
+  manaCost: 1
   value: 0.2
-  actionTime: 30
-  reloading: 100
+  actionTime: 5
+  reloading: 5
   icon: {fileID: 3687465974505754858, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
   description: Increase the hero's movement speed by 20% for 30 seconds.

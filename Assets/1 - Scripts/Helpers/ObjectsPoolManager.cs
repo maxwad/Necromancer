@@ -13,12 +13,14 @@ public class ObjectsPoolManager : MonoBehaviour
     public GameObject damageText;
     public GameObject torch;
     public GameObject bonusExp;
+    public GameObject bonusGold;
 
     //storages for created objects
     private Dictionary<EnemiesTypes, List<GameObject>> enemiesDict = new Dictionary<EnemiesTypes, List<GameObject>>();
     private List<GameObject> damageTextList = new List<GameObject>();
-    private List<GameObject> torchesList = new List<GameObject>();
-    private List<GameObject> bonusExpList = new List<GameObject>();
+    private List<GameObject> torchesList    = new List<GameObject>();
+    private List<GameObject> bonusExpList   = new List<GameObject>();
+    private List<GameObject> bonusGoldList  = new List<GameObject>();
 
 
     private int elementsCount = 10;
@@ -69,6 +71,12 @@ public class ObjectsPoolManager : MonoBehaviour
             bonusExpList.Add(CreateObject(bonusExp));
         }
 
+        //creating List with bonusGold
+        for(int i = 0; i < elementsCount; i++)
+        {
+            bonusGoldList.Add(CreateObject(bonusGold));
+        }
+
     }
 
     private GameObject CreateObject(GameObject prefab)
@@ -98,6 +106,11 @@ public class ObjectsPoolManager : MonoBehaviour
 
             case ObjectPool.BonusExp:
                 currentObjectsList = bonusExpList;
+                break;
+
+
+            case ObjectPool.BonusGold:
+                currentObjectsList = bonusGoldList;
                 break;
 
         }
@@ -156,6 +169,12 @@ public class ObjectsPoolManager : MonoBehaviour
         for (int i = 0; i < bonusExpList.Count; i++)
         {
             bonusExpList[i].SetActive(false);
+        }
+
+        //clear bonusGold after battle
+        for(int i = 0; i < bonusGoldList.Count; i++)
+        {
+            bonusGoldList[i].SetActive(false);
         }
     }
 

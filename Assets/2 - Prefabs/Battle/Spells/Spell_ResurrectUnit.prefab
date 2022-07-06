@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 14
-  manaCost: 50
+  manaCost: 1
   value: 1
   actionTime: 0
-  reloading: 600
+  reloading: 5
   icon: {fileID: -1190754557913613987, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Resurrect one random unit from the infirmary.
+  description: Resurrect one last killed unit from the infirmary.

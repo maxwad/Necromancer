@@ -21,7 +21,7 @@ public class HealthObjectStats : MonoBehaviour
 
     [SerializeField] private GameObject deathPrefab;
 
-    public SenderTypes typeOfObject;
+    public ObstacleTypes typeOfObject;
     public BonusType[] bonusTypes;
     public int[] bonusesPropabilities;
 

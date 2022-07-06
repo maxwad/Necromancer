@@ -22,6 +22,25 @@ public static class NameManager
         Church
     }
 
+    public enum UnitStats
+    {
+        Health,
+        MagicAttack,
+        PhysicAttack,
+        MagicDefence,
+        PhysicDefence,
+        SpeedAttack,
+        Size,
+
+        CoinsPrice,
+        FoodPrice,
+        WoodPrice,
+        IronPrice,
+        StonePrice,
+        MagicPrice,
+
+    }
+
     public enum UnitsAbilities
     {
         Kosar_lvl1,
@@ -58,7 +77,8 @@ public static class NameManager
         Enemy,
         DamageText,
         BonusExp,
-        Torch
+        Torch,
+        BonusGold
     }
 
     public enum AfterAnimation
@@ -68,7 +88,7 @@ public static class NameManager
         SetDisable
     }
 
-    public enum SenderTypes
+    public enum ObstacleTypes
     {
         Enemy,
         EnemyBoss,
@@ -137,7 +157,7 @@ public static class NameManager
         GoAway,
         AllBonuses,
         Healing,
-        ExtraExp,
+        DoubleBonuses,
         WeaponSize,
         Maning,
         Immortal,

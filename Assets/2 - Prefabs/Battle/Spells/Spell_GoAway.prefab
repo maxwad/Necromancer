@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 4
-  manaCost: 5
-  value: 5
+  manaCost: 1
+  value: 10
   actionTime: 0
-  reloading: 50
-  icon: {fileID: -1254149515004799959, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Knock back all enemies within a radius of 5 meters.
+  reloading: 1
+  icon: {fileID: 6630418901856197220, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
+  description: Knock back all enemies within a radius of 10 meters.

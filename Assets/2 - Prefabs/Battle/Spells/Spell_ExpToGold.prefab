@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 13
-  manaCost: 20
+  manaCost: 1
   value: 20
   actionTime: 0
-  reloading: 200
+  reloading: 5
   icon: {fileID: -8072868309065578990, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
   description: Turn all experience bonuses within 20 meters into gold.

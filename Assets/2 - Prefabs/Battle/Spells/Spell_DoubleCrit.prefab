@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 2
-  manaCost: 15
+  manaCost: 1
   value: 1
-  actionTime: 30
-  reloading: 150
+  actionTime: 5
+  reloading: 5
   icon: {fileID: 4490542196421010568, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Double the chance of critical damage for 30 seconds.
+  description: All damage becomes critical for 5 seconds.

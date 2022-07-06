@@ -46,9 +46,9 @@ MonoBehaviour:
   isFinded: 1
   isUnlocked: 1
   spellType: 12
-  manaCost: 40
-  value: 15
+  manaCost: 1
+  value: 10
   actionTime: 0
-  reloading: 400
+  reloading: 1
   icon: {fileID: 1526934011099985568, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
   description: Destroy all enemies within a radius of 15 meters.

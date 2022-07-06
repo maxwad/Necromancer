@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.4951, y: 0.4456}
+  m_SizeDelta: {x: 0.5, y: 0.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4223726373541259900
 MeshRenderer:
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 01ebaecf3d5bfb3439008199bb64c0a0, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: ada2cec70892958409fb5c699e0654fe, type: 2}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190333
+    rgba: 4278720760
   m_fontColor: {r: 0.972549, g: 0.09352468, b: 0.031372517, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -0.47934365, y: 0, z: -0.48893076, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
