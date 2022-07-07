@@ -22,18 +22,34 @@ public static class EventManager
     public static void OnAllUnitsIsReadyEvent() => AllUnitsIsReady?.Invoke();
 
 
-    //calls when we had finished to create an army of heroes
+
+    //calls when we had finished to create army of heroes(for real battle)
     //
     //SUBSCRIBERS:
-    // - PlayersArmy
-    // - PlayersArmyWindow
+    // - 
+    // - 
     //
     //ACTIVATION:
-    // - PlayersArmy
+    // - 
     //
     public delegate void PlayersArmyIsReadyEvent(Unit[] army);
     public static event PlayersArmyIsReadyEvent PlayersArmyIsReady;
     public static void OnPlayersArmyIsReadyEvent(Unit[] army) => PlayersArmyIsReady?.Invoke(army);
+
+
+
+    //calls when we switch unit from army to reserve or back
+    //
+    //SUBSCRIBERS:
+    // - PlayersArmy
+    //
+    //ACTIVATION:
+    // - ArmySlot
+    //
+    public delegate void SwitchUnitEvent(bool mode, Unit unit);
+    public static event SwitchUnitEvent SwitchUnit;
+    public static void OnSwitchUnitEvent(bool mode, Unit unit) => SwitchUnit?.Invoke(mode, unit);
+
 
 
     //calls when we lose 1 unit from squad

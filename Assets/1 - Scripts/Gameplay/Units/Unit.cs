@@ -33,7 +33,7 @@ public class Unit
     public int magicPrice;
 
     public int quantity;
-    public float commonHealth;
+    public float currentHealth;
 
     public Unit(UnitSO unitSO)
     {
@@ -66,6 +66,6 @@ public class Unit
 
 
         quantity = 1;
-        commonHealth = health;
+        currentHealth = health;
     }
 }

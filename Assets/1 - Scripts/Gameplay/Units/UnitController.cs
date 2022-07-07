@@ -6,7 +6,7 @@ using static NameManager;
 
 public class UnitController : MonoBehaviour
 {
-    [SerializeField] private UnitsTypes unitType;
+    public UnitsTypes unitType;
     [SerializeField] private float health;
     [SerializeField] public float magicAttack;
     [SerializeField] public float physicAttack;
@@ -21,7 +21,7 @@ public class UnitController : MonoBehaviour
 
     [SerializeField] private int quantity;
 
-    private float currentHealth;
+    public float currentHealth;
 
     private bool isDead = false;
     private bool isImmortal = false;

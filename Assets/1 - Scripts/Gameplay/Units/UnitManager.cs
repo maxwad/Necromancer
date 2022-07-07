@@ -73,7 +73,7 @@ public class UnitManager : MonoBehaviour
 
     public Unit[] GetUnitsForPlayersArmy(UnitsTypes[] playersArmy)
     {
-        Unit[] army = new Unit[4];
+        Unit[] army = new Unit[Enum.GetValues(typeof(UnitsTypes)).Length];
 
         for (int i = 0; i < army.Length; i++)
         {

@@ -6,10 +6,15 @@ using TMPro;
 
 public class PlayersArmyWindow : MonoBehaviour
 {
-    private Unit[] playersArmy;
-    [SerializeField] private GameObject playerArmyUI;  
+    [SerializeField] private GameObject playerArmyUI;
+
+    [Header("Army")]
     [SerializeField] private ArmySlot[] armySlots;
 
+    [Header("Reserve")]
+    [SerializeField] private ArmySlot[] reserveSlots;
+
+    [Header("Buttons")]
     [SerializeField] private Button fightButton;
     [SerializeField] private Button closeWindow;
     [SerializeField] private TMP_Text fightButtonText;
@@ -18,35 +23,20 @@ public class PlayersArmyWindow : MonoBehaviour
 
     [HideInInspector] public bool isWindowOpened = false;
 
-    private void Awake()
-    {
-        fightButton.onClick.AddListener(ToTheBattle);
-        fightButtonText.text = toTheBattleText;
-        closeWindow.onClick.AddListener(CloseWindow);        
-    }
 
-    private void Start()
+    public void CreateReserveScheme(Unit[] army)
     {
-        EventManager.PlayersArmyIsReady += SetArmy;
-    }
-
-    private void OnDestroy()
-    {
-        fightButton.onClick.RemoveListener(ToTheBattle);
-        closeWindow.onClick.RemoveListener(CloseWindow);
-        EventManager.PlayersArmyIsReady -= SetArmy;
-    }
-
-    private void SetArmy(Unit[] army)
-    {
-        playersArmy = army;
+        for(int i = 0; i < army.Length; i++)
+        {
+            reserveSlots[i].FillTheArmySlot(army[i]);
+        }
     }
 
     public void CreateArmyScheme(Unit[] army)
     {
         for (int i = 0; i < army.Length; i++)
         {
-            armySlots[i].FillTheSlot(army[i]);
+            armySlots[i].FillTheArmySlot(army[i]);
         }
     }
 
@@ -77,8 +67,9 @@ public class PlayersArmyWindow : MonoBehaviour
         if (isWindowOpened == false)
         {
             playerArmyUI.SetActive(true);
-            isWindowOpened = true;
-            CreateArmyScheme(playersArmy);
+            isWindowOpened = true;            
+            CreateReserveScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().reserveArmy);
+            CreateArmyScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().playersArmy);
             MenuManager.instance.MiniPauseOn();
 
         }            
@@ -96,5 +87,18 @@ public class PlayersArmyWindow : MonoBehaviour
         MenuManager.instance.MiniPauseOff();
 
         //TODO: here we should clear info about canceled battle
+    }
+
+    private void Awake()
+    {
+        fightButton.onClick.AddListener(ToTheBattle);
+        fightButtonText.text = toTheBattleText;
+        closeWindow.onClick.AddListener(CloseWindow);
+    }
+
+    private void OnDestroy()
+    {
+        fightButton.onClick.RemoveListener(ToTheBattle);
+        closeWindow.onClick.RemoveListener(CloseWindow);
     }
 }

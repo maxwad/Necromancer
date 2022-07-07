@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static NameManager;
 
 public class ArmySlot : MonoBehaviour, IPointerClickHandler
 {
@@ -11,8 +12,10 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
     public TMP_Text quantity;
     public int index;
     public Image backlight;
-    private Color visible = new Color(1, 0.45f, 0, 1);
-    private Color unvisible = new Color(1, 0.45f, 0, 0);
+    public UISlotTypes slotType;
+
+    public Color visible;
+    public Color unvisible;
     private Unit unitInSlot;
 
     private PlayersArmy playersArmy;
@@ -23,7 +26,7 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
         playersArmy = GlobalStorage.instance.player.GetComponent<PlayersArmy>();
     }
 
-    public void FillTheSlot(Unit unit)
+    public void FillTheArmySlot(Unit unit)
     {
         if (unit != null)
         {
@@ -42,8 +45,17 @@ public class ArmySlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        backlight.color = backlight.color == unvisible? visible : unvisible;
-        playersArmy.UnitsReplacementUI(index);
+        if(slotType == UISlotTypes.Army && eventData.button == PointerEventData.InputButton.Right)
+        {
+            backlight.color = backlight.color == unvisible ? visible : unvisible;
+            playersArmy.UnitsReplacementUI(index);
+        }
+
+        if(eventData.button == PointerEventData.InputButton.Left && GlobalStorage.instance.isGlobalMode == true)
+        {
+            bool mode = slotType == UISlotTypes.Reserve ? true : false;
+            EventManager.OnSwitchUnitEvent(mode, unitInSlot);
+        }
     }
 
     public void ResetSelecting()

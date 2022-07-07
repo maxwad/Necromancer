@@ -10,7 +10,10 @@ public static class NameManager
         Ranger,
         Meg,
         Skeleton,
-        Monk
+        Monk,
+        Knight,
+        Riddick,
+        Hulk
     }
 
     public enum UnitsHouses
@@ -170,5 +173,11 @@ public static class NameManager
     public enum BoostSender
     {
         Spell
+    }
+
+    public enum UISlotTypes
+    {
+        Army,
+        Reserve
     }
 }
