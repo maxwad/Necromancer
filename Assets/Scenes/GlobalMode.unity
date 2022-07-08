@@ -932,11 +932,6 @@ Transform:
   m_Father: {fileID: 184540780}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &216174959 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6955083954490165216, guid: 05adb6a9c168c6d40b8a09c247b6d85e, type: 3}
-  m_PrefabInstance: {fileID: 6955083954424993423}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &216174960 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6955083954490165247, guid: 05adb6a9c168c6d40b8a09c247b6d85e, type: 3}
@@ -947,7 +942,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3739615566917576353, guid: 05adb6a9c168c6d40b8a09c247b6d85e, type: 3}
   m_PrefabInstance: {fileID: 6955083954424993423}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 216174959}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b435c74908bc8c4ab1d5d617e619064, type: 3}
@@ -2312,7 +2307,7 @@ MonoBehaviour:
   spellManager: {fileID: 474117475}
   player: {fileID: 1536624705}
   globalPlayer: {fileID: 1206477819}
-  battlePlayer: {fileID: 632549868}
+  battlePlayer: {fileID: 632549870}
   hero: {fileID: 216174961}
   globalMap: {fileID: 507509143}
   battleMap: {fileID: 184540778}
@@ -2577,7 +2572,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0860c23d602494a97284c596cbd2fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hero: {fileID: 216174959}
+  currentDirection: {x: 0, y: 0}
+  currentFacing: 0
 --- !u!50 &632549871
 Rigidbody2D:
   serializedVersion: 4
@@ -4030,7 +4026,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!1 &1093596357
 GameObject:

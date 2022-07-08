@@ -51,4 +51,4 @@ MonoBehaviour:
   actionTime: 0
   reloading: 5
   icon: {fileID: 2914983793677538037, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Release 8 shurikens that kill everyone in their path.
+  description: Hero throws 8 shurikens that kill everyone in their path.

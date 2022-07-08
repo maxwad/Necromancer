@@ -19,7 +19,7 @@ public class EnemyMovement : MonoBehaviour
 
     void Start()
     {
-        player = GlobalStorage.instance.battlePlayer;
+        player = GlobalStorage.instance.battlePlayer.gameObject;
         collEnemy = GetComponent<Collider2D>();
         rbEnemy = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();

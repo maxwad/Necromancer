@@ -51,4 +51,4 @@ MonoBehaviour:
   actionTime: 0
   reloading: 5
   icon: {fileID: -1190754557913613987, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Resurrect one last killed unit from the infirmary.
+  description: Resurrects one last killed unit from the infirmary.

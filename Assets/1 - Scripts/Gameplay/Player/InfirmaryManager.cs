@@ -64,7 +64,6 @@ public class InfirmaryManager : MonoBehaviour
         }
 
         EventManager.OnUpdateInfirmaryUIEvent(injuredList.Count, currentCapacity);
-        Debug.Log(injuredList.Count);
     }
 
     public int GetCurrentInjuredQuantity()

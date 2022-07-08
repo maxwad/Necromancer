@@ -19,13 +19,14 @@ public class UnitController : MonoBehaviour
 
     [SerializeField] public GameObject attackTool;
 
-    [SerializeField] private int quantity;
+    public int quantity;
 
     public float currentHealth;
 
     private bool isDead = false;
     private bool isImmortal = false;
 
+    //Death section
     private SpriteRenderer unitSprite;
     private Color normalColor;
     private Color damageColor = Color.red;
@@ -36,11 +37,15 @@ public class UnitController : MonoBehaviour
     [SerializeField] GameObject damageNote;
     private Color colorDamage = Color.yellow;
 
+    private TMP_Text unitCountsText;
+
     private void Start()
     {
         currentHealth = quantity > 0 ? health : 0;
         unitSprite = GetComponent<SpriteRenderer>();
         normalColor = unitSprite.color;
+
+        unitCountsText = GetComponentInChildren<TMP_Text>();
     }
 
     public void Initilize(Unit unit) 
@@ -94,13 +99,13 @@ public class UnitController : MonoBehaviour
         {
             quantity--;
             currentHealth = health;
-            UpdateArmy();
+            UpdateSquad(false);
         }
 
         if (quantity <= 1 && currentHealth <= 0)
         {
             quantity--;
-            UpdateArmy();
+            UpdateSquad(false);
             Dead();
         }
     }
@@ -128,10 +133,12 @@ public class UnitController : MonoBehaviour
     #endregion
 
 
-    #region For Army updating
-    public void UpdateArmy()
+    #region For Squad updating
+    public void UpdateSquad(bool mode)
     {
-        EventManager.OnWeLostOneUnitEvent(unitType, quantity);
+        unitCountsText.text = quantity.ToString();
+
+        if(mode == false) EventManager.OnWeLostOneUnitEvent(unitType, quantity);
     }
 
     public UnitsTypes GetTypeUnit()

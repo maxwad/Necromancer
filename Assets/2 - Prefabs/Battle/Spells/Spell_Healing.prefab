@@ -51,4 +51,4 @@ MonoBehaviour:
   actionTime: 0
   reloading: 1
   icon: {fileID: 5097700250158239051, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Heal the hero by 20%.
+  description: Heals the hero by 20%.

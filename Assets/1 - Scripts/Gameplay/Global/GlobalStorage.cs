@@ -24,7 +24,7 @@ public class GlobalStorage : MonoBehaviour
     [Header("Player")]
     public GameObject player;
     public GameObject globalPlayer;
-    public GameObject battlePlayer;
+    public BattleArmyController battlePlayer;
     public HeroController hero;
 
     [Header("Maps")]

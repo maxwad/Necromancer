@@ -44,22 +44,66 @@ public class BattleUIManager : MonoBehaviour
     private List<SpellStat> currentSpells = new List<SpellStat>();
     [SerializeField] private GameObject spellButtonContainer;
     private List<Button> currentSpellsButtons = new List<Button>();
+    private int countOfActiveSpells = 10;
+    private int currentSpellIndex = -1;
 
+    private void Update()
+    {
+        if(GlobalStorage.instance.isGlobalMode == false) Spelling();
+    }
+
+    private void Spelling()
+    {
+        switch(Input.inputString)
+        {
+            case "1":
+                currentSpellIndex = 0;
+                break;
+            case "2":
+                currentSpellIndex = 1;
+                break;
+            case "3":
+                currentSpellIndex = 2;
+                break;
+            case "4":
+                currentSpellIndex = 3;
+                break;
+            case "5":
+                currentSpellIndex = 4;
+                break;
+            case "6":
+                currentSpellIndex = 5;
+                break;
+            case "7":
+                currentSpellIndex = 6;
+                break;
+            case "8":
+                currentSpellIndex = 7;
+                break;
+            case "9":
+                currentSpellIndex = 8;
+                break;
+            case "0":
+                currentSpellIndex = 9;
+                break;
+
+            default:
+                currentSpellIndex = -1;
+                break;
+        }
+
+        if(currentSpellIndex != -1) currentSpellsButtons[currentSpellIndex].GetComponent<SpellButtonController>().ActivateSpell();
+    }
 
     public void Inizialize(bool mode)
     {
         uiCanvas.gameObject.SetActive(!mode);
 
-        if(mode == false)
-        {
-            ResetCanvas();
-        }
+        if(mode == false) ResetCanvas();
     }
 
     private void ResetCanvas()
     {
-        levelList.Clear();
-
         FillRigthTempLevelScale();
 
         FillInfirmary();
@@ -74,6 +118,8 @@ public class BattleUIManager : MonoBehaviour
     #region TempExp
     private void FillRigthTempLevelScale()
     {
+        levelList.Clear();
+
         foreach(Transform child in currentTempLevelWrapper.transform)
             Destroy(child.gameObject);
 
@@ -217,11 +263,18 @@ public class BattleUIManager : MonoBehaviour
 
             currentSpellsButtons.Clear();
 
-            foreach(var spell in currentSpells)
+            for(int i = 0; i < currentSpells.Count; i++)
             {
+                int slotNumber = -1;
+                if(i < countOfActiveSpells)
+                {
+                    slotNumber = i + 1;
+                    if(i + 1 == 10) slotNumber = 0;
+                }   
+
                 Button button = Instantiate(buttonSpell);
-                button.GetComponent<SpellButtonController>().SetSpellOnButton(spell);
-                button.GetComponent<SpellButtonController>().InitializeButton();
+                button.GetComponent<SpellButtonController>().SetSpellOnButton(currentSpells[i]);
+                button.GetComponent<SpellButtonController>().InitializeButton(slotNumber);
                 currentSpellsButtons.Add(button);
                 button.transform.SetParent(spellButtonContainer.transform);
             }

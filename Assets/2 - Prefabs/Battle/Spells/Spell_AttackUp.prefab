@@ -51,4 +51,4 @@ MonoBehaviour:
   actionTime: 5
   reloading: 5
   icon: {fileID: 6734197509625700620, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Increase attack power by 20% for 30 seconds.
+  description: Increases attack power by 20% for 30 seconds.

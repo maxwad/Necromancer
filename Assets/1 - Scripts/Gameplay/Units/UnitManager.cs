@@ -22,6 +22,7 @@ public class UnitManager : MonoBehaviour
         StartCreatingPlayersArmy();
     }
 
+    #region Start army creation 
     private void StartCreatingPlayersArmy()
     {
         GetCurrentLevelOfUnits();
@@ -71,6 +72,9 @@ public class UnitManager : MonoBehaviour
         EventManager.OnAllUnitsIsReadyEvent();
     }
 
+    #endregion
+
+
     public Unit[] GetUnitsForPlayersArmy(UnitsTypes[] playersArmy)
     {
         Unit[] army = new Unit[Enum.GetValues(typeof(UnitsTypes)).Length];
@@ -84,7 +88,6 @@ public class UnitManager : MonoBehaviour
                     if (playersArmy[i] == item.UnitType)
                     {
                         army[i] = item;
-                        //Debug.Log(item.unitName + " got to the army");
                     }
                 }
             }
@@ -95,6 +98,18 @@ public class UnitManager : MonoBehaviour
         }              
         
         return army;
+    }
+
+    public Unit GetNewSquad(UnitsTypes type)
+    {
+        foreach(var unit in allCurrentBoostUnitsByTypes)
+        {
+            if(unit.UnitType == type)
+            {
+                return unit;
+            }
+        }
+        return null;
     }
 
     public void UpgradeUnitLevel(UnitsTypes unitType, int level)

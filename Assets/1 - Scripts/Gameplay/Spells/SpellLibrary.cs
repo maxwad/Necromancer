@@ -121,27 +121,36 @@ public class SpellLibrary : MonoBehaviour
 
     #endregion
 
+    //Increases the hero's movement speed by 20% for 30 seconds.
     private void SpeedUp(bool mode, float value)
     {
         EventManager.OnBoostStatEvent(mode, BoostSender.Spell, PlayersStats.Speed, value);
     }
 
+
+    //Increase attack power by 20% for 30 seconds.
     private void AttackUp(bool mode, float value)
     {
         EventManager.OnBoostUnitStatEvent(true, mode, BoostSender.Spell, UnitStats.PhysicAttack, value);
         EventManager.OnBoostUnitStatEvent(true, mode, BoostSender.Spell, UnitStats.MagicAttack, value);
     }
 
+
+    //All damage becomes critical for 5 seconds.
     private void DoubleCrit (bool mode, float value)
     {
         EventManager.OnBoostStatEvent(mode, BoostSender.Spell, PlayersStats.Luck, value);
     }
 
+
+    //Increases weapon size by 20% for 30 seconds.
     private void WeaponSize(bool mode, float value)
     {
         EventManager.OnBoostUnitStatEvent(true, mode, BoostSender.Spell, UnitStats.Size, value);
     }
 
+
+    //Hero throws 8 shurikens that kill everyone in their path.
     private void Shurikens(bool mode, float value)
     {
         if(mode == true)
@@ -156,7 +165,9 @@ public class SpellLibrary : MonoBehaviour
             }
         }
     }
-    
+
+
+    //Knock back all enemies within a radius of 10 meters.
     private void GoAway(bool mode, float value)
     {
         if(mode == true)
@@ -183,6 +194,8 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
+
+    //Pull all the bonuses in the field.
     private void AllBonuses(bool mode, float value)
     {
         if(mode == true)
@@ -196,6 +209,8 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
+
+    //Heal the hero by 20%.
     private void Healing(bool mode, float value)
     {
         if(mode == true)
@@ -203,7 +218,9 @@ public class SpellLibrary : MonoBehaviour
             EventManager.OnBonusPickedUpEvent(BonusType.Health, value);
         }
     }
-    
+
+
+    //Restore 20% mana.
     private void Maning(bool mode, float value)
     {
         if(mode == true)
@@ -212,6 +229,8 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
+
+    //Double all bonuses for 30 seconds.
     private void DoubleBonuses(bool mode, float value)
     {
         //boost new bonuses
@@ -231,11 +250,15 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
+
+    //Make units immortal for 30 seconds.
     private void Immortal(bool mode, float value)
     {
         EventManager.OnSpellImmortalEvent(mode);
     }
 
+
+    //Stop all enemies for 10 seconds.
     private void EnemiesStop(bool mode, float value)
     {
         List<GameObject> enemies = GlobalStorage.instance.battleMap.GetComponent<EnemySpawner>().enemiesOnTheMap;
@@ -245,6 +268,8 @@ public class SpellLibrary : MonoBehaviour
         // do we need stop spawn enemy while they freeze?
     }
 
+
+    //Destroy all enemies within a radius of 15 meters.
     private void DestroyEnemies(bool mode, float value)
     {
         if(mode == true)
@@ -264,6 +289,8 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
+
+    //Turn all experience bonuses within 20 meters into gold.
     private void ExpToGold(bool mode, float value)
     {
         if(mode == true)
@@ -284,6 +311,8 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
+
+    //Resurrect one last killed unit from the infirmary.
     private void ResurrectUnit(bool mode, float value)
     {
         if(mode == true)

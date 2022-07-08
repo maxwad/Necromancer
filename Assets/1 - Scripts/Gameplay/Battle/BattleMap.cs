@@ -63,7 +63,7 @@ public class BattleMap : MonoBehaviour
 
     private void Start()
     {
-        player = GlobalStorage.instance.battlePlayer;
+        player = GlobalStorage.instance.battlePlayer.gameObject;
 
         towerStats = towersPrefab.GetComponent<BattleObjectStats>();
         torchStats = torchPrefab.GetComponent<BattleObjectStats>();
@@ -420,17 +420,17 @@ public class BattleMap : MonoBehaviour
     //Enable or disable obstacles on map in dependent of distance to player
     private void CheckObstaclesOnBattle() 
     {
-        if (Vector2.Distance(player.gameObject.transform.position, playerPosition) >= distanceToUpdateObstacles)
+        if (Vector2.Distance(player.transform.position, playerPosition) >= distanceToUpdateObstacles)
         {
             foreach (GameObject obstacle in obstaclesOnMap)
             {
-                if (Vector2.Distance(obstacle.transform.position, player.gameObject.transform.position) <= radiusToCheckObstacles)
+                if (Vector2.Distance(obstacle.transform.position, player.transform.position) <= radiusToCheckObstacles)
                     obstacle.SetActive(true);
                 else
                     obstacle.SetActive(false);
             }
 
-            playerPosition = player.gameObject.transform.position;
+            playerPosition = player.transform.position;
         }
     }
 

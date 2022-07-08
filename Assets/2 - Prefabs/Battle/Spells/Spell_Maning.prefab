@@ -51,4 +51,4 @@ MonoBehaviour:
   actionTime: 0
   reloading: 1
   icon: {fileID: -5067258766746448811, guid: 54d98c65c3b37744baea457e9292557a, type: 3}
-  description: Restore 20% mana.
+  description: Restores 20% mana.

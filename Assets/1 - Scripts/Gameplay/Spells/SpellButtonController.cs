@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 using static NameManager;
 
-public class SpellButtonController : MonoBehaviour
+public class SpellButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private SpellStat spell;
     [SerializeField] private Image veil;
     [SerializeField] private Image icon;
     [SerializeField] private Button button;
+
+    [SerializeField] private GameObject descriptionGO;
+    [SerializeField] private TMP_Text description;
+
+    [SerializeField] private TMP_Text numberOfSlotText;
     //private EventTrigger eventTrigger;
 
     private bool disabledBecauseMana = false;
@@ -23,15 +29,22 @@ public class SpellButtonController : MonoBehaviour
     private WaitForSeconds checkMana;
     private WaitForSeconds checkDelay;
 
+    private Coroutine descriptionCoroutine;
+    private float checkTimeDescription = 0.5f;
+    private float timeStep = 0.1f;
+    private WaitForSecondsRealtime descriptionDelay;
+
     private HeroController hero;
     private SpellLibrary spellLibrary;
 
     public void SetSpellOnButton(SpellStat newSpell)
     {
         spell = newSpell;
+        description.text = newSpell.description;
+        descriptionGO.SetActive(false);
     }
 
-    public void InitializeButton()
+    public void InitializeButton(int slot = -1)
     {
         hero = GlobalStorage.instance.hero;
         spellLibrary = GlobalStorage.instance.spellManager.GetComponent<SpellLibrary>();
@@ -41,9 +54,7 @@ public class SpellButtonController : MonoBehaviour
 
         button = GetComponent<Button>();
 
-        //TODO: tooltip for description of spell
-        //eventTrigger = GetComponent<EventTrigger>();
-        //EventTrigger.Entry entry = new EventTrigger.Entry();
+        if(slot != -1) numberOfSlotText.text = slot.ToString();
 
         button.onClick.AddListener(ActivateSpell);
 
@@ -52,9 +63,11 @@ public class SpellButtonController : MonoBehaviour
 
     }
 
-    private void ActivateSpell()
+    public void ActivateSpell()
     {
         if(isDisabled == true) return;
+
+        if(MenuManager.isGamePaused == true || MenuManager.isMiniPause == true) return;
 
         hero.SpendMana(spell.manaCost);
         spellLibrary.ActivateSpell(spell.spellType, true, spell.value, spell.actionTime);
@@ -116,5 +129,30 @@ public class SpellButtonController : MonoBehaviour
     private void OnDestroy()
     {
         button.onClick.RemoveListener(ActivateSpell);
+    }
+
+    private IEnumerator ShowDescription()
+    {
+        descriptionDelay = new WaitForSecondsRealtime(timeStep);
+        float currentWaitTime = 0;
+
+        while(currentWaitTime < checkTimeDescription)
+        {
+            currentWaitTime += timeStep;
+            yield return descriptionDelay;
+        }
+
+        descriptionGO.SetActive(true);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        descriptionCoroutine = StartCoroutine(ShowDescription());
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        StopCoroutine(descriptionCoroutine);
+        descriptionGO.SetActive(false);
     }
 }

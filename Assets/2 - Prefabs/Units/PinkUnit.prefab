@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 4387482535749053694}
   - component: {fileID: -1511722774815572821}
   - component: {fileID: 4387482535749053695}
+  - component: {fileID: -6484052245722906557}
   - component: {fileID: 7266168001847362344}
   m_Layer: 3
   m_Name: PinkUnit
@@ -170,6 +171,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-6484052245722906557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4387482535749053680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d9e43444cd4045a3fc5f2f81f2ba5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7266168001847362344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +207,7 @@ MonoBehaviour:
   unitAbility: 0
   attackTool: {fileID: 0}
   quantity: 0
+  currentHealth: 0
   deathPrefab: {fileID: 3877275003630577787, guid: 8e2dbf07adabe6f458d623574390b341, type: 3}
   damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
 --- !u!1 &4967437670683601387
