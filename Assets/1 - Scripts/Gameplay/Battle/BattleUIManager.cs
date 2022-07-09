@@ -47,6 +47,14 @@ public class BattleUIManager : MonoBehaviour
     private int countOfActiveSpells = 10;
     private int currentSpellIndex = -1;
 
+    [Header("Enemy")]
+    [SerializeField] private RectTransform enemiesWrapper;
+    [SerializeField] private RectTransform enemiesValue;
+    [SerializeField] private TMP_Text enemiesInfo;
+    private float maxEnemiesCount = 0;
+    private float currentEnemiesCount = 0;
+
+
     private void Update()
     {
         if(GlobalStorage.instance.isGlobalMode == false) Spelling();
@@ -113,6 +121,8 @@ public class BattleUIManager : MonoBehaviour
         FillGold();
 
         FillSpells(-1);
+
+        FillEnemiesBar(null);
     }
 
     #region TempExp
@@ -299,19 +309,43 @@ public class BattleUIManager : MonoBehaviour
 
     #endregion
 
+    #region EnemiesBar
+    private void GetStartCountEnemies(int count)
+    {
+        maxEnemiesCount = count;
+        currentEnemiesCount = count;
+    }
+
+    public void FillEnemiesBar(GameObject enemy)
+    {
+        if(enemy != null) currentEnemiesCount--;
+
+        float widthEnemiesBar = enemiesWrapper.rect.width;
+        float widthOneEnemiesBarPiece = widthEnemiesBar / maxEnemiesCount;
+
+        enemiesValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, widthOneEnemiesBarPiece * (maxEnemiesCount - currentEnemiesCount));
+        enemiesInfo.text = currentEnemiesCount.ToString();
+    }
+
+    #endregion
+
     private void OnEnable()
     {
-        EventManager.ChangePlayer += Inizialize;
+        EventManager.ChangePlayer      += Inizialize;
         EventManager.UpdateInfirmaryUI += UpdateInfirmaryUI;
-        EventManager.UpgradeMana += UpdateManaUI;
-        EventManager.UpgradeGold += UpdateGoldUI;
+        EventManager.UpgradeMana       += UpdateManaUI;
+        EventManager.UpgradeGold       += UpdateGoldUI;
+        EventManager.EnemiesCount      += GetStartCountEnemies;
+        EventManager.EnemyDestroyed    += FillEnemiesBar;
     }
 
     private void OnDisable()
     {
-        EventManager.ChangePlayer -= Inizialize;
+        EventManager.ChangePlayer      -= Inizialize;
         EventManager.UpdateInfirmaryUI -= UpdateInfirmaryUI;
-        EventManager.UpgradeMana -= UpdateManaUI;
-        EventManager.UpgradeGold -= UpdateGoldUI;
+        EventManager.UpgradeMana       -= UpdateManaUI;
+        EventManager.UpgradeGold       -= UpdateGoldUI;
+        EventManager.EnemiesCount      -= GetStartCountEnemies;
+        EventManager.EnemyDestroyed    -= FillEnemiesBar;
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static NameManager;
+using System;
 
 public class PlayersArmyWindow : MonoBehaviour
 {
@@ -13,6 +15,11 @@ public class PlayersArmyWindow : MonoBehaviour
 
     [Header("Reserve")]
     [SerializeField] private ArmySlot[] reserveSlots;
+
+    [Header("Infirmary")]
+    [SerializeField] private InfirmarySlot[] infirmarySlots;
+    [SerializeField] private TMP_Text infirmaryCount;
+
 
     [Header("Buttons")]
     [SerializeField] private Button fightButton;
@@ -38,6 +45,38 @@ public class PlayersArmyWindow : MonoBehaviour
         {
             armySlots[i].FillTheArmySlot(army[i]);
         }
+    }
+
+    public void CreateInfirmaryScheme()
+    {
+        List<UnitsTypes> injuredList = GlobalStorage.instance.infirmaryManager.GetCurrentInjuredList();
+        List<Unit> actualUnits = GlobalStorage.instance.unitManager.GetActualArmy();
+        float infarmaryCapacity = GlobalStorage.instance.infirmaryManager.GetCurrentCapacity();
+        float currentInjuredCount = injuredList.Count;
+
+        infirmaryCount.text = "[" + currentInjuredCount + "/" + infarmaryCapacity + "]";
+
+        for(int i = 0; i < infirmarySlots.Length; i++)
+        {
+            infirmarySlots[i].ResetSlot();
+        }
+
+        int slotIndex = 0;
+        foreach(var unit in actualUnits)
+        {
+            int count = 0;
+            foreach(var injuredUnit in injuredList)
+            {
+                if(injuredUnit == unit.UnitType) count++;
+            }
+
+            if(count != 0)
+            {
+                infirmarySlots[slotIndex].FillTheInfarmarySlot(unit.unitIcon, count);
+                slotIndex++;
+            }
+        }
+        
     }
 
     private void ToTheBattle()
@@ -67,11 +106,13 @@ public class PlayersArmyWindow : MonoBehaviour
         if (isWindowOpened == false)
         {
             playerArmyUI.SetActive(true);
-            isWindowOpened = true;            
+            isWindowOpened = true;    
+            
             CreateReserveScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().reserveArmy);
             CreateArmyScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().playersArmy);
-            MenuManager.instance.MiniPauseOn();
+            CreateInfirmaryScheme();
 
+            MenuManager.instance.MiniPauseOn();
         }            
         else
             CloseWindow();

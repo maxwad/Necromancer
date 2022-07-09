@@ -255,10 +255,12 @@ public static class EventManager
     public static void OnObstacleDestroyedEvent(GameObject objectOnMap) => ObstacleDestroyed?.Invoke(objectOnMap);
 
 
+
     //calls when we destroy enemy
     //
     //SUBSCRIBERS:
     // - BattleMap
+    // - BattleUIManager
     //
     //ACTIVATION:
     // - EnemyController
@@ -266,6 +268,7 @@ public static class EventManager
     public delegate void EnemyDestroyedEvent(GameObject objectOnMap);
     public static event EnemyDestroyedEvent EnemyDestroyed;
     public static void OnEnemyDestroyedEvent(GameObject objectOnMap) => EnemyDestroyed?.Invoke(objectOnMap);
+
 
 
     //calls when we rich max level in the battle
@@ -279,6 +282,21 @@ public static class EventManager
     public delegate void ExpEnoughEvent(bool mode);
     public static event ExpEnoughEvent ExpEnough;
     public static void OnExpEnoughEvent(bool mode) => ExpEnough?.Invoke(mode);
+
+
+
+    //calls when battle starts, we send common enemies quantity
+    //
+    //SUBSCRIBERS:
+    // - BattleUIManager
+    //
+    //ACTIVATION:
+    // - EnemySpawner
+    //
+    public delegate void EnemiesCountEvent(int count);
+    public static event EnemiesCountEvent EnemiesCount;
+    public static void OnEnemiesCountEvent(int count) => EnemiesCount?.Invoke(count);
+
     #endregion
 
 

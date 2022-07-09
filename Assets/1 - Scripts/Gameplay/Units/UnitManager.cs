@@ -25,27 +25,27 @@ public class UnitManager : MonoBehaviour
     #region Start army creation 
     private void StartCreatingPlayersArmy()
     {
-        GetCurrentLevelOfUnits();
-        GetAllUnitsBase();
+        CreateCurrentLevelOfUnits();
+        CreateAllUnitsBase();
     }
 
-    private void GetCurrentLevelOfUnits()
+    private void CreateCurrentLevelOfUnits()
     {
         //формируем список начальных уровней всех юнитов
         foreach (UnitsTypes item in Enum.GetValues(typeof(UnitsTypes)))
             currentLevelOfUnitsDict.Add(item, 1);
     }
 
-    private void GetAllUnitsBase()
+    private void CreateAllUnitsBase()
     {
         //переводим все скриптеблќбджекты в дикт и получаем ¬—≈ юниты базовых параметров
         foreach (UnitSO item in allUnitsSO)
             allUnitsBase.Add(new Unit(item));
 
-        GetAllCurrentBaseUnitsByTypes();
+        CreateAllCurrentBaseUnitsByTypes();
     }
 
-    private void GetAllCurrentBaseUnitsByTypes()
+    private void CreateAllCurrentBaseUnitsByTypes()
     {
         //формируем список из юнитов (по одному каждого типа)
         foreach (UnitsTypes itemType in Enum.GetValues(typeof(UnitsTypes)))
@@ -60,10 +60,10 @@ public class UnitManager : MonoBehaviour
             }
         }
 
-        GetAllCurrentBoostUnitsByTypes();
+        CreateAllCurrentBoostUnitsByTypes();
     }
 
-    private void GetAllCurrentBoostUnitsByTypes()
+    private void CreateAllCurrentBoostUnitsByTypes()
     {
         //накладываем эффекты на все базовые юниты
         foreach (var item in allCurrentBaseUnitsByTypes)
@@ -115,5 +115,10 @@ public class UnitManager : MonoBehaviour
     public void UpgradeUnitLevel(UnitsTypes unitType, int level)
     {
         currentLevelOfUnitsDict[unitType] = level;
+    }
+
+    public List<Unit> GetActualArmy()
+    {
+        return allCurrentBoostUnitsByTypes;
     }
 }

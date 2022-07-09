@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
 {
     private List<GameObject> enemiesList;
     private List<int> enemiesQuantityList;
+    private int commonQuantity = 0;
     //[SerializeField] private GameObject enemiesContainer;
     public List<GameObject> enemiesOnTheMap = new List<GameObject>();
 
@@ -41,6 +42,13 @@ public class EnemySpawner : MonoBehaviour
         waitNextEnemySlow = new WaitForSeconds(waitNextEnemyTimeSlow);
         waitNextEnemyStop = new WaitForSeconds(waitNextEnemyTimeStop);
         waitNextEnemy = waitNextEnemyFast;
+
+        commonQuantity = 0;
+
+        for(int i = 0; i < enemiesQuantityList.Count; i++)
+            commonQuantity += enemiesQuantityList[i];
+        
+        EventManager.OnEnemiesCountEvent(commonQuantity);
     }
 
     private void Update()
@@ -67,18 +75,12 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemy()
     {
-        int commonQuantity;
+
         //List<float> currentProbably = new List<float>();
 
         while (canISpawn == true)
         {
             yield return waitNextEnemy;
-            //check current quantity
-            commonQuantity = 0;
-            for (int i = 0; i < enemiesQuantityList.Count; i++)
-            {
-                commonQuantity += enemiesQuantityList[i];                
-            }
 
             if (commonQuantity == 0)
             {
@@ -115,6 +117,7 @@ public class EnemySpawner : MonoBehaviour
 
                 enemiesOnTheMap.Add(enemy);
                 enemiesQuantityList[randomIndex]--;
+                commonQuantity--;
             }
         }
     }

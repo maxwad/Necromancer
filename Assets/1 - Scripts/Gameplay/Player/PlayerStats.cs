@@ -170,6 +170,8 @@ public class PlayerStats : MonoBehaviour
                 case PlayersStats.Infirmary:
                     baseValue = infarmaryBase;
                     maxValue = infarmaryBase;
+                    //this information we need before the battle
+                    EventManager.OnSetStartPlayerStatEvent(itemStat, maxValue);
                     break;
 
                 case PlayersStats.MovementDistance:
@@ -262,6 +264,13 @@ public class PlayerStats : MonoBehaviour
     //for starting current values in HeroController
     public float GetStartParameter(PlayersStats stat)
     {
+        return allStatsDict[stat].maxValue;
+    }
+
+    public float GetStartParametersBeforeBattle(PlayersStats stat)
+    {
+
+        Debug.Log(allStatsDict.Count);
         return allStatsDict[stat].maxValue;
     }
 

@@ -92,7 +92,7 @@ public class BattleMap : MonoBehaviour
             if (isDefendBattle == true) DrawObjects(towersPrefab, towerContainer, towerStats, towersOnMap, quantityOfTowers);
             DrawObstacles();
             DrawObjects(torchPrefab, null, torchStats, torchesOnMap, quantityOfTorches);
-            MarkFilledCells();
+            //MarkFilledCells();
 
             enemySpawner.ReadyToSpawnEnemy();
         }
@@ -474,7 +474,7 @@ public class BattleMap : MonoBehaviour
             Destroy(obj);
         }
 
-        MarkFilledCells();
+        //MarkFilledCells();
     }
 
     private void OnEnable()

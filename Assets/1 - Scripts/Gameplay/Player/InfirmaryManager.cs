@@ -9,7 +9,6 @@ public class InfirmaryManager : MonoBehaviour
 
     public List<UnitsTypes> injuredList = new List<UnitsTypes>();
 
-
     private void SetStartInfarmary(PlayersStats type, float value)
     {
         if(type == PlayersStats.Infirmary) currentCapacity = value;
@@ -69,6 +68,16 @@ public class InfirmaryManager : MonoBehaviour
     public int GetCurrentInjuredQuantity()
     {
         return injuredList.Count;
+    }
+
+    public List<UnitsTypes> GetCurrentInjuredList()
+    {
+        return injuredList;
+    }
+
+    public float GetCurrentCapacity()
+    {
+        return currentCapacity;
     }
 
     private void OnEnable()
