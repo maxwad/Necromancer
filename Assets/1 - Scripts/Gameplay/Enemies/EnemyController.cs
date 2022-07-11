@@ -6,6 +6,9 @@ using static NameManager;
 
 public class EnemyController : MonoBehaviour
 {
+    [HideInInspector] public bool isBoss = false;
+    private Enemy originalStats;
+
     [SerializeField] public EnemiesTypes enemiesType;
     [SerializeField] private float health;
     [SerializeField] private float magicAttack;
@@ -23,7 +26,7 @@ public class EnemyController : MonoBehaviour
     private float currentHealth;
     private float delayAttack;
 
-    private float maxDamage = 500;
+    private float maxDamage = 200;
     private SpriteRenderer enemySprite;
     private Color normalColor;
     private Color damageColor = Color.black;
@@ -41,7 +44,7 @@ public class EnemyController : MonoBehaviour
     public BonusType bonusType;
     private BonusType alternativeBonusType = BonusType.Gold;
 
-    private void Start()
+    private void Awake()
     {
         rbEnemy = GetComponent<Rigidbody2D>();
         hero = GlobalStorage.instance.hero;
@@ -55,24 +58,32 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         delayAttack -= Time.deltaTime;
+
+        if(isBoss)
+        {
+           // Debug.Log(exp);
+        }
+        
     }
 
-    public void Initialize(Enemy stats)
+    public void Initialize(Enemy stats = null)
     {
-        enemiesType   = stats.EnemiesType;
+        if(originalStats == null) originalStats = stats;
 
-        health        = stats.health;
-        magicAttack   = stats.magicAttack;
-        physicAttack  = stats.physicAttack;
-        magicDefence  = stats.magicDefence;
-        physicDefence = stats.physicDefence;
-        speedAttack   = stats.speedAttack;
-        size          = stats.size;
+        enemiesType   = originalStats.EnemiesType;
 
-        EnemyAbility  = stats.EnemyAbility;
-        attackTool    = stats.attackTool;
+        health        = originalStats.health;
+        magicAttack   = originalStats.magicAttack;
+        physicAttack  = originalStats.physicAttack;
+        magicDefence  = originalStats.magicDefence;
+        physicDefence = originalStats.physicDefence;
+        speedAttack   = originalStats.speedAttack;
+        size          = originalStats.size;
 
-        exp           = stats.exp;
+        EnemyAbility  = originalStats.EnemyAbility;
+        attackTool    = originalStats.attackTool;
+
+        exp           = originalStats.exp;
     }
 
 
@@ -85,9 +96,6 @@ public class EnemyController : MonoBehaviour
             {                    
                 if (obj.collider.gameObject.CompareTag(TagManager.T_PLAYER) == true)
                 {
-                    //if (hero == null)
-                    //    hero = obj.collider.gameObject.GetComponent<HeroController>();
-
                     hero.TakeDamage(physicAttack, magicAttack);
                     delayAttack = speedAttack;
                 }
@@ -110,7 +118,7 @@ public class EnemyController : MonoBehaviour
             Invoke("ColorBack", blinkTime);
 
             //TODO: we need to create some damage formula
-            float damage = physicalDamage + magicDamage;
+            float damage = Mathf.Round(physicalDamage + magicDamage);
             currentHealth -= damage;
 
             ShowDamage(damage, colorDamage);
@@ -154,6 +162,12 @@ public class EnemyController : MonoBehaviour
         CreateBonus();
         EventManager.OnEnemyDestroyedEvent(gameObject);
 
+        if(isBoss == true)
+        {
+            ReturnBossToOrdinaryEnemy();
+            //some event
+        }
+
         //reset enemy before death
         gameObject.GetComponent<EnemyMovement>().MakeMeFixed(false);
         gameObject.SetActive(false);
@@ -161,12 +175,45 @@ public class EnemyController : MonoBehaviour
 
     private void CreateBonus()
     {
+        Debug.Log("Bonus created" + exp);
         if(GlobalStorage.instance.isEnoughTempExp == true && bonusType == BonusType.TempExp)
         {
-            GlobalStorage.instance.bonusManager.CreateBonus(alternativeBonusType, transform.position);
+            GlobalStorage.instance.bonusManager.CreateBonus(alternativeBonusType, transform.position, exp);
             return;
         }
 
-        GlobalStorage.instance.bonusManager.CreateBonus(bonusType, transform.position);
+        GlobalStorage.instance.bonusManager.CreateBonus(bonusType, transform.position, exp);
+    }
+
+    public void MakeBoss() 
+    {
+        TurnOrdinaryEnemyToBoss();
+        //Invoke("TurnOrdinaryEnemyToBoss", 0.2f);
+    }
+
+    private void TurnOrdinaryEnemyToBoss() 
+    {
+        //need to test
+        isBoss = true;
+        currentHealth        *= 150;
+        magicAttack          *= 3;
+        physicAttack         *= 3;
+        transform.localScale *= 2;
+        rbEnemy.mass         *= 2;
+        exp                  *= 100;
+    }
+
+    private void ReturnBossToOrdinaryEnemy()
+    {
+        isBoss                = false;
+        currentHealth        /= 150;
+        magicAttack          /= 3;
+        physicAttack         /= 3;
+        transform.localScale /= 2;
+        rbEnemy.mass         /= 2;
+        exp                  /= 100;
+
+
+        Debug.Log("Return");
     }
 }

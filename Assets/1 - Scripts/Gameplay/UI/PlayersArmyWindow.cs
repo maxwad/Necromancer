@@ -15,6 +15,7 @@ public class PlayersArmyWindow : MonoBehaviour
 
     [Header("Reserve")]
     [SerializeField] private ArmySlot[] reserveSlots;
+    [SerializeField] private GameObject reserveVeil;
 
     [Header("Infirmary")]
     [SerializeField] private InfirmarySlot[] infirmarySlots;
@@ -30,7 +31,7 @@ public class PlayersArmyWindow : MonoBehaviour
 
     [HideInInspector] public bool isWindowOpened = false;
 
-
+    #region Schemes
     public void CreateReserveScheme(Unit[] army)
     {
         for(int i = 0; i < army.Length; i++)
@@ -79,6 +80,9 @@ public class PlayersArmyWindow : MonoBehaviour
         
     }
 
+    #endregion
+
+    #region Buttons
     private void ToTheBattle()
     {
         fightButton.onClick.RemoveAllListeners();
@@ -106,11 +110,9 @@ public class PlayersArmyWindow : MonoBehaviour
         if (isWindowOpened == false)
         {
             playerArmyUI.SetActive(true);
-            isWindowOpened = true;    
-            
-            CreateReserveScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().reserveArmy);
-            CreateArmyScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().playersArmy);
-            CreateInfirmaryScheme();
+            isWindowOpened = true;
+
+            UpdateArmyWindow();
 
             MenuManager.instance.MiniPauseOn();
         }            
@@ -129,6 +131,20 @@ public class PlayersArmyWindow : MonoBehaviour
 
         //TODO: here we should clear info about canceled battle
     }
+
+    private void UpdateArmyWindow()
+    {
+        CreateReserveScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().reserveArmy);
+        CreateArmyScheme(GlobalStorage.instance.player.GetComponent<PlayersArmy>().playersArmy);
+        CreateInfirmaryScheme();
+
+        if(GlobalStorage.instance.isGlobalMode == true)
+            reserveVeil.SetActive(false);
+        else
+            reserveVeil.SetActive(true);
+    }
+
+    #endregion
 
     private void Awake()
     {

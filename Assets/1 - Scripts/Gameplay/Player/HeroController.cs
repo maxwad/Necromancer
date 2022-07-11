@@ -171,7 +171,7 @@ public class HeroController : MonoBehaviour
     public void TakeDamage(float physicalDamage, float magicDamage)
     {
         //TODO: we need to create some damage formula
-        float damage = physicalDamage + magicDamage;
+        float damage = Mathf.Round(physicalDamage + magicDamage);
         currentHealth -= damage;
 
         ShowDamage(damage, colorDamage);

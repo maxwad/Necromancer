@@ -16,7 +16,7 @@ MonoBehaviour:
   EnemiesType: 2
   enemyGO: {fileID: 7361037799684881175, guid: 450c1a3f9d2ce384f98a7d9f14f50bf4, type: 3}
   enemyIcon: {fileID: -624852670993730243, guid: 6d8ebf6569c72c145bc37cfec582b5d8, type: 3}
-  health: 20
+  health: 10
   physicAttack: 3
   physicDefence: 3
   magicAttack: 1
@@ -31,4 +31,4 @@ MonoBehaviour:
   ironPrice: 500
   stonePrice: 500
   magicPrice: 500
-  exp: 20
+  exp: 1

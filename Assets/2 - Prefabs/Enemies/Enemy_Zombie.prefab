@@ -222,8 +222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01d8168c13be6f343809ffef6f497f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBoss: 0
   enemiesType: 1
-  health: 25
+  health: 7
   magicAttack: 2
   physicAttack: 1
   magicDefence: 2

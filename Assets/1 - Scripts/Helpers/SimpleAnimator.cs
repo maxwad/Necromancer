@@ -63,6 +63,14 @@ public class SimpleAnimator : MonoBehaviour
         stopAnimation = mode;
     }
 
+    public void SetSpeed(float newSpeed)
+    {
+        StopCoroutine(animating);
+
+        framerate = newSpeed;
+        animating = StartCoroutine(Animate());
+    }
+
     private void DestroyObject()
     {
         Destroy(gameObject);

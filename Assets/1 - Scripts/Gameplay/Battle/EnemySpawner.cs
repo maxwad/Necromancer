@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     private List<GameObject> enemiesList;
     private List<int> enemiesQuantityList;
     private int commonQuantity = 0;
+    private int maxQuantity = 0;
     //[SerializeField] private GameObject enemiesContainer;
     public List<GameObject> enemiesOnTheMap = new List<GameObject>();
 
@@ -19,6 +20,8 @@ public class EnemySpawner : MonoBehaviour
     private int enemySlowCount = 100;
     private int enemyTooSlowCount = 150;
     private float spawnOffset = 5f;
+
+    private bool isBossCreated = false;
 
     [Space]
     private Coroutine spawnCoroutine;
@@ -47,7 +50,9 @@ public class EnemySpawner : MonoBehaviour
 
         for(int i = 0; i < enemiesQuantityList.Count; i++)
             commonQuantity += enemiesQuantityList[i];
-        
+
+        maxQuantity = commonQuantity;
+
         EventManager.OnEnemiesCountEvent(commonQuantity);
     }
 
@@ -114,6 +119,13 @@ public class EnemySpawner : MonoBehaviour
                 GameObject enemy = GlobalStorage.instance.objectsPoolManager.GetObjectFromPool(ObjectPool.Enemy, enemyType);
                 enemy.transform.position = randomPosition;
                 enemy.SetActive(true);
+
+                //Create boss
+                if(commonQuantity <= maxQuantity / 2 && isBossCreated == false)
+                {
+                    enemy.GetComponent<EnemyController>().MakeBoss();
+                    isBossCreated = true;
+                }
 
                 enemiesOnTheMap.Add(enemy);
                 enemiesQuantityList[randomIndex]--;

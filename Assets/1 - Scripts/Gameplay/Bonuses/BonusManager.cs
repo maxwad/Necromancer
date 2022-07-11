@@ -15,7 +15,7 @@ public class BonusManager : MonoBehaviour
     private GameObject currentBonus;
     public List<GameObject> bonusesOnTheMap = new List<GameObject>();
 
-    public void CreateBonus(BonusType type, Vector3 position)
+    public void CreateBonus(BonusType type, Vector3 position, float value = 0)
     {
         switch (type)
         {
@@ -62,6 +62,8 @@ public class BonusManager : MonoBehaviour
             bonus.transform.SetParent(GlobalStorage.instance.bonusesContainer.transform);
         }
 
+
+        if(value != 0) bonus.GetComponent<BonusController>().SetBonusValue(value);
         bonus.GetComponent<BonusController>().BoostBonusValue(bonusBoost);
 
         bonusesOnTheMap.Add(bonus);

@@ -17,7 +17,7 @@ public class BonusController : MonoBehaviour
     private float inertion = -50f;
     private float currentInertion;
 
-    private void Start()
+    private void Awake()
     {
         currentInertion = inertion;
         value = baseValue;
@@ -28,6 +28,7 @@ public class BonusController : MonoBehaviour
         if (collision.CompareTag(TagManager.T_PLAYER))
         {
             EventManager.OnBonusPickedUpEvent(bonusType, value);
+            //Debug.Log("Bonus dead = " + value);
             DestroyMe();
         }
     }
@@ -74,6 +75,13 @@ public class BonusController : MonoBehaviour
     public void BoostBonusValue(float boost)
     {
         value = baseValue + (baseValue * boost);
+    }
+
+    public void SetBonusValue(float newValue)
+    {
+        value = newValue;
+
+        Debug.Log("Bonus = " + value);
     }
 
     private void OnEnable()

@@ -6,14 +6,19 @@ public class DefendTowerController : MonoBehaviour
 {
     [SerializeField] private GameObject[] shootingPoints;
     private GameObject player;
+    private GameObject effectsContainer;
     [SerializeField] private GameObject cannonball;
 
-    public float shootingDelay = 2f;
+    [SerializeField] private GameObject startDust;
+
+    public float shootingDelay = 3f;
     private float currentDelay = 0;
     private float coroutineStep = 0.1f;
 
     private void Start()
     {
+        effectsContainer = GlobalStorage.instance.effectsContainer;
+
         coroutineStep = shootingDelay;
         StartCoroutine(Reloading());
     }
@@ -67,10 +72,25 @@ public class DefendTowerController : MonoBehaviour
             }
         }
 
+        CreateBullet(shootingPoint);
+        CreateEffect(shootingPoint);        
+    }
+
+    private void CreateBullet(Vector3 point)
+    {
         GameObject bullet = Instantiate(cannonball);
-        bullet.transform.position = shootingPoint;
-        bullet.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
+        bullet.transform.position = point;
+        bullet.transform.SetParent(effectsContainer.transform);
         bullet.GetComponent<CannonballController>().Initialize(player.transform.position);
-        Debug.Log("SHOOT");
+    }
+
+    private void CreateEffect(Vector3 point)
+    {
+        GameObject dust = Instantiate(startDust);
+        dust.transform.position = point;
+        dust.transform.SetParent(effectsContainer.transform);
+        PrefabSettings settings = dust.GetComponent<PrefabSettings>();
+
+        if(settings != null) settings.SetSettings(color: Color.white, sortingOrder: 11, sortingLayer: TagManager.T_PLAYER, animationSpeed: 0.05f);
     }
 }

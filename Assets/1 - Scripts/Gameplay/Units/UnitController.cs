@@ -90,7 +90,7 @@ public class UnitController : MonoBehaviour
         if(isImmortal == true) return;
 
         //TODO: we need to create some damage formula
-        float damage = physicalDamage + magicDamage;
+        float damage = Mathf.Round(physicalDamage + magicDamage);
         currentHealth -= damage;
 
         ShowDamage(damage, colorDamage);
