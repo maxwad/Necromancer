@@ -261,30 +261,36 @@ public class HeroController : MonoBehaviour
         if(type == BonusType.TempExp && isDead == false && isLevelUpComplete == false)
         {
             value *= (currentTempLevel == 0 ? 1 : currentTempLevel);
-            currentTempExp += value;
 
-            battleUIManager.UpgradeScale(currentTempExpGoal, value);
-
-            if(currentTempExp >= currentTempExpGoal)
+            while(value > 0)
             {
-                if(currentTempLevel < currentMaxLevel)
-                {
-                    battleUIManager.TempLevelUp(currentTempLevel);
-                    currentTempLevel++;
+                value--;
+                currentTempExp++;
 
-                    EventManager.OnUpgradeTempLevelEvent(currentTempLevel);
-                    if(currentTempLevel != currentMaxLevel)
+                battleUIManager.UpgradeScale(currentTempExpGoal, currentTempExp);
+
+                if(currentTempExp >= currentTempExpGoal)
+                {
+                    if(currentTempLevel < currentMaxLevel)
                     {
-                        currentTempExp = 0;
-                        UpgradeTempExpGoal();
+                        battleUIManager.TempLevelUp(currentTempLevel);
+                        currentTempLevel++;
+
+                        EventManager.OnUpgradeTempLevelEvent(currentTempLevel);
+                        if(currentTempLevel != currentMaxLevel)
+                        {
+                            currentTempExp = 0;
+                            UpgradeTempExpGoal();
+                        }
+                        else
+                        {
+                            isLevelUpComplete = true;
+                            EventManager.OnExpEnoughEvent(true);
+                        }
                     }
-                    else
-                    {
-                        isLevelUpComplete = true;
-                        EventManager.OnExpEnoughEvent(true);
-                    }
-                }                
-            }
+                }
+
+            }           
         }
 
         if(isFigthingStarted == false)

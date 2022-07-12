@@ -20,7 +20,7 @@ public class UnitSO : ScriptableObject
     public float magicDefence;
     public float speedAttack;
     public float size;
-    public float level;
+    public int level;
     public UnitsAbilities UnitAbility;
 
     public GameObject attackTool;

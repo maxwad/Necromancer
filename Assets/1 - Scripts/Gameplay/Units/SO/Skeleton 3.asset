@@ -25,7 +25,7 @@ MonoBehaviour:
   speedAttack: 1
   size: 1
   level: 3
-  UnitAbility: 11
+  UnitAbility: 0
   attackTool: {fileID: 394755954311998102, guid: aaa8f49f3f3fb474080b0b787f2ae961, type: 3}
   coinsPrice: 100
   foodPrice: 765

@@ -46,21 +46,14 @@ public static class NameManager
 
     public enum UnitsAbilities
     {
-        Kosar_lvl1,
-        Kosar_lvl2,
-        Kosar_lvl3,
-        Ranger_lvl1,
-        Ranger_lvl2,
-        Ranger_lvl3,
-        Meg_lvl1,
-        Meg_lvl2,
-        Meg_lvl3,
-        Skeleton_lvl1,
-        Skeleton_lvl2,
-        Skeleton_lvl3,
-        Monk_lvl1,
-        Monk_lvl2,
-        Monk_lvl3
+        Whip,  
+        Garlic,
+        Axe,
+        Spear,
+        Bible,
+        Bow,
+        Knive,
+        Bottle
     }
 
     public enum EnemiesTypes

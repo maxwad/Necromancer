@@ -8,6 +8,7 @@ public class BonusController : MonoBehaviour
 {
     public BonusType bonusType;
     [SerializeField] private float baseValue;
+    [SerializeField] private float originalBaseValue;
     public float value;
     public bool isFromPoolObject = false;
 
@@ -21,6 +22,7 @@ public class BonusController : MonoBehaviour
     {
         currentInertion = inertion;
         value = baseValue;
+        originalBaseValue = baseValue;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,7 +30,6 @@ public class BonusController : MonoBehaviour
         if (collision.CompareTag(TagManager.T_PLAYER))
         {
             EventManager.OnBonusPickedUpEvent(bonusType, value);
-            //Debug.Log("Bonus dead = " + value);
             DestroyMe();
         }
     }
@@ -60,6 +61,7 @@ public class BonusController : MonoBehaviour
     {
         isActivate = false;
         GlobalStorage.instance.bonusManager.bonusesOnTheMap.Remove(gameObject);
+        ResetBonusValue();
 
         if (isFromPoolObject == true)
         {
@@ -79,9 +81,13 @@ public class BonusController : MonoBehaviour
 
     public void SetBonusValue(float newValue)
     {
-        value = newValue;
+        baseValue = newValue;
+    }
 
-        Debug.Log("Bonus = " + value);
+    private void ResetBonusValue()
+    {
+        baseValue = originalBaseValue;
+        value = originalBaseValue;
     }
 
     private void OnEnable()

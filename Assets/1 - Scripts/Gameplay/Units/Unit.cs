@@ -19,7 +19,7 @@ public class Unit
     public float physicDefence;
     public float speedAttack;
     public float size;
-    public float level;
+    public int level;
     public UnitsAbilities UnitAbility;
 
     public GameObject attackTool;

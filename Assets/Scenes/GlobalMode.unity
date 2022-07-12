@@ -5936,8 +5936,10 @@ MonoBehaviour:
   - {fileID: 7361037799684881175, guid: 504121e5e11b7f742a5700149b1ee9cb, type: 3}
   - {fileID: 7361037799684881175, guid: 64dc7639b5bc0314eb0eef2aeae2a4ef, type: 3}
   - {fileID: 7361037799684881175, guid: 450c1a3f9d2ce384f98a7d9f14f50bf4, type: 3}
-  falseEnemiesQuantity: 320000003200000032000000
+  falseEnemiesQuantity: 140000001400000014000000
   allEnemiesList: []
+  sizeMapX: 100
+  sizeMapY: 100
   enemySpawner: {fileID: 184540782}
 --- !u!1 &1399137628
 GameObject:
@@ -7729,7 +7731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018e4d036c668314597e1aae43354d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelBase: 5
+  levelBase: 8
   healthBase: 500
   manaBase: 20
   searchRadiusBase: 2

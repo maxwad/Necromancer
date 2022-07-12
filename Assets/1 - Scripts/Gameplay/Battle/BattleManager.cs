@@ -13,8 +13,8 @@ public class BattleManager : MonoBehaviour
     private List<int> enemiesQuantity = new List<int>();
     private List<GameObject> enemiesArmy = new List<GameObject>();
 
-    private int sizeMapX = 50;
-    private int sizeMapY = 50;
+    [SerializeField] private int sizeMapX = 50;
+    [SerializeField] private int sizeMapY = 50;
     private int positionZ = 40; // we should send double size of Z because dividing by 2
 
     [SerializeField] private EnemySpawner enemySpawner;

@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static StructManager;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private float magicAttack;
     [SerializeField] private float physicAttack;
+    [SerializeField] private float magicAttack;
+    [HideInInspector] public UnitController controller;
 
-    private float lifeTime = 0.1f;
+    public float lifeTime = 0.1f;
     private float currentLifeTime = 0;
 
-    public void SetAttackParameters(float magicDamage, float physicDamage)
+    public void SetSettings(UnitController unitController)
     {
-        magicAttack = magicDamage;
-        physicAttack = physicDamage;
+        controller = unitController;
+        physicAttack = unitController.physicAttack;
+        magicAttack = unitController.magicAttack;
+
     }
 
     private void OnEnable()
@@ -21,15 +25,17 @@ public class WeaponController : MonoBehaviour
         currentLifeTime = 0;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        currentLifeTime += Time.deltaTime;
+        if(lifeTime != 0)
+        {
+            currentLifeTime += Time.deltaTime;
 
-        if (currentLifeTime >= lifeTime) {
-            //Destroy(gameObject);
-            gameObject.SetActive(false);
-        } 
-
+            if(currentLifeTime >= lifeTime)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

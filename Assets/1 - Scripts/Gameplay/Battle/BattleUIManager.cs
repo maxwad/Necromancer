@@ -162,7 +162,7 @@ public class BattleUIManager : MonoBehaviour
     public void UpgradeScale(float scale, float value)
     {
         float heightOneExp = heigthCurrentScaleWrapper / scale;
-        currentTempExp += value;
+        currentTempExp = value;
         currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentTempExp * heightOneExp);
     }
 

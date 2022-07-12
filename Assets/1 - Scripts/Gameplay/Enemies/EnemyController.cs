@@ -160,6 +160,7 @@ public class EnemyController : MonoBehaviour
         GameObject death = Instantiate(deathPrefab, transform.position, Quaternion.identity);
         death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
         CreateBonus();
+
         EventManager.OnEnemyDestroyedEvent(gameObject);
 
         if(isBoss == true)
@@ -175,7 +176,6 @@ public class EnemyController : MonoBehaviour
 
     private void CreateBonus()
     {
-        Debug.Log("Bonus created" + exp);
         if(GlobalStorage.instance.isEnoughTempExp == true && bonusType == BonusType.TempExp)
         {
             GlobalStorage.instance.bonusManager.CreateBonus(alternativeBonusType, transform.position, exp);
@@ -187,21 +187,14 @@ public class EnemyController : MonoBehaviour
 
     public void MakeBoss() 
     {
-        TurnOrdinaryEnemyToBoss();
-        //Invoke("TurnOrdinaryEnemyToBoss", 0.2f);
-    }
-
-    private void TurnOrdinaryEnemyToBoss() 
-    {
-        //need to test
-        isBoss = true;
+        isBoss                = true;
         currentHealth        *= 150;
         magicAttack          *= 3;
         physicAttack         *= 3;
         transform.localScale *= 2;
         rbEnemy.mass         *= 2;
-        exp                  *= 100;
-    }
+        exp                  *= 50;
+    }    
 
     private void ReturnBossToOrdinaryEnemy()
     {
@@ -211,9 +204,11 @@ public class EnemyController : MonoBehaviour
         physicAttack         /= 3;
         transform.localScale /= 2;
         rbEnemy.mass         /= 2;
-        exp                  /= 100;
+        exp                  /= 50;
+    }
 
-
-        Debug.Log("Return");
+    private void OnDisable()
+    {
+        if(isBoss == true) ReturnBossToOrdinaryEnemy();
     }
 }

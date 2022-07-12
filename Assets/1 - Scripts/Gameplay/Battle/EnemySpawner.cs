@@ -69,12 +69,13 @@ public class EnemySpawner : MonoBehaviour
     {
         canISpawn = true;
         battleMap = GetComponent<BattleMap>().battleArray;
-        spawnCoroutine = StartCoroutine(SpawnEnemy());
+        //spawnCoroutine = StartCoroutine(SpawnEnemy());
     }
 
     public void StopSpawnEnemy()
     {
         canISpawn = false;
+        isBossCreated = false;
         enemiesOnTheMap.Clear();
     }
 
@@ -84,9 +85,7 @@ public class EnemySpawner : MonoBehaviour
         //List<float> currentProbably = new List<float>();
 
         while (canISpawn == true)
-        {
-            yield return waitNextEnemy;
-
+        {      
             if (commonQuantity == 0)
             {
                 canISpawn = false;
@@ -131,6 +130,8 @@ public class EnemySpawner : MonoBehaviour
                 enemiesQuantityList[randomIndex]--;
                 commonQuantity--;
             }
+
+            yield return waitNextEnemy;
         }
     }
 

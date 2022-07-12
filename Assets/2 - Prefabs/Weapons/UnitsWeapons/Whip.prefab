@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 394755954311998100}
   - component: {fileID: 394755954311998103}
   - component: {fileID: 4245415472375724151}
+  - component: {fileID: -382362448512913728}
   m_Layer: 9
-  m_Name: Weapon_Skeleton
+  m_Name: Whip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,5 +114,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53293a8a24d971141a3a2644e99de30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magicAttack: 0
   physicAttack: 0
+  magicAttack: 0
+  controller: {fileID: 0}
+  lifeTime: 0.1
+--- !u!114 &-382362448512913728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394755954311998102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22eb562bb5ae9c84b94ee96a49c0a2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1

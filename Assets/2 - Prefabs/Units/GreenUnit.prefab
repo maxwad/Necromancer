@@ -61,6 +61,8 @@ GameObject:
   - component: {fileID: 4387482535749053695}
   - component: {fileID: -2887591521885481496}
   - component: {fileID: 5279355296889900823}
+  - component: {fileID: 7564525511050456454}
+  - component: {fileID: 1562191431257872375}
   m_Layer: 3
   m_Name: GreenUnit
   m_TagString: Squad
@@ -210,6 +212,30 @@ MonoBehaviour:
   currentHealth: 0
   deathPrefab: {fileID: 3877275003630577787, guid: 8e2dbf07adabe6f458d623574390b341, type: 3}
   damageNote: {fileID: 4223726373541259902, guid: dc8112cb6cbc981458351f24ddb13002, type: 3}
+--- !u!114 &7564525511050456454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4387482535749053680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 970c17c2b043c7e4ab3d9826baafa775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1562191431257872375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4387482535749053680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b09d7ddb7d36c1489f2f160c70a18e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4547059084748106549
 GameObject:
   m_ObjectHideFlags: 0

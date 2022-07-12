@@ -14,7 +14,7 @@ public class UnitController : MonoBehaviour
     [SerializeField] private float physicDefence;
     [SerializeField] public float speedAttack;
     [SerializeField] public float size;
-    [SerializeField] public float level;
+    [SerializeField] public int level;
     [SerializeField] public UnitsAbilities unitAbility;
 
     [SerializeField] public GameObject attackTool;
@@ -27,7 +27,7 @@ public class UnitController : MonoBehaviour
     private bool isImmortal = false;
 
     //Death section
-    private SpriteRenderer unitSprite;
+    [HideInInspector]public SpriteRenderer unitSprite;
     private Color normalColor;
     private Color damageColor = Color.red;
     private float blinkTime = 0.1f;
