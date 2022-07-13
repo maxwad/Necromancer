@@ -16,6 +16,7 @@ public class EnemyMovement : MonoBehaviour
     private float acceleration = 10f;
 
     private bool canIMove = true;
+    private float timeAutoEnebling = 1f;
 
     void Start()
     {
@@ -48,10 +49,17 @@ public class EnemyMovement : MonoBehaviour
         rbEnemy.velocity = Vector3.ClampMagnitude(rbEnemy.velocity, speed);
     }
 
-    public void MakeMeFixed(bool mode)
+    public void MakeMeFixed(bool mode = false, bool autoEnable = false)
     {
         canIMove = !mode;
         gameObject.GetComponent<SimpleAnimator>().StopAnimation(mode);
+
+        if(autoEnable == true) Invoke("MakeMeUnfixed", timeAutoEnebling);
+    }
+
+    private void MakeMeUnfixed()
+    {
+        MakeMeFixed(false);
     }
 
     private void OnBecameVisible()

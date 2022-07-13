@@ -24,7 +24,7 @@ public class ShurikenController : MonoBehaviour
         rb.transform.Rotate(0, 0, rotationSpeed);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag(TagManager.T_ENEMY) == true)
             collision.gameObject.GetComponent<EnemyController>().Kill();
@@ -34,5 +34,4 @@ public class ShurikenController : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
 }

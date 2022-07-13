@@ -140,7 +140,7 @@ public class EnemyController : MonoBehaviour
         enemySprite.color = normalColor;
     }
 
-    private void PushMe(Vector3 direction, float force)
+    public void PushMe(Vector3 direction, float force)
     {
         Vector3 kickForce = (transform.position - direction).normalized * force;
         rbEnemy.AddForce(kickForce, ForceMode2D.Force);

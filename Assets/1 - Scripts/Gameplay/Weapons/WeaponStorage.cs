@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static NameManager;
-using static StructManager;
 
 public class WeaponStorage : MonoBehaviour
 {
+    private bool isGarlicWork = false;
+
     public void Attack(UnitController unitController)
     {
         switch(unitController.unitAbility)
@@ -13,17 +15,24 @@ public class WeaponStorage : MonoBehaviour
             case UnitsAbilities.Whip:
                 WhipAction(unitController);
                 break;
+
             case UnitsAbilities.Garlic:
+                if(isGarlicWork == false) GarlicAction(unitController);
                 break;
+
             case UnitsAbilities.Axe:
+                AxeAction(unitController);
                 break;
+
             case UnitsAbilities.Spear:
+                SpearAction(unitController);
                 break;
+
             case UnitsAbilities.Bible:
                 break;
             case UnitsAbilities.Bow:
                 break;
-            case UnitsAbilities.Knive:
+            case UnitsAbilities.Knife:
                 break;
             case UnitsAbilities.Bottle:
                 break;
@@ -32,21 +41,117 @@ public class WeaponStorage : MonoBehaviour
         }
     }
 
-    private void WhipAction(UnitController unitController) 
+    #region Helpers
+
+    private GameObject CreateWeapon(UnitController unitController)
     {
-        if(unitController.level == 1)
-        {
-            GameObject weapon = Instantiate(unitController.attackTool);
-            weapon.transform.position = transform.position;
-            weapon.transform.SetParent(transform);
-            weapon.GetComponent<WeaponController>().SetSettings(unitController);
-            weapon.GetComponent<WeaponMovement>().SetSettings(unitController);
+        GameObject weapon = Instantiate(unitController.attackTool);
 
-            float yAngle = unitController.unitSprite.flipX == true ? 180 : 0;
-            weapon.transform.eulerAngles = new Vector3(weapon.transform.eulerAngles.x, yAngle, weapon.transform.eulerAngles.x);
+        weapon.transform.position = transform.position;
+        weapon.transform.localScale = new Vector3(unitController.size, unitController.size, unitController.size);
+        weapon.transform.SetParent(transform);
 
-        }
-       
+        weapon.GetComponent<WeaponDamage>().SetSettings(unitController);
+        weapon.GetComponent<WeaponMovement>().SetSettings(unitController);
+
+        return weapon;
     }
 
+    #endregion
+
+
+    private void WhipAction(UnitController unitController) 
+    {
+        float normalYAngle = 0f;
+        float flipYAngle = 180f;
+        float zAngle = 25f;
+
+        if(unitController.level == 1)
+        {
+            CreateConfiguredWeapon(flipYAngle, normalYAngle);           
+        }
+
+        if(unitController.level == 2)
+        {
+            CreateConfiguredWeapon(flipYAngle, normalYAngle);
+
+            CreateConfiguredWeapon(normalYAngle, flipYAngle);            
+        }
+
+        if(unitController.level == 3)
+        {
+            CreateConfiguredWeapon(normalYAngle, flipYAngle, zAngle);
+            CreateConfiguredWeapon(normalYAngle, flipYAngle, -zAngle);
+
+            CreateConfiguredWeapon(flipYAngle, normalYAngle, zAngle);
+            CreateConfiguredWeapon(flipYAngle, normalYAngle, -zAngle);            
+        }
+
+        void CreateConfiguredWeapon(float normalAngleY, float flipAngleY, float angleZ = 0)
+        {
+            GameObject itemWeapon = CreateWeapon(unitController);
+            float yAngle = unitController.unitSprite.flipX == true ? normalAngleY : flipAngleY;
+            itemWeapon.transform.eulerAngles = new Vector3(itemWeapon.transform.eulerAngles.x, yAngle, angleZ);
+        }
+    }
+
+
+    private void GarlicAction(UnitController unitController) 
+    {
+        isGarlicWork = true;
+
+        GameObject weapon = CreateWeapon(unitController);
+        weapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);
+    }
+
+
+    private void AxeAction(UnitController unitController)
+    {
+        float axeAngleLvl1 = 20;
+        float axeAngleLvl2 = 45;
+
+        if(unitController.level == 1)
+        {
+            CreateConfiguredWeapon(1, 0);            
+        }
+
+        if(unitController.level == 2)
+        {
+            CreateConfiguredWeapon(1, axeAngleLvl1);
+
+            CreateConfiguredWeapon(2, -axeAngleLvl1);
+        }
+
+        if(unitController.level == 3)
+        {
+            CreateConfiguredWeapon(1, axeAngleLvl2);
+
+            CreateConfiguredWeapon(2, 0);
+
+            CreateConfiguredWeapon(3, -axeAngleLvl2);
+        }
+
+        void CreateConfiguredWeapon(int index, float angleZ = 0)
+        {
+            GameObject weapon = CreateWeapon(unitController);
+            weapon.transform.eulerAngles = new Vector3(weapon.transform.eulerAngles.x, weapon.transform.eulerAngles.y, angleZ);
+            weapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController, index);
+        }
+    }
+
+
+    private void SpearAction(UnitController unitController) 
+    {
+        //if(unitController.level == 1)
+        //{
+        //    CreateConfiguredWeapon(flipYAngle, normalYAngle);
+        //}
+
+        //void CreateConfiguredWeapon(float normalAngleY, float flipAngleY, float angleZ = 0)
+        //{
+        //    GameObject itemWeapon = CreateWeapon(unitController);
+        //    float yAngle = unitController.unitSprite.flipX == true ? normalAngleY : flipAngleY;
+        //    itemWeapon.transform.eulerAngles = new Vector3(itemWeapon.transform.eulerAngles.x, yAngle, angleZ);
+        //}
+    }
 }

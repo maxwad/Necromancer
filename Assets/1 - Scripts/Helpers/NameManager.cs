@@ -52,7 +52,7 @@ public static class NameManager
         Spear,
         Bible,
         Bow,
-        Knive,
+        Knife,
         Bottle
     }
 
