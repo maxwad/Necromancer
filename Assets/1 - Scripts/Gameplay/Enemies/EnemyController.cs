@@ -114,8 +114,7 @@ public class EnemyController : MonoBehaviour
     {
         if(currentHealth > 0)
         {
-            enemySprite.color = damageColor;
-            Invoke("ColorBack", blinkTime);
+            Blink();
 
             //TODO: we need to create some damage formula
             float damage = Mathf.Round(physicalDamage + magicDamage);
@@ -133,6 +132,12 @@ public class EnemyController : MonoBehaviour
     {
         float damage = currentHealth > maxDamage ? maxDamage : currentHealth;
         TakeDamage(damage, damage, Vector3.zero);
+    }
+
+    public void Blink()
+    {
+        enemySprite.color = damageColor;
+        Invoke("ColorBack", blinkTime);
     }
 
     private void ColorBack()

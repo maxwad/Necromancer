@@ -7,6 +7,7 @@ using static NameManager;
 public class WeaponStorage : MonoBehaviour
 {
     private bool isGarlicWork = false;
+    private bool isBibleWork = false;
 
     public void Attack(UnitController unitController)
     {
@@ -29,7 +30,9 @@ public class WeaponStorage : MonoBehaviour
                 break;
 
             case UnitsAbilities.Bible:
+                if(isBibleWork == false) BibleAction(unitController);
                 break;
+
             case UnitsAbilities.Bow:
                 break;
             case UnitsAbilities.Knife:
@@ -142,16 +145,33 @@ public class WeaponStorage : MonoBehaviour
 
     private void SpearAction(UnitController unitController) 
     {
-        //if(unitController.level == 1)
-        //{
-        //    CreateConfiguredWeapon(flipYAngle, normalYAngle);
-        //}
+        StartCoroutine(CreateSpears(unitController.level));
 
-        //void CreateConfiguredWeapon(float normalAngleY, float flipAngleY, float angleZ = 0)
-        //{
-        //    GameObject itemWeapon = CreateWeapon(unitController);
-        //    float yAngle = unitController.unitSprite.flipX == true ? normalAngleY : flipAngleY;
-        //    itemWeapon.transform.eulerAngles = new Vector3(itemWeapon.transform.eulerAngles.x, yAngle, angleZ);
-        //}
+        IEnumerator CreateSpears(int count)
+        {
+            for(int i = 0; i < count; i++)
+            {
+                GameObject itemWeapon = CreateWeapon(unitController);
+                itemWeapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);
+                yield return new WaitForSeconds(0.2f);
+            }
+        }        
+    }
+
+    private void BibleAction(UnitController unitController)
+    {
+        isBibleWork = true;
+
+        StartCoroutine(CreateBible(unitController.level));
+
+        IEnumerator CreateBible(int count)
+        {
+            for(int i = 0; i < count; i++)
+            {
+                GameObject itemWeapon = CreateWeapon(unitController);
+                itemWeapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);
+                yield return new WaitForSeconds(0.4f);
+            }
+        }
     }
 }

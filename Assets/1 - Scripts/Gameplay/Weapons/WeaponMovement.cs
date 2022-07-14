@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 using static NameManager;
+using static UnityEngine.GraphicsBuffer;
 
 public class WeaponMovement : MonoBehaviour
 {
     UnitController controller;
     private bool isReadyToWork = false;
+
+    private Rigidbody2D rbSpear;
+    private GameObject spearEnemy;
+    private Vector2 spearDirection;
+
+    private Vector2 bibleCenter;
 
     public float speed = 1;
     private SpriteRenderer unitSprite;
@@ -21,8 +30,6 @@ public class WeaponMovement : MonoBehaviour
     {
         controller = unitController;
         unitSprite = unitController.unitSprite;
-
-        isReadyToWork = true;
     }
 
     private void Update()
@@ -51,7 +58,9 @@ public class WeaponMovement : MonoBehaviour
                 break;
 
             case UnitsAbilities.Bible:
+                BibleMovement();
                 break;
+
             case UnitsAbilities.Bow:
                 break;
             case UnitsAbilities.Knife:
@@ -71,6 +80,10 @@ public class WeaponMovement : MonoBehaviour
 
         if(unitController.unitAbility == UnitsAbilities.Axe) ActivateAxe(index);
 
+        if(unitController.unitAbility == UnitsAbilities.Spear) ActivateSpear();
+
+        if(unitController.unitAbility == UnitsAbilities.Bible) ActivateBible();
+
     }
 
     #endregion
@@ -79,6 +92,12 @@ public class WeaponMovement : MonoBehaviour
 
     private void SpearMovement()
     {
+        rbSpear.velocity = -rbSpear.transform.right * speed;
+    }
+
+    private void BibleMovement()
+    {
+        transform.RotateAround(controller.transform.position, Vector3.forward, speed * Time.deltaTime);
 
     }
 
@@ -133,6 +152,56 @@ public class WeaponMovement : MonoBehaviour
 
         rbAxe.AddForce(rbAxe.transform.up * force, ForceMode2D.Impulse);
         rbAxe.AddTorque(torqueForce);
+    }
+
+    private void ActivateSpear()
+    {
+        rbSpear = GetComponent<Rigidbody2D>();
+
+        float searchRadius = 25f;
+        float distance = 9999999;
+        Vector2 nearestEnemyPosition = Vector2.zero;
+
+
+        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, searchRadius);
+        foreach(Collider2D obj in objects)
+        {
+            if(obj.CompareTag(TagManager.T_ENEMY) == true)
+            {
+                float currentDistance = Vector2.Distance(transform.position, obj.transform.position);
+
+                if(currentDistance < distance)
+                {
+                    distance = currentDistance;
+                    nearestEnemyPosition = obj.transform.position;                 
+                }
+            }            
+        }
+
+        if(nearestEnemyPosition != Vector2.zero)
+        {
+            transform.rotation = Quaternion.Euler(
+                transform.rotation.eulerAngles.x,
+                transform.rotation.eulerAngles.y,
+                Mathf.Atan2(nearestEnemyPosition.y - transform.position.y, nearestEnemyPosition.x - transform.position.x) * Mathf.Rad2Deg - 180
+            );
+
+        }
+        else
+        {
+            float yAngle = unitSprite.flipX == true ? 180 : 0;
+            rbSpear.transform.eulerAngles = new Vector3(rbSpear.transform.eulerAngles.x, yAngle, rbSpear.transform.eulerAngles.z);
+        }
+        
+        isReadyToWork = true;
+    }
+
+    private void ActivateBible()
+    {
+        bibleCenter = transform.position;
+        transform.position += (Vector3)(Vector2.one * 3);
+
+        isReadyToWork = true;
     }
 
     #endregion
