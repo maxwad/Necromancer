@@ -34,11 +34,17 @@ public class WeaponStorage : MonoBehaviour
                 break;
 
             case UnitsAbilities.Bow:
+                BowAction(unitController);
                 break;
+
             case UnitsAbilities.Knife:
+                KnifeAction(unitController);
                 break;
+
             case UnitsAbilities.Bottle:
+                BottleAction(unitController);
                 break;
+
             default:
                 break;
         }
@@ -158,20 +164,132 @@ public class WeaponStorage : MonoBehaviour
         }        
     }
 
+
     private void BibleAction(UnitController unitController)
     {
         isBibleWork = true;
 
-        StartCoroutine(CreateBible(unitController.level));
+        float bibleAngleLvl2_2 = 180;
 
-        IEnumerator CreateBible(int count)
+        float bibleAngleLvl3_2 = 120;
+        float bibleAngleLvl3_3 = 240;
+
+        if(unitController.level == 1)
         {
-            for(int i = 0; i < count; i++)
+            CreateConfiguredWeapon();
+        }
+
+        if(unitController.level == 2)
+        {
+            CreateConfiguredWeapon();
+
+            CreateConfiguredWeapon(bibleAngleLvl2_2);
+        }
+
+        if(unitController.level == 3)
+        {
+            CreateConfiguredWeapon();
+
+            CreateConfiguredWeapon(bibleAngleLvl3_2);
+
+            CreateConfiguredWeapon(bibleAngleLvl3_3);
+        }
+
+        void CreateConfiguredWeapon(float angleZ = 0)
+        {
+            GameObject weapon = CreateWeapon(unitController);
+            weapon.transform.eulerAngles = new Vector3(0, 0, angleZ);
+
+            GameObject weaponInner = weapon.transform.GetChild(0).gameObject;
+            weaponInner.transform.Rotate(0, 0, -angleZ);
+
+            weapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);
+        }
+    }
+
+
+    private void BowAction(UnitController unitController)
+    {
+        if(unitController.level == 1) StartCoroutine(CreateBow(new float[] { 90 }));
+
+        if(unitController.level == 2) StartCoroutine(CreateBow(new float[] { 90, 270 }));
+
+        if(unitController.level == 3) StartCoroutine(CreateBow(new float[] { 0, 90, 180, 270 }));
+
+        IEnumerator CreateBow(float[] angles)
+        {
+            for(int i = 0; i < angles.Length; i++)
             {
-                GameObject itemWeapon = CreateWeapon(unitController);
+                GameObject itemWeapon = CreateWeapon(unitController);                
+                itemWeapon.transform.eulerAngles = new Vector3(0, 0, angles[i]);
                 itemWeapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.2f);
             }
         }
+    }
+
+
+    private void KnifeAction(UnitController unitController)
+    {
+        if(unitController.level == 1) CreateKnife(new float[] { 0 });
+
+        if(unitController.level == 2) CreateKnife(new float[] { 10, -10 });
+
+        if(unitController.level == 3) CreateKnife(new float[] { 15, 0, -15 });
+
+        void CreateKnife(float[] offsetAngles)
+        {
+            for(int i = 0; i < offsetAngles.Length; i++)
+            {
+                GameObject itemWeapon = CreateWeapon(unitController);
+                itemWeapon.transform.eulerAngles = new Vector3(0, 0, GetAngleY(itemWeapon) + offsetAngles[i]);
+                itemWeapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);                
+            }
+        }
+
+        float GetAngleY(GameObject weapon)
+        {
+            float angleZ = 0;
+
+            float x = Input.GetAxis("Horizontal");
+            float y = Input.GetAxis("Vertical");
+
+            if(x == 0 )
+            {
+                if(y == 0) angleZ = unitController.unitSprite.flipX == true ? -180 : 0;
+
+                if(y > 0) angleZ = -90;
+
+                if(y < 0) angleZ = 90;
+            }
+
+            if(x > 0)
+            {                
+                if(y == 0) angleZ = 180;
+
+                if(y > 0) angleZ = 225;
+
+                if(y < 0) angleZ = 135;
+
+                weapon.GetComponent<SpriteRenderer>().flipY = true;
+            }
+
+            if(x < 0)
+            {
+                if(y == 0) angleZ = 0;
+
+                if(y > 0) angleZ = -45;
+
+                if(y < 0) angleZ = 45;
+            }
+
+            return angleZ;
+        }
+    }
+
+
+    private void BottleAction(UnitController unitController)
+    {
+
     }
 }

@@ -8,7 +8,7 @@ public class AttackController : MonoBehaviour
     private WeaponStorage weaponStorage;
     private UnitController unitController;
 
-    private float startAttackDelay = 2f;
+    private float startAttackDelay = 1f;
     private SpriteRenderer sprite;
 
     private Coroutine attack;

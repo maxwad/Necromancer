@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6701833834038758982}
   - component: {fileID: 7525087813452890253}
   - component: {fileID: 7525087813452890242}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,6 @@ MonoBehaviour:
   magicAttack: 0
   controller: {fileID: 0}
   lifeTime: 5
-  enemyList: []
 --- !u!114 &7525087813452890242
 MonoBehaviour:
   m_ObjectHideFlags: 0

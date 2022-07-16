@@ -11,7 +11,7 @@ public class WeaponDamage : MonoBehaviour
     public float lifeTime = 0.1f;
     private float currentLifeTime = 0;
 
-    [HideInInspector] public List<GameObject> enemyList = new List<GameObject>();
+    [HideInInspector] private List<GameObject> enemyList = new List<GameObject>();
 
     public void SetSettings(UnitController unitController)
     {
@@ -19,6 +19,11 @@ public class WeaponDamage : MonoBehaviour
         physicAttack = unitController.physicAttack;
         magicAttack = unitController.magicAttack;
 
+    }
+
+    public void ClearEnemyList()
+    {
+        enemyList.Clear();
     }
 
     private void OnEnable()
@@ -67,13 +72,26 @@ public class WeaponDamage : MonoBehaviour
                     collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
                     enemyList.Add(collision.gameObject);
                 }
+                else if(controller.unitAbility == NameManager.UnitsAbilities.Bible)
+                {
+                    collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
+                    enemyList.Add(collision.gameObject);
+                }
+                else if(controller.unitAbility == NameManager.UnitsAbilities.Bow)
+                {
+                    collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
+                    enemyList.Add(collision.gameObject);
+                }
+                else if(controller.unitAbility == NameManager.UnitsAbilities.Knife)
+                {
+                    collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
+                    enemyList.Add(collision.gameObject);
+                }
                 else
                 {
                     collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
                 }
-            }
-
-            
+            }           
             
         }
 

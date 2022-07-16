@@ -4,7 +4,6 @@ using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 using static NameManager;
-using static UnityEngine.GraphicsBuffer;
 
 public class WeaponMovement : MonoBehaviour
 {
@@ -15,7 +14,11 @@ public class WeaponMovement : MonoBehaviour
     private GameObject spearEnemy;
     private Vector2 spearDirection;
 
-    private Vector2 bibleCenter;
+    private SpriteRenderer bible;
+
+    private Rigidbody2D rbArrow;
+
+    private Rigidbody2D rbKnife;
 
     public float speed = 1;
     private SpriteRenderer unitSprite;
@@ -62,10 +65,15 @@ public class WeaponMovement : MonoBehaviour
                 break;
 
             case UnitsAbilities.Bow:
+                BowMovement();
                 break;
+
             case UnitsAbilities.Knife:
+                KnifeMovement();
                 break;
+
             case UnitsAbilities.Bottle:
+                BottleMovement();
                 break;
             default:
                 break;
@@ -84,6 +92,12 @@ public class WeaponMovement : MonoBehaviour
 
         if(unitController.unitAbility == UnitsAbilities.Bible) ActivateBible();
 
+        if(unitController.unitAbility == UnitsAbilities.Bow) ActivateBow();
+
+        if(unitController.unitAbility == UnitsAbilities.Knife) ActivateKnife();
+
+        if(unitController.unitAbility == UnitsAbilities.Knife) ActivateBottle();
+
     }
 
     #endregion
@@ -97,7 +111,28 @@ public class WeaponMovement : MonoBehaviour
 
     private void BibleMovement()
     {
-        transform.RotateAround(controller.transform.position, Vector3.forward, speed * Time.deltaTime);
+        transform.RotateAround(transform.position, Vector3.forward, speed * Time.deltaTime);
+        bible.transform.RotateAround(bible.transform.position, Vector3.forward, -speed * Time.deltaTime);
+
+        //reset EnemyList every cycle
+        if(transform.rotation.eulerAngles.z > 0 && transform.rotation.eulerAngles.z < 5f)
+        {
+            GetComponent<WeaponDamage>().ClearEnemyList();
+        }
+    }
+
+    private void BowMovement()
+    {
+        rbArrow.velocity = -rbArrow.transform.right * speed;
+    }
+
+    private void KnifeMovement()
+    {
+        rbKnife.velocity = -rbKnife.transform.right * speed;
+    }
+
+    private void BottleMovement()
+    {
 
     }
 
@@ -118,7 +153,7 @@ public class WeaponMovement : MonoBehaviour
             {                
                 gameObject.transform.localScale = new Vector3(0, 0, 0);
                 currentSize = 0;
-                GetComponent<WeaponDamage>().enemyList.Clear();
+                GetComponent<WeaponDamage>().ClearEnemyList();
 
                 yield return new WaitForSeconds(controller.speedAttack);
 
@@ -185,7 +220,6 @@ public class WeaponMovement : MonoBehaviour
                 transform.rotation.eulerAngles.y,
                 Mathf.Atan2(nearestEnemyPosition.y - transform.position.y, nearestEnemyPosition.x - transform.position.x) * Mathf.Rad2Deg - 180
             );
-
         }
         else
         {
@@ -198,25 +232,28 @@ public class WeaponMovement : MonoBehaviour
 
     private void ActivateBible()
     {
-        bibleCenter = transform.position;
-        transform.position += (Vector3)(Vector2.one * 3);
-
+        bible = GetComponentInChildren<SpriteRenderer>();
         isReadyToWork = true;
     }
 
-    #endregion
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void ActivateBow()
     {
-        if(collision.CompareTag(TagManager.T_ENEMY) == true)
-        {
-
-            if(controller.unitAbility == UnitsAbilities.Garlic)
-            {
-                
-            }
-        }
+        rbArrow = GetComponent<Rigidbody2D>();
+        isReadyToWork = true;
     }
+
+    private void ActivateKnife() 
+    {
+        rbKnife = GetComponent<Rigidbody2D>();
+        isReadyToWork = true;
+    }
+
+    private void ActivateBottle() 
+    {
+
+    }
+
+    #endregion
 
 
     private void OnBecameInvisible()
