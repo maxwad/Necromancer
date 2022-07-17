@@ -28,7 +28,5 @@ public class PrefabSettings : MonoBehaviour
         if(sortingLayer != "") sprite.sortingLayerName = sortingLayer;
 
         if(animationSpeed != 0) GetComponent<SimpleAnimator>().SetSpeed(animationSpeed);
-
     }
-
 }

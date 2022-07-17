@@ -87,6 +87,10 @@ public class WeaponDamage : MonoBehaviour
                     collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
                     enemyList.Add(collision.gameObject);
                 }
+                else if(controller.unitAbility == NameManager.UnitsAbilities.Bottle)
+                {
+                    //no one action
+                }
                 else
                 {
                     collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);

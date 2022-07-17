@@ -20,6 +20,11 @@ public class WeaponMovement : MonoBehaviour
 
     private Rigidbody2D rbKnife;
 
+    private Rigidbody2D rbBottle;
+    private Vector3 goalPoint;
+    [SerializeField] private GameObject bottleDeath;
+
+
     public float speed = 1;
     private SpriteRenderer unitSprite;
     private SpriteRenderer sprite;
@@ -96,7 +101,7 @@ public class WeaponMovement : MonoBehaviour
 
         if(unitController.unitAbility == UnitsAbilities.Knife) ActivateKnife();
 
-        if(unitController.unitAbility == UnitsAbilities.Knife) ActivateBottle();
+        if(unitController.unitAbility == UnitsAbilities.Bottle) ActivateBottle();
 
     }
 
@@ -133,7 +138,29 @@ public class WeaponMovement : MonoBehaviour
 
     private void BottleMovement()
     {
+        transform.position = Vector3.MoveTowards(transform.position, goalPoint, speed * Time.deltaTime);
 
+        if(Mathf.Abs(transform.position.x - goalPoint.x) < 0.1 && Mathf.Abs(transform.position.y - goalPoint.y) < 0.1)
+            Explosive();
+        
+        
+        void Explosive()
+        {
+            GameObject death = Instantiate(bottleDeath, transform.position, Quaternion.identity);
+            death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
+            PrefabSettings settings = death.GetComponent<PrefabSettings>();
+
+            if(settings != null) settings.SetSettings(sortingLayer: TagManager.T_PLAYER, color: UnityEngine.Color.cyan, size: controller.size);
+
+            Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, controller.size);
+            foreach(Collider2D obj in objects)
+            {
+                if(obj.CompareTag(TagManager.T_ENEMY) == true)
+                    obj.GetComponent<EnemyController>().TakeDamage(controller.physicAttack, controller.magicAttack, transform.position);
+            }
+
+            Destroy(gameObject);
+        }
     }
 
     #endregion
@@ -250,7 +277,29 @@ public class WeaponMovement : MonoBehaviour
 
     private void ActivateBottle() 
     {
+        rbBottle = GetComponent<Rigidbody2D>();
 
+        goalPoint = transform.position + (Vector3)GetRandomPoint();
+
+        isReadyToWork = true;
+
+        Vector3 GetRandomPoint()
+        {
+            float minRadiusMovement = 2;
+            float maxRadiusMovement = 10;
+
+            float x = Random.Range(-maxRadiusMovement, maxRadiusMovement);
+            float y = Random.Range(-maxRadiusMovement, maxRadiusMovement);
+
+            Vector3 resultPoint = Vector3.zero;
+
+            if((x > -minRadiusMovement && x < minRadiusMovement) || (y > -minRadiusMovement && y < minRadiusMovement))
+                resultPoint = GetRandomPoint();
+            else
+                resultPoint = new Vector3(x, y, 0);
+
+            return resultPoint;
+        }
     }
 
     #endregion

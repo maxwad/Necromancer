@@ -290,6 +290,17 @@ public class WeaponStorage : MonoBehaviour
 
     private void BottleAction(UnitController unitController)
     {
+        StartCoroutine(CreateBottle());
 
+        IEnumerator CreateBottle()
+        {
+            for(int i = 0; i < unitController.level; i++)
+            {
+                GameObject itemWeapon = CreateWeapon(unitController);
+                itemWeapon.transform.eulerAngles = new Vector3(0, 0, 0);
+                itemWeapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
     }
 }
