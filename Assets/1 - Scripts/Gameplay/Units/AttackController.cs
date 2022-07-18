@@ -41,9 +41,9 @@ public class AttackController : MonoBehaviour
 
         while (gameObject != null)
         {
-            yield return new WaitForSeconds(unitController.speedAttack);
-
             weaponStorage.Attack(unitController);
+
+            yield return new WaitForSeconds(unitController.speedAttack);
         }
     }
 }

@@ -69,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
     {
         canISpawn = true;
         battleMap = GetComponent<BattleMap>().battleArray;
-        spawnCoroutine = StartCoroutine(SpawnEnemy());
+        //spawnCoroutine = StartCoroutine(SpawnEnemy());
     }
 
     public void StopSpawnEnemy()

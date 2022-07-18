@@ -11,8 +11,6 @@ public class WeaponMovement : MonoBehaviour
     private bool isReadyToWork = false;
 
     private Rigidbody2D rbSpear;
-    private GameObject spearEnemy;
-    private Vector2 spearDirection;
 
     private SpriteRenderer bible;
 
@@ -21,18 +19,16 @@ public class WeaponMovement : MonoBehaviour
     private Rigidbody2D rbKnife;
 
     private Rigidbody2D rbBottle;
-    private Vector3 goalPoint;
     [SerializeField] private GameObject bottleDeath;
-
+    [SerializeField] private GameObject bottleShadowPrefab;
+    [SerializeField] private GameObject bottleShadow;
+    private Vector3 groundVelocity;
+    private float verticalVelocity;
+    private float gravity = -10;
 
     public float speed = 1;
     private SpriteRenderer unitSprite;
-    private SpriteRenderer sprite;
 
-    private void Awake()
-    {
-        sprite = GetComponent<SpriteRenderer>();
-    }
 
     public void SetSettings(UnitController unitController)
     {
@@ -137,28 +133,32 @@ public class WeaponMovement : MonoBehaviour
     }
 
     private void BottleMovement()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, goalPoint, speed * Time.deltaTime);
+    {        
+        verticalVelocity += gravity * Time.deltaTime;
+        rbBottle.transform.position += new Vector3(0, verticalVelocity, 0) * Time.deltaTime;
+        rbBottle.transform.position += groundVelocity * Time.deltaTime;
 
-        if(Mathf.Abs(transform.position.x - goalPoint.x) < 0.1 && Mathf.Abs(transform.position.y - goalPoint.y) < 0.1)
+        bottleShadow.transform.position += groundVelocity * Time.deltaTime;
+
+        if(rbBottle.transform.position.y < bottleShadow.transform.position.y)
             Explosive();
-        
-        
+
         void Explosive()
         {
             GameObject death = Instantiate(bottleDeath, transform.position, Quaternion.identity);
             death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
             PrefabSettings settings = death.GetComponent<PrefabSettings>();
 
-            if(settings != null) settings.SetSettings(sortingLayer: TagManager.T_PLAYER, color: UnityEngine.Color.cyan, size: controller.size);
+            if(settings != null) settings.SetSettings(sortingLayer: TagManager.T_PLAYER, sortingOrder: 11, color: UnityEngine.Color.cyan, size: controller.size * 2);
 
-            Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, controller.size);
+            Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, controller.size * 2);
             foreach(Collider2D obj in objects)
             {
                 if(obj.CompareTag(TagManager.T_ENEMY) == true)
                     obj.GetComponent<EnemyController>().TakeDamage(controller.physicAttack, controller.magicAttack, transform.position);
             }
 
+            Destroy(bottleShadow);
             Destroy(gameObject);
         }
     }
@@ -277,28 +277,53 @@ public class WeaponMovement : MonoBehaviour
 
     private void ActivateBottle() 
     {
+        float minRadiusMovement = 3;
+        float maxRadiusMovement = 6;
+        float torqueForce = 300;
+
         rbBottle = GetComponent<Rigidbody2D>();
 
-        goalPoint = transform.position + (Vector3)GetRandomPoint();
+        Vector3 goalVector = GetRandomPoint();
+        groundVelocity = goalVector.normalized * speed;
+        verticalVelocity = Random.Range(minRadiusMovement - 1, maxRadiusMovement);
+
+        torqueForce = goalVector.x < 0 ? torqueForce : -torqueForce;
+        rbBottle.AddTorque(torqueForce);
+
+        bottleShadow = Instantiate(bottleShadowPrefab, transform.position, Quaternion.identity);
+        bottleShadow.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
+
+        StartCoroutine(ScaleShadow());
 
         isReadyToWork = true;
 
+
         Vector3 GetRandomPoint()
         {
-            float minRadiusMovement = 2;
-            float maxRadiusMovement = 10;
-
             float x = Random.Range(-maxRadiusMovement, maxRadiusMovement);
             float y = Random.Range(-maxRadiusMovement, maxRadiusMovement);
 
             Vector3 resultPoint = Vector3.zero;
 
-            if((x > -minRadiusMovement && x < minRadiusMovement) || (y > -minRadiusMovement && y < minRadiusMovement))
+            if((x > -minRadiusMovement && x < minRadiusMovement) && (y > -minRadiusMovement && y < minRadiusMovement))
                 resultPoint = GetRandomPoint();
             else
                 resultPoint = new Vector3(x, y, 0);
 
             return resultPoint;
+        }
+
+        IEnumerator ScaleShadow()
+        {
+            while(true)
+            {
+                if(verticalVelocity > 0)
+                    bottleShadow.transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
+                else
+                    bottleShadow.transform.localScale += new Vector3(0.03f, 0.03f, 0.03f);
+
+                yield return new WaitForSeconds(0.1f);
+            }
         }
     }
 
@@ -307,6 +332,8 @@ public class WeaponMovement : MonoBehaviour
 
     private void OnBecameInvisible()
     {
+        if(bottleShadow != null) Destroy(bottleShadow);
+
         Destroy(gameObject);
     }
 
