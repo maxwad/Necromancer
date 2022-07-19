@@ -29,6 +29,7 @@ public class UnitController : MonoBehaviour
     //Death section
     [HideInInspector]public SpriteRenderer unitSprite;
     private Color normalColor;
+    private Color originalColor;
     private Color damageColor = Color.red;
     private float blinkTime = 0.1f;
 
@@ -44,6 +45,7 @@ public class UnitController : MonoBehaviour
         currentHealth = quantity > 0 ? health : 0;
         unitSprite = GetComponent<SpriteRenderer>();
         normalColor = unitSprite.color;
+        originalColor = unitSprite.color;
 
         unitCountsText = GetComponentInChildren<TMP_Text>();
     }
@@ -75,14 +77,29 @@ public class UnitController : MonoBehaviour
         {
             if(isImmortal == true) return;
 
-            unitSprite.color = damageColor;
-            Invoke("ColorBack", blinkTime);
+            Blink();
         }
+    }
+
+    public void Blink()
+    {
+        unitSprite.color = damageColor;
+        Invoke("ColorBack", blinkTime);
     }
 
     private void ColorBack()
     {
+        CheckColors();
         unitSprite.color = normalColor;
+    }
+
+    private void CheckColors()
+    {
+        if(currentHealth > health * 0.66f) normalColor = originalColor;
+
+        if(currentHealth < health * 0.66f) normalColor = Color.gray;
+
+        if(currentHealth < health * 0.33f) normalColor = Color.red;
     }
 
     public void TakeDamage(float physicalDamage, float magicDamage)
@@ -99,6 +116,7 @@ public class UnitController : MonoBehaviour
         {
             quantity--;
             currentHealth = health;
+            CheckColors();
             UpdateSquad(false);
         }
 

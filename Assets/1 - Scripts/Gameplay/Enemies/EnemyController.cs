@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour
 
     private float maxDamage = 200;
     private SpriteRenderer enemySprite;
-    private Color normalColor;
+    private Color normalColor = Color.white;
     private Color damageColor = Color.black;
     private float blinkTime = 0.1f;
 
@@ -52,7 +52,6 @@ public class EnemyController : MonoBehaviour
         currentHealth = health;
         delayAttack = speedAttack;
         enemySprite = GetComponent<SpriteRenderer>();
-        normalColor = enemySprite.color;
     }
 
     private void Update()
@@ -62,8 +61,7 @@ public class EnemyController : MonoBehaviour
         if(isBoss)
         {
            // Debug.Log(exp);
-        }
-        
+        }        
     }
 
     public void Initialize(Enemy stats = null)
@@ -106,26 +104,33 @@ public class EnemyController : MonoBehaviour
                     delayAttack = speedAttack;
                 }
             }
-        }   
-               
+        }                
     }
 
     public void TakeDamage(float physicalDamage, float magicDamage, Vector3 forceDirection)
     {
         if(currentHealth > 0)
-        {
-            Blink();
-
+        {            
             //TODO: we need to create some damage formula
             float damage = Mathf.Round(physicalDamage + magicDamage);
             currentHealth -= damage;
 
+            Blink();
             ShowDamage(damage, colorDamage);
 
             if(forceDirection != Vector3.zero) PushMe(forceDirection, pushForce);
 
             if(currentHealth <= 0) Dead();
         }   
+    }
+
+    private void CheckColors()
+    {
+        float multiplier = isBoss == true ? 100 : 1;
+
+        if(currentHealth < health * multiplier * 0.66f) normalColor = Color.gray;
+
+        if(currentHealth < health * multiplier * 0.33f) normalColor = Color.red;
     }
 
     public void Kill()
@@ -142,6 +147,7 @@ public class EnemyController : MonoBehaviour
 
     private void ColorBack()
     {
+        CheckColors();
         enemySprite.color = normalColor;
     }
 
@@ -168,13 +174,18 @@ public class EnemyController : MonoBehaviour
 
         EventManager.OnEnemyDestroyedEvent(gameObject);
 
+        ResetEnemy();
+    }
+
+    private void ResetEnemy()
+    {
         if(isBoss == true)
         {
             ReturnBossToOrdinaryEnemy();
             //some event
         }
 
-        //reset enemy before death
+        normalColor = Color.white;
         gameObject.GetComponent<EnemyMovement>().MakeMeFixed(false);
         gameObject.SetActive(false);
     }
@@ -193,7 +204,7 @@ public class EnemyController : MonoBehaviour
     public void MakeBoss() 
     {
         isBoss                = true;
-        currentHealth        *= 150;
+        currentHealth        *= 100;
         magicAttack          *= 3;
         physicAttack         *= 3;
         transform.localScale *= 2;
@@ -204,7 +215,7 @@ public class EnemyController : MonoBehaviour
     private void ReturnBossToOrdinaryEnemy()
     {
         isBoss                = false;
-        currentHealth        /= 150;
+        currentHealth        /= 100;
         magicAttack          /= 3;
         physicAttack         /= 3;
         transform.localScale /= 2;

@@ -285,7 +285,9 @@ public class SpellLibrary : MonoBehaviour
                 {
                     enemies[i].GetComponent<EnemyController>().Kill();
                 }
-            }            
+            }
+
+            Camera.main.GetComponent<BattleCamera>()?.ShakeCamera();
         }
     }
 

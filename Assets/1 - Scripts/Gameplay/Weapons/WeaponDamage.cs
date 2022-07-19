@@ -18,7 +18,6 @@ public class WeaponDamage : MonoBehaviour
         controller = unitController;
         physicAttack = unitController.physicAttack;
         magicAttack = unitController.magicAttack;
-
     }
 
     public void ClearEnemyList()
@@ -46,10 +45,10 @@ public class WeaponDamage : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(TagManager.T_ENEMY) == true)
+        if(collision.CompareTag(TagManager.T_ENEMY) == true)
         {
             //we need to check for re-touch. if we don't need this then add enemy in list
-            if(enemyList.Contains(collision.gameObject) == false) 
+            if(enemyList.Contains(collision.gameObject) == false)
             {
                 if(controller.unitAbility == NameManager.UnitsAbilities.Garlic)
                 {
@@ -61,36 +60,21 @@ public class WeaponDamage : MonoBehaviour
                     enemyList.Add(collision.gameObject);
                 }
 
-                else if(controller.unitAbility == NameManager.UnitsAbilities.Axe)
+                else if(controller.unitAbility == NameManager.UnitsAbilities.Axe   ||
+                        controller.unitAbility == NameManager.UnitsAbilities.Spear ||
+                        controller.unitAbility == NameManager.UnitsAbilities.Bible ||
+                        controller.unitAbility == NameManager.UnitsAbilities.Bow   ||
+                        controller.unitAbility == NameManager.UnitsAbilities.Knife)
                 {
                     collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
                     enemyList.Add(collision.gameObject);
                 }
-
-                else if(controller.unitAbility == NameManager.UnitsAbilities.Spear)
-                {
-                    collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
-                    enemyList.Add(collision.gameObject);
-                }
-                else if(controller.unitAbility == NameManager.UnitsAbilities.Bible)
-                {
-                    collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
-                    enemyList.Add(collision.gameObject);
-                }
-                else if(controller.unitAbility == NameManager.UnitsAbilities.Bow)
-                {
-                    collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
-                    enemyList.Add(collision.gameObject);
-                }
-                else if(controller.unitAbility == NameManager.UnitsAbilities.Knife)
-                {
-                    collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
-                    enemyList.Add(collision.gameObject);
-                }
+                
                 else if(controller.unitAbility == NameManager.UnitsAbilities.Bottle)
                 {
-                    //no one action
+                    //no action
                 }
+
                 else
                 {
                     collision.gameObject.GetComponent<EnemyController>().TakeDamage(physicAttack, magicAttack, transform.position);
@@ -101,13 +85,8 @@ public class WeaponDamage : MonoBehaviour
 
         if (collision.CompareTag(TagManager.T_OBSTACLE) == true)
         {
+            if(controller.unitAbility != NameManager.UnitsAbilities.Bottle)
             collision.gameObject.GetComponent<HealthObjectStats>().TakeDamage(physicAttack, magicAttack);
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        gameObject.GetComponent<Collider2D>().isTrigger = true;
-    }
-
 }

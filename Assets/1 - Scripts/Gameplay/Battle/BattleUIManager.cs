@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class BattleUIManager : MonoBehaviour
     [Header("Left Column Exp")]
     [SerializeField] private RectTransform currentScaleValueWrapper;
     [SerializeField] private RectTransform currentScaleValue;
+    private Image currentScaleValueImage;
     private float heigthCurrentScaleWrapper;
     private float currentTempExp = 0;
 
@@ -20,6 +22,13 @@ public class BattleUIManager : MonoBehaviour
     private float heigthOneLevel;
     private float currentMaxLevel;
     private List<GameObject> levelList = new List<GameObject>();
+
+    [Header("Exp Effects")]
+    private float blinkTime = 0.005f;
+    [SerializeField] private Color levelUpColor;
+    [SerializeField] private Color normalColor;
+    private Coroutine blinkExpCoroutine;
+    private Coroutine blinkLevelCoroutine;
 
     [Header("Infirmary")]
     [SerializeField] private RectTransform infirmaryWrapper;
@@ -107,6 +116,8 @@ public class BattleUIManager : MonoBehaviour
     {
         uiCanvas.gameObject.SetActive(!mode);
 
+        currentScaleValueImage = currentScaleValue.GetComponent<Image>();
+
         if(mode == false) ResetCanvas();
     }
 
@@ -164,6 +175,7 @@ public class BattleUIManager : MonoBehaviour
         float heightOneExp = heigthCurrentScaleWrapper / scale;
         currentTempExp = value;
         currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentTempExp * heightOneExp);
+        Blink(true, currentScaleValueImage);
     }
 
     public void TempLevelUp(float oldLevel)
@@ -174,6 +186,46 @@ public class BattleUIManager : MonoBehaviour
         {
             currentTempExp = 0;
             currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
+        }
+
+        foreach(var itemLevel in levelList)
+        {
+            Image imageLevel = itemLevel.GetComponent<Image>();
+
+            if(imageLevel.enabled == true) Blink(false, imageLevel, 100);
+        }
+    }
+
+    private void Blink(bool mode, Image panel, float divider = 5)
+    {
+        //mode: true - exp scale, false - level scale
+
+        panel.color = levelUpColor;
+
+        if(mode == true)
+        {
+            if(blinkExpCoroutine != null) StopCoroutine(blinkExpCoroutine);
+
+            blinkExpCoroutine = StartCoroutine(ColorBack(panel, divider));
+        }
+        else
+        {
+            blinkLevelCoroutine = StartCoroutine(ColorBack(panel, divider));
+        }
+
+    }
+
+    private IEnumerator ColorBack(Image panel, float divider)
+    {
+        //the bigger divider the slower animation
+
+        float time = 0;
+
+        while(panel.color != normalColor)
+        {
+            time += Time.deltaTime;
+            panel.color = Color.Lerp(panel.color, normalColor, time / divider);
+            yield return new WaitForSeconds(blinkTime);
         }
     }
 

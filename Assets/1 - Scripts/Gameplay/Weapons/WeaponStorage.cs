@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using static NameManager;
 
 public class WeaponStorage : MonoBehaviour
 {
-    private bool isGarlicWork = false;
-    private bool isBibleWork = false;
+    private bool isWeaponWork = false;
 
     public void Attack(UnitController unitController)
     {
@@ -18,7 +15,7 @@ public class WeaponStorage : MonoBehaviour
                 break;
 
             case UnitsAbilities.Garlic:
-                if(isGarlicWork == false) GarlicAction(unitController);
+                if(isWeaponWork == false) GarlicAction(unitController);
                 break;
 
             case UnitsAbilities.Axe:
@@ -30,7 +27,7 @@ public class WeaponStorage : MonoBehaviour
                 break;
 
             case UnitsAbilities.Bible:
-                if(isBibleWork == false) BibleAction(unitController);
+                if(isWeaponWork == false) BibleAction(unitController);
                 break;
 
             case UnitsAbilities.Bow:
@@ -107,7 +104,7 @@ public class WeaponStorage : MonoBehaviour
 
     private void GarlicAction(UnitController unitController) 
     {
-        isGarlicWork = true;
+        isWeaponWork = true;
 
         GameObject weapon = CreateWeapon(unitController);
         weapon.GetComponent<WeaponMovement>().ActivateWeapon(unitController);
@@ -167,7 +164,7 @@ public class WeaponStorage : MonoBehaviour
 
     private void BibleAction(UnitController unitController)
     {
-        isBibleWork = true;
+        isWeaponWork = true;
 
         float bibleAngleLvl2_2 = 180;
 

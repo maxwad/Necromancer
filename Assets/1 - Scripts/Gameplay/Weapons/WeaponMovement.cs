@@ -10,18 +10,13 @@ public class WeaponMovement : MonoBehaviour
     UnitController controller;
     private bool isReadyToWork = false;
 
-    private Rigidbody2D rbSpear;
+    private Rigidbody2D rbWeapon;
 
     private SpriteRenderer bible;
 
-    private Rigidbody2D rbArrow;
-
-    private Rigidbody2D rbKnife;
-
-    private Rigidbody2D rbBottle;
     [SerializeField] private GameObject bottleDeath;
     [SerializeField] private GameObject bottleShadowPrefab;
-    [SerializeField] private GameObject bottleShadow;
+    private GameObject bottleShadow;
     private Vector3 groundVelocity;
     private float verticalVelocity;
     private float gravity = -10;
@@ -29,12 +24,6 @@ public class WeaponMovement : MonoBehaviour
     public float speed = 1;
     private SpriteRenderer unitSprite;
 
-
-    public void SetSettings(UnitController unitController)
-    {
-        controller = unitController;
-        unitSprite = unitController.unitSprite;
-    }
 
     private void Update()
     {
@@ -45,18 +34,6 @@ public class WeaponMovement : MonoBehaviour
     {
         switch(controller.unitAbility)
         {
-            case UnitsAbilities.Whip:
-                //WhipMovement();
-                break;
-
-            case UnitsAbilities.Garlic:
-                //GarlicMovement();
-                break;
-
-            case UnitsAbilities.Axe:
-                //AxeMovement();
-                break;
-
             case UnitsAbilities.Spear:
                 SpearMovement();
                 break;
@@ -82,23 +59,53 @@ public class WeaponMovement : MonoBehaviour
     }
 
     #region Helpers
+    public void SetSettings(UnitController unitController)
+    {
+        controller = unitController;
+        unitSprite = unitController.unitSprite;
+    }
 
     public void ActivateWeapon(UnitController unitController, int index = 0)
     {
-        if(unitController.unitAbility == UnitsAbilities.Garlic) ActivateGarlic();
+        switch(unitController.unitAbility)
+        {
+            case UnitsAbilities.Garlic:
+                ActivateGarlic();
+                break;
 
-        if(unitController.unitAbility == UnitsAbilities.Axe) ActivateAxe(index);
+            case UnitsAbilities.Axe:
+                ActivateAxe(index);
+                break;
 
-        if(unitController.unitAbility == UnitsAbilities.Spear) ActivateSpear();
+            case UnitsAbilities.Spear:
+                ActivateSpear();
+                break;
 
-        if(unitController.unitAbility == UnitsAbilities.Bible) ActivateBible();
+            case UnitsAbilities.Bible:
+                ActivateBible();
+                break;
 
-        if(unitController.unitAbility == UnitsAbilities.Bow) ActivateBow();
+            case UnitsAbilities.Bow:
+                ActivateBow();
+                break;
 
-        if(unitController.unitAbility == UnitsAbilities.Knife) ActivateKnife();
+            case UnitsAbilities.Knife:
+                ActivateKnife();
+                break;
+            case UnitsAbilities.Bottle:
+                ActivateBottle();
+                break;
 
-        if(unitController.unitAbility == UnitsAbilities.Bottle) ActivateBottle();
+            default:
+                break;
+        }
+    }
 
+    private void OnBecameInvisible()
+    {
+        if(bottleShadow != null) Destroy(bottleShadow);
+
+        Destroy(gameObject);
     }
 
     #endregion
@@ -107,7 +114,7 @@ public class WeaponMovement : MonoBehaviour
 
     private void SpearMovement()
     {
-        rbSpear.velocity = -rbSpear.transform.right * speed;
+        rbWeapon.velocity = -rbWeapon.transform.right * speed;
     }
 
     private void BibleMovement()
@@ -124,23 +131,23 @@ public class WeaponMovement : MonoBehaviour
 
     private void BowMovement()
     {
-        rbArrow.velocity = -rbArrow.transform.right * speed;
+        rbWeapon.velocity = -rbWeapon.transform.right * speed;
     }
 
     private void KnifeMovement()
     {
-        rbKnife.velocity = -rbKnife.transform.right * speed;
+        rbWeapon.velocity = -rbWeapon.transform.right * speed;
     }
 
     private void BottleMovement()
     {        
         verticalVelocity += gravity * Time.deltaTime;
-        rbBottle.transform.position += new Vector3(0, verticalVelocity, 0) * Time.deltaTime;
-        rbBottle.transform.position += groundVelocity * Time.deltaTime;
+        rbWeapon.transform.position += new Vector3(0, verticalVelocity, 0) * Time.deltaTime;
+        rbWeapon.transform.position += groundVelocity * Time.deltaTime;
 
         bottleShadow.transform.position += groundVelocity * Time.deltaTime;
 
-        if(rbBottle.transform.position.y < bottleShadow.transform.position.y)
+        if(rbWeapon.transform.position.y < bottleShadow.transform.position.y)
             Explosive();
 
         void Explosive()
@@ -149,7 +156,12 @@ public class WeaponMovement : MonoBehaviour
             death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
             PrefabSettings settings = death.GetComponent<PrefabSettings>();
 
-            if(settings != null) settings.SetSettings(sortingLayer: TagManager.T_PLAYER, sortingOrder: 11, color: UnityEngine.Color.cyan, size: controller.size * 2);
+            if(settings != null) settings.SetSettings(
+                sortingLayer: TagManager.T_PLAYER, 
+                sortingOrder: 11, 
+                color: UnityEngine.Color.cyan, 
+                size: controller.size * 2,
+                animationSpeed: 0.07f);
 
             Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, controller.size * 2);
             foreach(Collider2D obj in objects)
@@ -218,12 +230,11 @@ public class WeaponMovement : MonoBehaviour
 
     private void ActivateSpear()
     {
-        rbSpear = GetComponent<Rigidbody2D>();
+        rbWeapon = GetComponent<Rigidbody2D>();
 
         float searchRadius = 25f;
         float distance = 9999999;
         Vector2 nearestEnemyPosition = Vector2.zero;
-
 
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, searchRadius);
         foreach(Collider2D obj in objects)
@@ -251,7 +262,7 @@ public class WeaponMovement : MonoBehaviour
         else
         {
             float yAngle = unitSprite.flipX == true ? 180 : 0;
-            rbSpear.transform.eulerAngles = new Vector3(rbSpear.transform.eulerAngles.x, yAngle, rbSpear.transform.eulerAngles.z);
+            rbWeapon.transform.eulerAngles = new Vector3(rbWeapon.transform.eulerAngles.x, yAngle, rbWeapon.transform.eulerAngles.z);
         }
         
         isReadyToWork = true;
@@ -265,13 +276,13 @@ public class WeaponMovement : MonoBehaviour
 
     private void ActivateBow()
     {
-        rbArrow = GetComponent<Rigidbody2D>();
+        rbWeapon = GetComponent<Rigidbody2D>();
         isReadyToWork = true;
     }
 
     private void ActivateKnife() 
     {
-        rbKnife = GetComponent<Rigidbody2D>();
+        rbWeapon = GetComponent<Rigidbody2D>();
         isReadyToWork = true;
     }
 
@@ -281,14 +292,14 @@ public class WeaponMovement : MonoBehaviour
         float maxRadiusMovement = 6;
         float torqueForce = 300;
 
-        rbBottle = GetComponent<Rigidbody2D>();
+        rbWeapon = GetComponent<Rigidbody2D>();
 
         Vector3 goalVector = GetRandomPoint();
         groundVelocity = goalVector.normalized * speed;
         verticalVelocity = Random.Range(minRadiusMovement - 1, maxRadiusMovement);
 
         torqueForce = goalVector.x < 0 ? torqueForce : -torqueForce;
-        rbBottle.AddTorque(torqueForce);
+        rbWeapon.AddTorque(torqueForce);
 
         bottleShadow = Instantiate(bottleShadowPrefab, transform.position, Quaternion.identity);
         bottleShadow.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
@@ -328,13 +339,4 @@ public class WeaponMovement : MonoBehaviour
     }
 
     #endregion
-
-
-    private void OnBecameInvisible()
-    {
-        if(bottleShadow != null) Destroy(bottleShadow);
-
-        Destroy(gameObject);
-    }
-
 }

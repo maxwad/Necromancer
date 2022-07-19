@@ -25,8 +25,8 @@ MonoBehaviour:
   speedAttack: 1
   size: 1
   level: 2
-  UnitAbility: 7
-  attackTool: {fileID: 394755954311998102, guid: aaa8f49f3f3fb474080b0b787f2ae961, type: 3}
+  UnitAbility: 2
+  attackTool: {fileID: 7525087813452890241, guid: 106e8eb83f1e3fd48acade3987cadefd, type: 3}
   coinsPrice: 67
   foodPrice: 876
   woodPrice: 77

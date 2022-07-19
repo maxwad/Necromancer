@@ -1868,6 +1868,8 @@ MonoBehaviour:
   currentScaleValue: {fileID: 1537929722}
   tempLevelGO: {fileID: 2065452776068308150, guid: 1b5a0b6d40ca07d489bd41c38252fd15, type: 3}
   currentTempLevelWrapper: {fileID: 104977368}
+  levelUpColor: {r: 1, g: 0.6645149, b: 0.015686274, a: 1}
+  normalColor: {r: 0.627451, g: 0, b: 0.98039216, a: 1}
   infirmaryWrapper: {fileID: 764134048}
   infirmaryValue: {fileID: 860299856}
   infirmaryInfo: {fileID: 1500549211}
@@ -4483,6 +4485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85ec7ad52646d4ba25e166c7d7756d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakingDuring: 3
 --- !u!114 &1015207253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4704,7 +4707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1073271419
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4759,12 +4762,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5936,7 +5939,7 @@ MonoBehaviour:
   - {fileID: 7361037799684881175, guid: 504121e5e11b7f742a5700149b1ee9cb, type: 3}
   - {fileID: 7361037799684881175, guid: 64dc7639b5bc0314eb0eef2aeae2a4ef, type: 3}
   - {fileID: 7361037799684881175, guid: 450c1a3f9d2ce384f98a7d9f14f50bf4, type: 3}
-  falseEnemiesQuantity: 140000001400000014000000
+  falseEnemiesQuantity: 640000006400000064000000
   allEnemiesList: []
   sizeMapX: 100
   sizeMapY: 100
@@ -7692,7 +7695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a90e8e5339929ca419d87518002f6a87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playersArmyEnums: 00000000
+  playersArmyEnums: 0000000001000000020000000300000004000000
   playersArmyWindow: {fileID: 1341323598}
   ReserveArmyContainer: {fileID: 1101306500}
   playersArmyPositions:
@@ -7731,7 +7734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018e4d036c668314597e1aae43354d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelBase: 8
+  levelBase: 3
   healthBase: 500
   manaBase: 20
   searchRadiusBase: 2
