@@ -40,7 +40,7 @@ public class SpellButtonController : MonoBehaviour, IPointerEnterHandler, IPoint
     public void SetSpellOnButton(SpellStat newSpell)
     {
         spell = newSpell;
-        description.text = newSpell.description;
+        description.text = newSpell.description + " (Cost: " + newSpell.manaCost + ")";
         descriptionGO.SetActive(false);
     }
 

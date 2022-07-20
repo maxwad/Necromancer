@@ -11,6 +11,7 @@ public class BattleArmyController : MonoBehaviour
 
     [HideInInspector] public Vector2 currentDirection;
     [HideInInspector] public bool currentFacing = false;
+    private bool isMovementInverted = false;
 
     private void Start()
     {
@@ -50,7 +51,14 @@ public class BattleArmyController : MonoBehaviour
 
     private void Moving(Vector2 direction)
     {
+        direction = isMovementInverted == true ? -direction : direction;
         rbPlayer.velocity = (Vector3)direction * Time.fixedDeltaTime * speed;
+    }
+
+    public void MovementInverting(bool mode)
+    {
+        isMovementInverted = mode;
+        GlobalStorage.instance.hero.gameObject.GetComponent<HeroMovement>().Dizziness(mode);
     }
 
     private void SetStartSpeed(PlayersStats stats, float value)

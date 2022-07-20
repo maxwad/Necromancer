@@ -11,6 +11,7 @@ public class EnemyMovement : MonoBehaviour
     private SpriteRenderer sprite;
 
     private float speed = 1f;
+    private float originalSpeed;
 
     //for playmode: 10, for editor: 3
     private float acceleration = 10f;
@@ -26,6 +27,10 @@ public class EnemyMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
+    private void OnEnable()
+    {
+        originalSpeed = speed;
+    }
 
     void Update()
     {
@@ -60,6 +65,21 @@ public class EnemyMovement : MonoBehaviour
     private void MakeMeUnfixed()
     {
         MakeMeFixed(false);
+    }
+
+    public void StopMoving(bool mode)
+    {
+        canIMove = !mode;
+    }
+
+    public void BoostSpeed(float boost)
+    {
+        speed += (speed * boost);
+    }
+
+    public void ResetSpeed()
+    {
+        speed = originalSpeed;
     }
 
     private void OnBecameVisible()

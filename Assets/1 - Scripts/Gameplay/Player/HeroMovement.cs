@@ -6,6 +6,7 @@ public class HeroMovement : MonoBehaviour
 {
     private Vector2 currentDirection;
     private bool currentFacing = false;
+    [SerializeField] private GameObject dizziness;
 
     private SpriteRenderer sprite;
     private Animator animator;
@@ -43,5 +44,10 @@ public class HeroMovement : MonoBehaviour
 
         bool runningFlag = currentDirection != Vector2.zero ? true : false;
         animator.SetBool(TagManager.A_RUN, runningFlag);
+    }
+
+    public void Dizziness(bool mode)
+    {
+        dizziness.SetActive(mode);
     }
 }

@@ -1866,16 +1866,22 @@ MonoBehaviour:
   uiCanvas: {fileID: 1073271422}
   currentScaleValueWrapper: {fileID: 752231929}
   currentScaleValue: {fileID: 1537929722}
+  levelUpColor: {r: 1, g: 0.6645149, b: 0.015686274, a: 1}
+  normalLevelColor: {r: 0.627451, g: 0, b: 0.98039216, a: 1}
   tempLevelGO: {fileID: 2065452776068308150, guid: 1b5a0b6d40ca07d489bd41c38252fd15, type: 3}
   currentTempLevelWrapper: {fileID: 104977368}
-  levelUpColor: {r: 1, g: 0.6645149, b: 0.015686274, a: 1}
-  normalColor: {r: 0.627451, g: 0, b: 0.98039216, a: 1}
   infirmaryWrapper: {fileID: 764134048}
   infirmaryValue: {fileID: 860299856}
   infirmaryInfo: {fileID: 1500549211}
+  infirmaryUpColor: {r: 0, g: 0, b: 0, a: 1}
+  infirmaryDownColor: {r: 0.3529412, g: 1, b: 0, a: 1}
+  normalInfirmaryColor: {r: 1, g: 0, b: 0, a: 1}
   manaWrapper: {fileID: 1017703924}
   manaValue: {fileID: 860332489}
   manaInfo: {fileID: 1997906891}
+  manaUpColor: {r: 0.36982632, g: 1, b: 0, a: 1}
+  manaDownColor: {r: 1, g: 0, b: 0, a: 1}
+  normalManaColor: {r: 0, g: 0.54901963, b: 1, a: 1}
   goldInfo: {fileID: 1739282417}
   buttonSpell: {fileID: 789927226672346254, guid: 42808aedfd072f54f8e5fea791f6d9f9, type: 3}
   spellButtonContainer: {fileID: 1460724791}
@@ -3908,7 +3914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.55049276, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4485,7 +4491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85ec7ad52646d4ba25e166c7d7756d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakingDuring: 3
 --- !u!114 &1015207253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5939,7 +5944,7 @@ MonoBehaviour:
   - {fileID: 7361037799684881175, guid: 504121e5e11b7f742a5700149b1ee9cb, type: 3}
   - {fileID: 7361037799684881175, guid: 64dc7639b5bc0314eb0eef2aeae2a4ef, type: 3}
   - {fileID: 7361037799684881175, guid: 450c1a3f9d2ce384f98a7d9f14f50bf4, type: 3}
-  falseEnemiesQuantity: 640000006400000064000000
+  falseEnemiesQuantity: 320000003200000032000000
   allEnemiesList: []
   sizeMapX: 100
   sizeMapY: 100

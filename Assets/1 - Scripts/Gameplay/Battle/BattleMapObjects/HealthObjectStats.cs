@@ -29,12 +29,12 @@ public class HealthObjectStats : MonoBehaviour
     {
         currentHealth = health;
         sprite = GetComponent<SpriteRenderer>();
-        if (sprite != null) normalColor = sprite.color;
+        if(sprite != null) normalColor = sprite.color;
     }
 
     public void TakeDamage(float physicalDamage, float magicDamage)
     {
-        if (isImmortal == false)
+        if(isImmortal == false)
         {
             sprite.color = damageColor;
             Invoke("ColorBack", blinkTime);
@@ -44,7 +44,7 @@ public class HealthObjectStats : MonoBehaviour
 
             ShowDamage(damage, colorDamage);
 
-            if (currentHealth <= 0) Dead();
+            if(currentHealth <= 0) Dead();
         }
     }
 
@@ -82,14 +82,23 @@ public class HealthObjectStats : MonoBehaviour
         int randomNumb = Random.Range(0, 101);
         int checkSumm = 0;
 
-        for (int i = 0; i < bonusTypes.Length; i++)
+        for(int i = 0; i < bonusTypes.Length; i++)
         {
             checkSumm += bonusesPropabilities[i];
 
-            if (randomNumb <= checkSumm) return bonusTypes[i];
+            if(randomNumb <= checkSumm) return bonusTypes[i];
         }
 
         return BonusType.Nothing;
     }
 
+    private void OnBecameInvisible()
+    {
+        if(typeOfObject == ObstacleTypes.Obstacle) GetComponent<Collider2D>().enabled = false;
+    }
+
+    private void OnBecameVisible()
+    {
+        if(typeOfObject == ObstacleTypes.Obstacle) GetComponent<Collider2D>().enabled = true;
+    }
 }

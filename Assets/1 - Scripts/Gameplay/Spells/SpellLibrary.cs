@@ -109,17 +109,9 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        EventManager.ChangePlayer += DeactivateAllSpells;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.ChangePlayer -= DeactivateAllSpells;
-    }
-
     #endregion
+
+    #region Hero's Spells
 
     //Increases the hero's movement speed by 20% for 30 seconds.
     private void SpeedUp(bool mode, float value)
@@ -321,5 +313,108 @@ public class SpellLibrary : MonoBehaviour
         {
             EventManager.OnRemoveUnitFromInfirmaryEvent(mode, true, 1);
         }
+    }
+
+    #endregion
+
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    ///
+    private List<BossSpells> currentBossSpellList = new List<BossSpells>();
+    private Coroutine bossCoroutine;
+
+    public void ActivateBossSpell(BossSpells bossSpell, bool mode, float duration = 0)
+    {
+        switch(bossSpell)
+        {
+            case BossSpells.InvertMovement:
+                InvertMovement(mode);
+                break;
+
+            case BossSpells.Lightning:
+                Lightning(mode);
+                break;
+
+            case BossSpells.ManningLess:
+                ManningLess(mode);
+                break;
+
+            default:
+                break;
+        }
+
+        if(mode == true)
+        {
+            currentBossSpellList.Add(bossSpell);
+            StartCoroutine(DeactivateBossSpell(bossSpell, duration));
+        }
+        else
+        {
+            currentBossSpellList.Remove(bossSpell);
+            if(bossCoroutine != null) StopCoroutine(bossCoroutine);
+        }
+    }
+
+    private IEnumerator DeactivateBossSpell(BossSpells spell, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        ActivateBossSpell(spell, false);
+    }
+
+    private void DeactivateAllBossSpells(bool mode)
+    {
+        if(mode == true)
+        {
+            foreach(var item in currentBossSpellList)
+            {
+                StartCoroutine(DeactivateBossSpell(item, 0));
+            }
+        }
+    }
+
+    private void InvertMovement(bool mode)
+    {
+        GlobalStorage.instance.battlePlayer.MovementInverting(mode);
+    }
+
+    private void ManningLess(bool mode)
+    {
+        if(mode == true) bossCoroutine = StartCoroutine(StealMana(1));
+
+        IEnumerator StealMana(float quantity)
+        {
+            while(true)
+            {
+                yield return new WaitForSeconds(1f);
+                GlobalStorage.instance.hero.SpendMana(quantity);
+            }           
+        }
+    }
+    private void Lightning(bool mode) 
+    {
+        if(mode == true) bossCoroutine = StartCoroutine(StartLightning());
+
+        IEnumerator StartLightning()
+        {
+            while(true)
+            {
+                yield return new WaitForSeconds(1f);
+
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.ChangePlayer += DeactivateAllSpells;
+        EventManager.ChangePlayer += DeactivateAllBossSpells;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.ChangePlayer -= DeactivateAllSpells;
+        EventManager.ChangePlayer += DeactivateAllBossSpells;
     }
 }

@@ -21,9 +21,9 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] private GameObject attackTool;
 
-    [SerializeField] public int exp;
+    public int exp;
 
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     private float delayAttack;
 
     private float maxDamage = 200;
@@ -44,6 +44,8 @@ public class EnemyController : MonoBehaviour
     public BonusType bonusType;
     private BonusType alternativeBonusType = BonusType.Gold;
 
+    private EnemyMovement movementScript;
+
     private void Awake()
     {
         rbEnemy = GetComponent<Rigidbody2D>();
@@ -52,6 +54,7 @@ public class EnemyController : MonoBehaviour
         currentHealth = health;
         delayAttack = speedAttack;
         enemySprite = GetComponent<SpriteRenderer>();
+        movementScript = GetComponent<EnemyMovement>();
     }
 
     private void Update()
@@ -124,15 +127,6 @@ public class EnemyController : MonoBehaviour
         }   
     }
 
-    private void CheckColors()
-    {
-        float multiplier = isBoss == true ? 100 : 1;
-
-        if(currentHealth < health * multiplier * 0.66f) normalColor = Color.gray;
-
-        if(currentHealth < health * multiplier * 0.33f) normalColor = Color.red;
-    }
-
     public void Kill()
     {
         float damage = currentHealth > maxDamage ? maxDamage : currentHealth;
@@ -151,6 +145,15 @@ public class EnemyController : MonoBehaviour
         enemySprite.color = normalColor;
     }
 
+    private void CheckColors()
+    {
+        float multiplier = isBoss == true ? 50 : 1;
+
+        if(currentHealth < health * multiplier * 0.66f) normalColor = Color.gray;
+
+        if(currentHealth < health * multiplier * 0.33f) normalColor = Color.red;
+    }
+
     public void PushMe(Vector3 direction, float force)
     {
         Vector3 kickForce = (transform.position - direction).normalized * force;
@@ -166,8 +169,7 @@ public class EnemyController : MonoBehaviour
     }
 
     private void Dead()
-    {        
-        currentHealth = health;
+    {           
         GameObject death = Instantiate(deathPrefab, transform.position, Quaternion.identity);
         death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
         CreateBonus();
@@ -185,8 +187,12 @@ public class EnemyController : MonoBehaviour
             //some event
         }
 
-        normalColor = Color.white;
-        gameObject.GetComponent<EnemyMovement>().MakeMeFixed(false);
+        currentHealth = health;
+        ColorBack();
+        movementScript.MakeMeFixed(false);
+        movementScript.StopMoving(false);
+        movementScript.ResetSpeed();
+
         gameObject.SetActive(false);
     }
 
@@ -204,27 +210,33 @@ public class EnemyController : MonoBehaviour
     public void MakeBoss() 
     {
         isBoss                = true;
-        currentHealth        *= 100;
+        currentHealth        *= 50;
         magicAttack          *= 3;
         physicAttack         *= 3;
         transform.localScale *= 2;
         rbEnemy.mass         *= 2;
         exp                  *= 50;
+
+        movementScript.BoostSpeed(0.2f);
+        BossController bossController = gameObject.AddComponent<BossController>();
+        bossController.Init();
     }    
 
     private void ReturnBossToOrdinaryEnemy()
     {
         isBoss                = false;
-        currentHealth        /= 100;
+        currentHealth        /= 50;
         magicAttack          /= 3;
         physicAttack         /= 3;
         transform.localScale /= 2;
         rbEnemy.mass         /= 2;
         exp                  /= 50;
+
+        Destroy(gameObject.GetComponent<BossController>());
     }
 
     private void OnDisable()
     {
-        if(isBoss == true) ReturnBossToOrdinaryEnemy();
+        ResetEnemy();
     }
 }

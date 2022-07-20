@@ -196,6 +196,15 @@ MonoBehaviour:
   - {fileID: -8540936824289033575, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   - {fileID: 4836760467912430716, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   - {fileID: 6453412123980407896, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  spriteListAttack:
+  - {fileID: -4865580889072910247, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  - {fileID: -1416412187749372096, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  - {fileID: -4865580889072910247, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  - {fileID: -1416412187749372096, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  - {fileID: -4865580889072910247, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  - {fileID: -1416412187749372096, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  - {fileID: -4865580889072910247, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
+  - {fileID: -1416412187749372096, guid: b8e34b28f5546a24fb5040c6d23f32df, type: 3}
   actionAfterAnimation: 0
   framerate: 0.1
 --- !u!114 &7373041339029599471

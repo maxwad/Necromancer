@@ -77,6 +77,13 @@ public static class NameManager
         BonusGold
     }
 
+    public enum Animations
+    {
+        Idle,
+        Walk,
+        Attack
+    }
+
     public enum AfterAnimation
     {
         Nothing,
@@ -161,6 +168,13 @@ public static class NameManager
         DestroyEnemies,
         ExpToGold,
         ResurrectUnit
+    }
+
+    public enum BossSpells
+    {
+        InvertMovement = 0,
+        Lightning = 1,
+        ManningLess = 2
     }
 
     public enum BoostSender

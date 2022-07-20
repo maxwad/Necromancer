@@ -15,6 +15,8 @@ public class BattleUIManager : MonoBehaviour
     private Image currentScaleValueImage;
     private float heigthCurrentScaleWrapper;
     private float currentTempExp = 0;
+    [SerializeField] private Color levelUpColor;
+    [SerializeField] private Color normalLevelColor;
 
     [Header("Rigth Column Exp")]
     [SerializeField] private GameObject tempLevelGO;
@@ -25,10 +27,7 @@ public class BattleUIManager : MonoBehaviour
 
     [Header("Exp Effects")]
     private float blinkTime = 0.005f;
-    [SerializeField] private Color levelUpColor;
-    [SerializeField] private Color normalColor;
-    private Coroutine blinkExpCoroutine;
-    private Coroutine blinkLevelCoroutine;
+    private Coroutine blinkOneCoroutine;
 
     [Header("Infirmary")]
     [SerializeField] private RectTransform infirmaryWrapper;
@@ -36,6 +35,9 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TMP_Text infirmaryInfo;
     private float currentMaxInfirmaryCount;
     private float currentInfirmaryCount;
+    [SerializeField] private Color infirmaryUpColor;
+    [SerializeField] private Color infirmaryDownColor;
+    [SerializeField] private Color normalInfirmaryColor;
 
     [Header("Mana")]
     [SerializeField] private RectTransform manaWrapper;
@@ -43,6 +45,9 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TMP_Text manaInfo;
     private float currentMaxManaCount;
     private float currentManaCount;
+    [SerializeField] private Color manaUpColor;
+    [SerializeField] private Color manaDownColor;
+    [SerializeField] private Color normalManaColor;
 
     [Header("Gold")]
     [SerializeField] private TMP_Text goldInfo;
@@ -121,6 +126,7 @@ public class BattleUIManager : MonoBehaviour
         if(mode == false) ResetCanvas();
     }
 
+    #region Helpers
     private void ResetCanvas()
     {
         FillRigthTempLevelScale();
@@ -135,6 +141,41 @@ public class BattleUIManager : MonoBehaviour
 
         FillEnemiesBar(null);
     }
+
+    private void Blink(bool mode, Image panel, Color effectColor, Color normalColor, float divider = 5)
+    {
+        //mode: true - one coroutines at the time, false - few coroutines at the time
+
+        panel.color = effectColor;
+
+        if(mode == true)
+        {
+            if(blinkOneCoroutine != null) StopCoroutine(blinkOneCoroutine);
+
+            blinkOneCoroutine = StartCoroutine(ColorBack(panel, normalColor, divider));
+        }
+        else
+        {
+            StartCoroutine(ColorBack(panel, normalColor, divider));
+        }
+
+    }
+
+    private IEnumerator ColorBack(Image panel, Color normalColor, float divider)
+    {
+        //the bigger divider the slower animation
+
+        float time = 0;
+
+        while(panel.color != normalColor)
+        {
+            time += Time.deltaTime;
+            panel.color = Color.Lerp(panel.color, normalColor, time / divider);
+            yield return new WaitForSeconds(blinkTime);
+        }
+    }
+
+    #endregion
 
     #region TempExp
     private void FillRigthTempLevelScale()
@@ -175,7 +216,7 @@ public class BattleUIManager : MonoBehaviour
         float heightOneExp = heigthCurrentScaleWrapper / scale;
         currentTempExp = value;
         currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentTempExp * heightOneExp);
-        Blink(true, currentScaleValueImage);
+        Blink(true, currentScaleValueImage, levelUpColor, normalLevelColor);
     }
 
     public void TempLevelUp(float oldLevel)
@@ -192,40 +233,7 @@ public class BattleUIManager : MonoBehaviour
         {
             Image imageLevel = itemLevel.GetComponent<Image>();
 
-            if(imageLevel.enabled == true) Blink(false, imageLevel, 100);
-        }
-    }
-
-    private void Blink(bool mode, Image panel, float divider = 5)
-    {
-        //mode: true - exp scale, false - level scale
-
-        panel.color = levelUpColor;
-
-        if(mode == true)
-        {
-            if(blinkExpCoroutine != null) StopCoroutine(blinkExpCoroutine);
-
-            blinkExpCoroutine = StartCoroutine(ColorBack(panel, divider));
-        }
-        else
-        {
-            blinkLevelCoroutine = StartCoroutine(ColorBack(panel, divider));
-        }
-
-    }
-
-    private IEnumerator ColorBack(Image panel, float divider)
-    {
-        //the bigger divider the slower animation
-
-        float time = 0;
-
-        while(panel.color != normalColor)
-        {
-            time += Time.deltaTime;
-            panel.color = Color.Lerp(panel.color, normalColor, time / divider);
-            yield return new WaitForSeconds(blinkTime);
+            if(imageLevel.enabled == true) Blink(false, imageLevel, levelUpColor, normalLevelColor, 100);
         }
     }
 
@@ -235,6 +243,7 @@ public class BattleUIManager : MonoBehaviour
 
     private void FillInfirmary(float max = 0, float current = 0)
     {
+        Color blinkColor = infirmaryUpColor;
         if(max == 0)
         {
             currentMaxInfirmaryCount = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Infirmary);
@@ -242,7 +251,8 @@ public class BattleUIManager : MonoBehaviour
         }
         else
         {
-            currentMaxInfirmaryCount = max;
+            if(currentInfirmaryCount > current) blinkColor = infirmaryDownColor;
+            currentMaxInfirmaryCount = max;            
             currentInfirmaryCount = current;
         }        
 
@@ -251,12 +261,12 @@ public class BattleUIManager : MonoBehaviour
 
         infirmaryValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, widthOneInjured * currentInfirmaryCount);
         infirmaryInfo.text = currentInfirmaryCount.ToString() + "/" + currentMaxInfirmaryCount.ToString();
-
+        Blink(false, infirmaryValue.GetComponent<Image>(), blinkColor, normalInfirmaryColor);
     }
 
     private void UpdateInfirmaryUI(float quantity, float capacity)
     {
-        FillInfirmary(capacity, quantity);
+        FillInfirmary(capacity, quantity);        
     }
 
     #endregion
@@ -265,6 +275,8 @@ public class BattleUIManager : MonoBehaviour
 
     private void FillMana(float max = 0, float current = 0)
     {
+        Color blinkColor = manaUpColor;
+
         if(max == 0)
         {
             currentMaxManaCount = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Mana);
@@ -272,6 +284,7 @@ public class BattleUIManager : MonoBehaviour
         }
         else
         {
+            if(currentManaCount > current) blinkColor = manaDownColor;
             currentMaxManaCount = max;
             currentManaCount = current;
         }
@@ -281,6 +294,8 @@ public class BattleUIManager : MonoBehaviour
         manaValue.GetComponent<Image>().fillAmount = heightMana;
 
         manaInfo.text = currentManaCount.ToString();
+
+        Blink(false, manaValue.GetComponent<Image>(), blinkColor, normalManaColor, 10);
     }
 
     private void UpdateManaUI(float maxValue, float currentValue)

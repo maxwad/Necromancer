@@ -6,6 +6,9 @@ using static NameManager;
 public class SimpleAnimator : MonoBehaviour
 {
     public List<Sprite> spriteList;
+    public List<Sprite> spriteListAttack;
+    private List<Sprite> currentSpriteList = new List<Sprite>();
+
     public AfterAnimation actionAfterAnimation;
     private SpriteRenderer image;
     public float framerate = 0.01f;
@@ -21,6 +24,8 @@ public class SimpleAnimator : MonoBehaviour
         image = GetComponent<SpriteRenderer>();
         if (animating != null) StopCoroutine(animating);
 
+        currentSpriteList = spriteList;
+
         animating = StartCoroutine(Animate());
     }
 
@@ -30,7 +35,7 @@ public class SimpleAnimator : MonoBehaviour
 
         while (true)
         {            
-            foreach (Sprite item in spriteList)
+            foreach (Sprite item in currentSpriteList)
             {
                 yield return waitTime;
 
@@ -61,6 +66,17 @@ public class SimpleAnimator : MonoBehaviour
     public void StopAnimation(bool mode)
     {
         stopAnimation = mode;
+    }
+
+    public void ChangeAnimation(Animations animation)
+    {
+        if(animating != null) StopCoroutine(animating);
+
+        if(animation == Animations.Attack && spriteListAttack.Count != 0) currentSpriteList = spriteListAttack;
+
+        if(animation == Animations.Walk && spriteList.Count != 0) currentSpriteList = spriteList;
+
+        animating = StartCoroutine(Animate());
     }
 
     public void SetSpeed(float newSpeed)
