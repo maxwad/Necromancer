@@ -320,9 +320,13 @@ public class SpellLibrary : MonoBehaviour
     ///////////////////////////////////////
     ///////////////////////////////////////
     ///////////////////////////////////////
-    ///
+
+    #region Boss's Spells
+
     private List<BossSpells> currentBossSpellList = new List<BossSpells>();
     private Coroutine bossCoroutine;
+
+    [SerializeField] private GameObject lightningPrefab;
 
     public void ActivateBossSpell(BossSpells bossSpell, bool mode, float duration = 0)
     {
@@ -387,7 +391,7 @@ public class SpellLibrary : MonoBehaviour
         {
             while(true)
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(2f);
                 GlobalStorage.instance.hero.SpendMana(quantity);
             }           
         }
@@ -400,11 +404,14 @@ public class SpellLibrary : MonoBehaviour
         {
             while(true)
             {
-                yield return new WaitForSeconds(1f);
-
+                yield return new WaitForSeconds(2f);
+                GameObject ray = Instantiate(lightningPrefab, GlobalStorage.instance.hero.transform.position, Quaternion.identity);
+                ray.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
             }
         }
     }
+
+    #endregion
 
     private void OnEnable()
     {

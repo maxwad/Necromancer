@@ -149,6 +149,8 @@ public class EnemyController : MonoBehaviour
     {
         float multiplier = isBoss == true ? 50 : 1;
 
+        if(currentHealth > health * multiplier * 0.66f) normalColor = Color.white;
+
         if(currentHealth < health * multiplier * 0.66f) normalColor = Color.gray;
 
         if(currentHealth < health * multiplier * 0.33f) normalColor = Color.red;
@@ -232,6 +234,7 @@ public class EnemyController : MonoBehaviour
         rbEnemy.mass         /= 2;
         exp                  /= 50;
 
+        gameObject.GetComponent<BossController>().StopSpelling();
         Destroy(gameObject.GetComponent<BossController>());
     }
 

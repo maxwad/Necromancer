@@ -12,7 +12,7 @@ public class BattleCamera : MonoBehaviour
     private float shakePercent = 1.5f / 100;
     private float shakingInterval = 0.05f;
     private float timeCount = 0f;
-    private float shakingDuring = 1f;
+    private float shakingDuring = 0.5f;
     private Coroutine coroutine;
 
     private void Start()
@@ -35,7 +35,7 @@ public class BattleCamera : MonoBehaviour
 
     #region Shaking
 
-    public void ResetCameraShakingPoint(float shakingTime = 1f)
+    public void ResetCameraShakingPoint(float shakingTime = 0.5f)
     {
         timeCount = 0f;
         Camera.main.orthographicSize = originalCameraSize;

@@ -6,8 +6,8 @@ using static NameManager;
 
 public class BossController : MonoBehaviour
 {
-    private float delayAttack = 10f;
-    private float timeAttack = 5f;
+    private float delayAttack = 20f;
+    private float timeAttack = 10f;
     private float timeStep = 1f;
 
     private float radiusPlayerSearch = 20;
@@ -17,6 +17,7 @@ public class BossController : MonoBehaviour
 
     private bool isSpelling = false;
     private BossSpells spell;
+    private Coroutine spelling;
 
     public void Init()
     {
@@ -25,9 +26,14 @@ public class BossController : MonoBehaviour
         player = GlobalStorage.instance.battlePlayer;
 
         //spell = (BossSpells)UnityEngine.Random.Range(0, Enum.GetValues(typeof(BossSpells)).Length);
-        spell = (BossSpells)2;
-        StartCoroutine(Spelling());
+        spell = (BossSpells)1;
+        spelling = StartCoroutine(Spelling());
 
+    }
+
+    public void StopSpelling()
+    {
+        if(spelling != null) StopCoroutine(spelling);
     }
 
     private IEnumerator Spelling()
@@ -62,9 +68,7 @@ public class BossController : MonoBehaviour
             movementScript.StopMoving(false);
             animatorScript.ChangeAnimation(Animations.Walk);
             isSpelling = false;
-        }  
-
-        
+        }        
     }
 
     private void Spell(float duration)
