@@ -35,7 +35,7 @@ public class UnitBoostManager : MonoBehaviour
         return enemy;
     }
 
-    private void SetBoost(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Kosar)
+    private void SetBoost(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Militias)
     {
         Debug.Log("We set " + addBoost + " to " + stat + " boost = " + value);
     }

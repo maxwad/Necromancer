@@ -53,7 +53,7 @@ public class WeaponStorage : MonoBehaviour
     {
         GameObject weapon = Instantiate(unitController.attackTool);
 
-        weapon.transform.position = transform.position;
+        weapon.transform.position = transform.position + new Vector3 (0, transform.localScale.y / 2, 0);
         weapon.transform.localScale = new Vector3(unitController.size, unitController.size, unitController.size);
         weapon.transform.SetParent(transform);
 

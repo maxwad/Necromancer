@@ -88,7 +88,7 @@ public class ObjectsPoolManager : MonoBehaviour
         return obj;
     }
 
-    public GameObject GetObjectFromPool(ObjectPool type, EnemiesTypes enemiesTypes = EnemiesTypes.Goblin)
+    public GameObject GetObjectFromPool(ObjectPool type, EnemiesTypes enemiesTypes = EnemiesTypes.Bat)
     {
         GameObject obj = null;
 

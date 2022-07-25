@@ -6,14 +6,14 @@ public static class NameManager
 {
     public enum UnitsTypes
     {
-        Kosar,
-        Ranger,
-        Meg,
-        Skeleton,
-        Monk,
-        Knight,
-        Riddick,
-        Hulk
+        Militias,
+        Rangers,
+        Barbarians,
+        Spearmen,
+        Monks,
+        Priests,
+        Mercenaries,
+        Paladins
     }
 
     public enum UnitsHouses
@@ -58,9 +58,16 @@ public static class NameManager
 
     public enum EnemiesTypes
     {
-        Goblin,
+        Bat,
         Zombie,
-        Samurai
+        Monster,
+        Banshi,
+        Fish,
+        Werewolf,
+        Mummy,
+        Skeleton,
+        Crab,
+        Mantis
     }
 
     public enum EnemyAbilities 

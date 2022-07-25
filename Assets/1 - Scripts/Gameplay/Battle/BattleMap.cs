@@ -44,7 +44,6 @@ public class BattleMap : MonoBehaviour
 
     public List<GameObject> obstaclesPrefabs;
     private List<BattleObjectStats> obstaclesStats = new List<BattleObjectStats>();   
-    private List<float> obstaclesAngles = new List<float> { 0f, 90f, 180f, 270f};
 
 
     [Header("Torches")]
@@ -182,32 +181,23 @@ public class BattleMap : MonoBehaviour
         int battleMapSizeY = battleArray.GetLength(1);
 
         int randomIndex;
-        float randomAngle;
         GameObject currentObstacle;
         BattleObjectStats currentStats;
         float probability;
         int obstacleSizeX;
         int obstacleSizeY;
-        int obstacleTempSize;
         int obstacleGap;
 
         void InitializeCurrentObstacle()
         {
             randomIndex     = Random.Range(0, obstaclesPrefabs.Count);
-            randomAngle     = obstaclesAngles[Random.Range(0, obstaclesAngles.Count)];
+
             currentObstacle = obstaclesPrefabs[randomIndex];
             currentStats    = obstaclesStats[randomIndex];
             obstacleSizeX   = currentStats.sizeX;
             obstacleSizeY   = currentStats.sizeY;
             probability     = currentStats.probability;
             obstacleGap     = currentStats.gap;
-
-            if (randomAngle == 90 || randomAngle == 270)
-            {
-                obstacleTempSize = obstacleSizeX;
-                obstacleSizeX = obstacleSizeY;
-                obstacleSizeY = obstacleTempSize;
-            }
         }       
 
         InitializeCurrentObstacle();
@@ -260,7 +250,6 @@ public class BattleMap : MonoBehaviour
                 if (probability >= Random.Range(0, 100))
                 {
                     GameObject obstacle = Instantiate(currentObstacle, new Vector3(x, y, spawnZOffset), Quaternion.identity);
-                    obstacle.transform.eulerAngles = new Vector3(0, 0, randomAngle);
                     obstacle.transform.SetParent(obstaclesContainer.transform);
                     obstacle.SetActive(false);
                     obstaclesOnMap.Add(obstacle);
@@ -405,9 +394,9 @@ public class BattleMap : MonoBehaviour
         battleArray[xPos, yPos] = false;
 
         //mark filled coordinates as false
-        for (int checkX = -sizeX; checkX < sizeX / 2 + gap; checkX++)
+        for (int checkX = -gap -sizeX / 2; checkX < sizeX / 2 + gap; checkX++)
         {
-            for (int checkY = -sizeY; checkY < sizeY / 2 + gap; checkY++)
+            for (int checkY = -gap - sizeY / 2; checkY < sizeY / 2 + gap; checkY++)
             {
                 if (battleArray[xPos + checkX, yPos + checkY] == !value)
                 {

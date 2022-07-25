@@ -103,9 +103,9 @@ public static class EventManager
     //ACTIVATION:
     // - SpellLibrary
     //
-    public delegate void BoostUnitStatEvent(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Kosar);
+    public delegate void BoostUnitStatEvent(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Militias);
     public static event BoostUnitStatEvent BoostUnitStat;
-    public static void OnBoostUnitStatEvent(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Kosar) => BoostUnitStat?.Invoke(boostAll, addBoost, sender, stat, value, types);
+    public static void OnBoostUnitStatEvent(bool boostAll, bool addBoost, BoostSender sender, UnitStats stat, float value, UnitsTypes types = UnitsTypes.Militias) => BoostUnitStat?.Invoke(boostAll, addBoost, sender, stat, value, types);
     #endregion
 
 
