@@ -10,11 +10,8 @@ public class BattleUIManager : MonoBehaviour
     public Canvas uiCanvas;
 
     [Header("Left Column Exp")]
-    [SerializeField] private RectTransform currentScaleValueWrapper;
     [SerializeField] private RectTransform currentScaleValue;
     private Image currentScaleValueImage;
-    private float heigthCurrentScaleWrapper;
-    private float currentTempExp = 0;
     [SerializeField] private Color levelUpColor;
     [SerializeField] private Color normalLevelColor;
 
@@ -30,7 +27,6 @@ public class BattleUIManager : MonoBehaviour
     private Coroutine blinkOneCoroutine;
 
     [Header("Infirmary")]
-    [SerializeField] private RectTransform infirmaryWrapper;
     [SerializeField] private RectTransform infirmaryValue;
     [SerializeField] private TMP_Text infirmaryInfo;
     private float currentMaxInfirmaryCount;
@@ -40,7 +36,6 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private Color normalInfirmaryColor;
 
     [Header("Mana")]
-    [SerializeField] private RectTransform manaWrapper;
     [SerializeField] private RectTransform manaValue;
     [SerializeField] private TMP_Text manaInfo;
     private float currentMaxManaCount;
@@ -58,7 +53,7 @@ public class BattleUIManager : MonoBehaviour
     private List<SpellStat> currentSpells = new List<SpellStat>();
     [SerializeField] private GameObject spellButtonContainer;
     private List<Button> currentSpellsButtons = new List<Button>();
-    private int countOfActiveSpells = 10;
+    private int countOfActiveSpells = 5;
     private int currentSpellIndex = -1;
 
     [Header("Enemy")]
@@ -185,10 +180,7 @@ public class BattleUIManager : MonoBehaviour
         foreach(Transform child in currentTempLevelWrapper.transform)
             Destroy(child.gameObject);
 
-        heigthCurrentScaleWrapper = currentScaleValueWrapper.rect.height;
-        currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
-        currentTempExp = 0;
-
+        currentScaleValueImage.fillAmount = 0;
         currentMaxLevel = GlobalStorage.instance.player.GetComponent<PlayerStats>().GetStartParameter(PlayersStats.Level);
 
         heigthOneLevel = currentTempLevelWrapper.rect.height / currentMaxLevel;
@@ -213,9 +205,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void UpgradeScale(float scale, float value)
     {
-        float heightOneExp = heigthCurrentScaleWrapper / scale;
-        currentTempExp = value;
-        currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentTempExp * heightOneExp);
+        currentScaleValueImage.fillAmount = value / scale;
         Blink(true, currentScaleValueImage, levelUpColor, normalLevelColor);
     }
 
@@ -224,10 +214,7 @@ public class BattleUIManager : MonoBehaviour
         levelList[(int)oldLevel].GetComponent<Image>().enabled = true;
 
         if(oldLevel + 1 < levelList.Count)
-        {
-            currentTempExp = 0;
-            currentScaleValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
-        }
+            currentScaleValueImage.fillAmount = 0;
 
         foreach(var itemLevel in levelList)
         {
@@ -254,14 +241,15 @@ public class BattleUIManager : MonoBehaviour
             if(currentInfirmaryCount > current) blinkColor = infirmaryDownColor;
             currentMaxInfirmaryCount = max;            
             currentInfirmaryCount = current;
-        }        
+        }
 
-        float widthInfirmary = infirmaryWrapper.rect.width;
-        float widthOneInjured = widthInfirmary / currentMaxInfirmaryCount;
+        Image infirmaryScale = infirmaryValue.GetComponent<Image>();
 
-        infirmaryValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, widthOneInjured * currentInfirmaryCount);
+        float widthInfirmary = currentInfirmaryCount / currentMaxInfirmaryCount;
+
+        infirmaryScale.fillAmount = widthInfirmary;
         infirmaryInfo.text = currentInfirmaryCount.ToString() + "/" + currentMaxInfirmaryCount.ToString();
-        Blink(false, infirmaryValue.GetComponent<Image>(), blinkColor, normalInfirmaryColor);
+        Blink(false, infirmaryScale, blinkColor, normalInfirmaryColor);
     }
 
     private void UpdateInfirmaryUI(float quantity, float capacity)
@@ -289,13 +277,14 @@ public class BattleUIManager : MonoBehaviour
             currentManaCount = current;
         }
 
-        float heightMana = currentManaCount / currentMaxManaCount;
+        Image manaScale = manaValue.GetComponent<Image>();
+        float widthMana = currentManaCount / currentMaxManaCount;
 
-        manaValue.GetComponent<Image>().fillAmount = heightMana;
+        manaScale.fillAmount = widthMana;
 
         manaInfo.text = currentManaCount.ToString();
 
-        Blink(false, manaValue.GetComponent<Image>(), blinkColor, normalManaColor, 10);
+        Blink(false, manaScale, blinkColor, normalManaColor, 10);
     }
 
     private void UpdateManaUI(float maxValue, float currentValue)
@@ -340,7 +329,7 @@ public class BattleUIManager : MonoBehaviour
 
             currentSpellsButtons.Clear();
 
-            for(int i = 0; i < currentSpells.Count; i++)
+            for(int i = 0; i < countOfActiveSpells; i++)
             {
                 int slotNumber = -1;
                 if(i < countOfActiveSpells)
@@ -358,7 +347,7 @@ public class BattleUIManager : MonoBehaviour
         }
         else
         {
-            for(int i = 0; i < currentSpells.Count; i++)
+            for(int i = 0; i < countOfActiveSpells; i++)
             {
                 if(i == numberOfSpell)
                 {
@@ -387,10 +376,9 @@ public class BattleUIManager : MonoBehaviour
     {
         if(enemy != null) currentEnemiesCount--;
 
-        float widthEnemiesBar = enemiesWrapper.rect.width;
-        float widthOneEnemiesBarPiece = widthEnemiesBar / maxEnemiesCount;
+        float widthEnemyScale = (maxEnemiesCount - currentEnemiesCount) / maxEnemiesCount;
 
-        enemiesValue.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, widthOneEnemiesBarPiece * (maxEnemiesCount - currentEnemiesCount));
+        enemiesValue.GetComponent<Image>().fillAmount = widthEnemyScale;
         enemiesInfo.text = currentEnemiesCount.ToString();
     }
 

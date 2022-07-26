@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -689341299
   m_SortingLayer: 2
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 927b119e760eb214aa790a3f2582dbf7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d3746ca7f4a7ac8409c6bd2d48424e20, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -154,5 +154,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bottleDeath: {fileID: 5129068117508607062, guid: 494278796b523b243972145a26dde814, type: 3}
   bottleShadowPrefab: {fileID: 1132100649567338931, guid: fa6a8d7f28592b942a763f8f8426f2bb, type: 3}
-  bottleShadow: {fileID: 0}
   speed: 5

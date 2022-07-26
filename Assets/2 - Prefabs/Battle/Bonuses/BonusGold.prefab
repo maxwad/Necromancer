@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2605775561934873846}
   - component: {fileID: 3906939543600408266}
   - component: {fileID: 5282104992570807004}
+  - component: {fileID: 6373391860362515875}
   m_Layer: 0
   m_Name: BonusGold
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 310659111504139924}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.03, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -73,8 +74,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: -8199286388317555849, guid: 89ee45412af5c4f49ab87810185e2d0b, type: 3}
+  m_SortingOrder: 3
+  m_Sprite: {fileID: 3220480761598718032, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,7 +101,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.38
+  m_Radius: 0.2791772
 --- !u!114 &5282104992570807004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,5 +116,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bonusType: 2
   baseValue: 1
+  originalBaseValue: 0
   value: 1
   isFromPoolObject: 1
+--- !u!114 &6373391860362515875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310659111504139924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4955e2c422d8e3845b26019efc478f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteList:
+  - {fileID: 3220480761598718032, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -5482550628693517761, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -8261976256581902436, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -4906993996087406195, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  spriteListAttack: []
+  actionAfterAnimation: 0
+  framerate: 0.2

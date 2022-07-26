@@ -50,10 +50,11 @@ public class BonusController : MonoBehaviour
         while(player.activeInHierarchy == true && isActivate == true)
         {
             float step = (speed + currentInertion) * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
-            if(currentInertion < 0) currentInertion += 0.5f;
 
-            yield return new WaitForSeconds(0.01f);
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+            if(currentInertion < 0) currentInertion += 0.05f;
+
+            yield return new WaitForSeconds(0.001f);
         }
     }
 

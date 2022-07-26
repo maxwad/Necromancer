@@ -186,8 +186,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteList:
-  - {fileID: -4669921857946425314, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}
-  - {fileID: -731756946235510198, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}
+  - {fileID: -7945901444079236628, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}
+  - {fileID: -8421458170528590454, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}
+  - {fileID: -1147401495359466748, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}
+  - {fileID: 8414478535512612329, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}
   spriteListAttack:
   - {fileID: -7945901444079236628, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}
   - {fileID: 8414478535512612329, guid: 4d7a02af42c41584d9d5e709e3d22033, type: 3}

@@ -255,9 +255,11 @@ public class WeaponStorage : MonoBehaviour
             {
                 if(y == 0) angleZ = unitController.unitSprite.flipX == true ? -180 : 0;
 
+                if(y == 0 && unitController.unitSprite.flipX == true) weapon.GetComponent<SpriteRenderer>().flipY = true;
+
                 if(y > 0) angleZ = -90;
 
-                if(y < 0) angleZ = 90;
+                if(y < 0) angleZ = 90;                                
             }
 
             if(x > 0)

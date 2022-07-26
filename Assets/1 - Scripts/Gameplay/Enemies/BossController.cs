@@ -34,6 +34,7 @@ public class BossController : MonoBehaviour
     public void StopSpelling()
     {
         if(spelling != null) StopCoroutine(spelling);
+        StopSpell();
     }
 
     private IEnumerator Spelling()
@@ -74,5 +75,12 @@ public class BossController : MonoBehaviour
     private void Spell(float duration)
     {        
         GlobalStorage.instance.spellManager.GetComponent<SpellLibrary>().ActivateBossSpell(spell, true, duration);
+    }
+
+    private void StopSpell()
+    {
+        //we need this checking because when we turn off Editor, at this moment Unity had already destroyed most of objects and we receive error
+        if(GlobalStorage.instance != null && GlobalStorage.instance.spellManager != null)
+            GlobalStorage.instance.spellManager.GetComponent<SpellLibrary>().ActivateBossSpell(spell, false);
     }
 }

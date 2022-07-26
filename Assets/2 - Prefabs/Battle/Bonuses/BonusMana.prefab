@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2605775561934873846}
   - component: {fileID: 3906939543600408266}
   - component: {fileID: 8147564306635560728}
+  - component: {fileID: 2774253302354803239}
   m_Layer: 0
   m_Name: BonusMana
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 310659111504139924}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.03, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -73,8 +74,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: -4722383512201705073, guid: 89ee45412af5c4f49ab87810185e2d0b, type: 3}
+  m_SortingOrder: 3
+  m_Sprite: {fileID: 6800968708949722761, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,9 +99,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.015344918}
   serializedVersion: 2
-  m_Radius: 1.38
+  m_Radius: 0.3288687
 --- !u!114 &8147564306635560728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,5 +116,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bonusType: 1
   baseValue: 5
+  originalBaseValue: 0
   value: 2
   isFromPoolObject: 0
+--- !u!114 &2774253302354803239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310659111504139924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4955e2c422d8e3845b26019efc478f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteList:
+  - {fileID: 6800968708949722761, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -1801375859302902750, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  spriteListAttack: []
+  actionAfterAnimation: 0
+  framerate: 0.4

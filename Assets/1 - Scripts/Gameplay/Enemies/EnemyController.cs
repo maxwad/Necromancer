@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using static NameManager;
+using UnityEditor.Experimental.GraphView;
 
 public class EnemyController : MonoBehaviour
 {
@@ -235,6 +236,7 @@ public class EnemyController : MonoBehaviour
         exp                  /= 50;
 
         gameObject.GetComponent<BossController>().StopSpelling();
+        //GlobalStorage.instance.spellManager.GetComponent<SpellLibrary>().AbortBossSpell();
         Destroy(gameObject.GetComponent<BossController>());
     }
 

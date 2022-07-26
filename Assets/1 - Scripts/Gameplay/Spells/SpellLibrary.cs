@@ -378,6 +378,11 @@ public class SpellLibrary : MonoBehaviour
         }
     }
 
+    public void AbortBossSpell()
+    {
+        DeactivateAllBossSpells(true);
+    }
+
     private void InvertMovement(bool mode)
     {
         GlobalStorage.instance.battlePlayer.MovementInverting(mode);
