@@ -81,7 +81,9 @@ public static class NameManager
         DamageText,
         BonusExp,
         Torch,
-        BonusGold
+        BonusGold,
+        BloodSpot,
+        EnemyDeath
     }
 
     public enum Animations

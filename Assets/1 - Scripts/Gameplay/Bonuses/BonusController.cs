@@ -14,8 +14,8 @@ public class BonusController : MonoBehaviour
 
     private GameObject player;
     private bool isActivate = false;
-    private float speed = 40f;
-    private float inertion = -50f;
+    private float speed = 30f;
+    private float inertion = -32f;
     private float currentInertion;
 
     private void Awake()
@@ -52,7 +52,7 @@ public class BonusController : MonoBehaviour
             float step = (speed + currentInertion) * Time.deltaTime;
 
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
-            if(currentInertion < 0) currentInertion += 0.05f;
+            if(currentInertion < 0) currentInertion += 0.1f;
 
             yield return new WaitForSeconds(0.001f);
         }

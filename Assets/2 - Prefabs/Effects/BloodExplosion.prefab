@@ -103,5 +103,6 @@ MonoBehaviour:
   - {fileID: -4061398408948389232, guid: 3f09a2d1863352247aef7ef15c3deac7, type: 3}
   - {fileID: 9029276005994306484, guid: 3f09a2d1863352247aef7ef15c3deac7, type: 3}
   - {fileID: 4706288812666162694, guid: 3f09a2d1863352247aef7ef15c3deac7, type: 3}
-  actionAfterAnimation: 1
+  spriteListAttack: []
+  actionAfterAnimation: 2
   framerate: 0.1

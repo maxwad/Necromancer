@@ -9,6 +9,7 @@ public class EnemySpawner : MonoBehaviour
     private List<int> enemiesQuantityList;
     private int commonQuantity = 0;
     private int maxQuantity = 0;
+    private int removeQuantity = 0;
     //[SerializeField] private GameObject enemiesContainer;
     public List<GameObject> enemiesOnTheMap = new List<GameObject>();
 
@@ -68,6 +69,7 @@ public class EnemySpawner : MonoBehaviour
     public void ReadyToSpawnEnemy()
     {
         canISpawn = true;
+        removeQuantity = 0;
         battleMap = GetComponent<BattleMap>().battleArray;
         spawnCoroutine = StartCoroutine(SpawnEnemy());
     }
@@ -89,7 +91,8 @@ public class EnemySpawner : MonoBehaviour
             if (commonQuantity == 0)
             {
                 canISpawn = false;
-                StopCoroutine(spawnCoroutine);
+                if(spawnCoroutine != null) StopCoroutine(spawnCoroutine);
+                
                 break;
             }
 
@@ -177,7 +180,22 @@ public class EnemySpawner : MonoBehaviour
     public void UpdateEnemiesList(GameObject enemy)
     {
         enemiesOnTheMap.Remove(enemy);
+        removeQuantity++;
+
+        SpawnControl();        
     }     
+
+    public void SpawnControl()
+    {
+        //sometimes we have difference between data and i don't know why, i had chacked everithing
+        //SOLVED, NEED TO OBSERVE
+        if((removeQuantity + commonQuantity + enemiesOnTheMap.Count) != maxQuantity)
+        {
+            int difference = (removeQuantity + commonQuantity + enemiesOnTheMap.Count) - maxQuantity;
+
+            Debug.Log("CONTROL " + difference);
+        }       
+    }
 
     private void OnEnable()
     {

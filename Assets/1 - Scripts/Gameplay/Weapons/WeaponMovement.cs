@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
 using UnityEngine;
 using static NameManager;
 
 public class WeaponMovement : MonoBehaviour
 {
     UnitController controller;
+    WeaponStorage weaponStorage;
     private bool isReadyToWork = false;
 
     private Rigidbody2D rbWeapon;
@@ -59,10 +58,11 @@ public class WeaponMovement : MonoBehaviour
     }
 
     #region Helpers
-    public void SetSettings(UnitController unitController)
+    public void SetSettings(UnitController unitController, WeaponStorage weaponSource)
     {
         controller = unitController;
         unitSprite = unitController.unitSprite;
+        weaponStorage = weaponSource;
     }
 
     public void ActivateWeapon(UnitController unitController, int index = 0)
@@ -106,6 +106,11 @@ public class WeaponMovement : MonoBehaviour
         if(bottleShadow != null) Destroy(bottleShadow);
 
         Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        weaponStorage.isWeaponWork = false;
     }
 
     #endregion
@@ -186,7 +191,7 @@ public class WeaponMovement : MonoBehaviour
         {
             float lifetime = 2f;
             float currentSize;
-            float sizeStep = 0.05f;
+            float sizeStep = 0.075f;
 
             while(true)
             {                
@@ -288,7 +293,7 @@ public class WeaponMovement : MonoBehaviour
 
     private void ActivateBottle() 
     {
-        float minRadiusMovement = 3;
+        float minRadiusMovement = 4;
         float maxRadiusMovement = 6;
         float torqueForce = 300;
 

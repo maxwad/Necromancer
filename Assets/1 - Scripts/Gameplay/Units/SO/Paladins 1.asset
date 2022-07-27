@@ -22,7 +22,7 @@ MonoBehaviour:
   physicDefence: 2
   magicAttack: 1
   magicDefence: 1
-  speedAttack: 1
+  speedAttack: 2
   size: 1
   level: 1
   UnitAbility: 7

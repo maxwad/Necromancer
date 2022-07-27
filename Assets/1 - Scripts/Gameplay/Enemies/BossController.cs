@@ -25,8 +25,9 @@ public class BossController : MonoBehaviour
         animatorScript = GetComponent<SimpleAnimator>();
         player = GlobalStorage.instance.battlePlayer;
 
-        //spell = (BossSpells)UnityEngine.Random.Range(0, Enum.GetValues(typeof(BossSpells)).Length);
-        spell = (BossSpells)1;
+        spell = (BossSpells)UnityEngine.Random.Range(0, Enum.GetValues(typeof(BossSpells)).Length);
+        //spell = (BossSpells)1;
+
         spelling = StartCoroutine(Spelling());
 
     }

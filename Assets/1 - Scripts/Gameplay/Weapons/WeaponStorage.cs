@@ -4,7 +4,7 @@ using static NameManager;
 
 public class WeaponStorage : MonoBehaviour
 {
-    private bool isWeaponWork = false;
+    [HideInInspector] public bool isWeaponWork = false;
 
     public void Attack(UnitController unitController)
     {
@@ -58,7 +58,7 @@ public class WeaponStorage : MonoBehaviour
         weapon.transform.SetParent(transform);
 
         weapon.GetComponent<WeaponDamage>().SetSettings(unitController);
-        weapon.GetComponent<WeaponMovement>().SetSettings(unitController);
+        weapon.GetComponent<WeaponMovement>().SetSettings(unitController, this);
 
         return weapon;
     }

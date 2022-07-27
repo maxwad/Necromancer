@@ -14,13 +14,18 @@ public class ObjectsPoolManager : MonoBehaviour
     public GameObject torch;
     public GameObject bonusExp;
     public GameObject bonusGold;
+    public GameObject enemyDeath;
+    public GameObject bloodSpot;
 
     //storages for created objects
+    private List<List<GameObject>> allLists = new List<List<GameObject>>();
     private Dictionary<EnemiesTypes, List<GameObject>> enemiesDict = new Dictionary<EnemiesTypes, List<GameObject>>();
     private List<GameObject> damageTextList = new List<GameObject>();
     private List<GameObject> torchesList    = new List<GameObject>();
     private List<GameObject> bonusExpList   = new List<GameObject>();
     private List<GameObject> bonusGoldList  = new List<GameObject>();
+    private List<GameObject> enemyDeathList = new List<GameObject>();
+    private List<GameObject> bloodSpotList  = new List<GameObject>();
 
 
     private int elementsCount = 10;
@@ -58,24 +63,47 @@ public class ObjectsPoolManager : MonoBehaviour
         {
             damageTextList.Add(CreateObject(damageText));
         }
+        allLists.Add(damageTextList);
+
 
         //creating List with tourches
         for (int i = 0; i < elementsCount; i++)
         {
             torchesList.Add(CreateObject(torch));
         }
+        allLists.Add(torchesList);
+
 
         //creating List with bonusExp
         for (int i = 0; i < elementsCount; i++)
         {
             bonusExpList.Add(CreateObject(bonusExp));
         }
+        allLists.Add(bonusExpList);
+
 
         //creating List with bonusGold
         for(int i = 0; i < elementsCount; i++)
         {
             bonusGoldList.Add(CreateObject(bonusGold));
         }
+        allLists.Add(bonusGoldList);
+
+
+        //creating List with enemyDeath
+        for(int i = 0; i < elementsCount; i++)
+        {
+            enemyDeathList.Add(CreateObject(enemyDeath));
+        }
+        allLists.Add(enemyDeathList);
+
+
+        //creating List with bloodSpot
+        for(int i = 0; i < elementsCount; i++)
+        {
+            bloodSpotList.Add(CreateObject(bloodSpot));
+        }
+        allLists.Add(bloodSpotList);
 
     }
 
@@ -108,9 +136,16 @@ public class ObjectsPoolManager : MonoBehaviour
                 currentObjectsList = bonusExpList;
                 break;
 
-
             case ObjectPool.BonusGold:
                 currentObjectsList = bonusGoldList;
+                break;
+
+            case ObjectPool.EnemyDeath:
+                currentObjectsList = enemyDeathList;
+                break;
+
+            case ObjectPool.BloodSpot:
+                currentObjectsList = bloodSpotList;
                 break;
 
         }
@@ -139,7 +174,7 @@ public class ObjectsPoolManager : MonoBehaviour
 
     //TODO: check later how many objects we have in pull after few battle
     //if it's too match - clear it to initial value
-    private void AllObjectsFalse()
+    private void AllObjectsFalseAfterBattle()
     {
         //clear enemy after battle
         for (int x = 0; x < enemyPrefabsList.Count; x++)
@@ -153,38 +188,46 @@ public class ObjectsPoolManager : MonoBehaviour
             }
         }
 
-        //clear damageText after battle
-        for (int i = 0; i < damageTextList.Count; i++)
+        foreach(var itemList in allLists)
         {
-            damageTextList[i].SetActive(false);
+            for(int i = 0; i < itemList.Count; i++)
+            {
+                itemList[i].SetActive(false);
+            }
         }
 
-        //clear torches after battle
-        for (int i = 0; i < torchesList.Count; i++)
-        {
-            torchesList[i].SetActive(false);
-        }
+        ////clear damageText after battle
+        //for (int i = 0; i < damageTextList.Count; i++)
+        //{
+        //    damageTextList[i].SetActive(false);
+        //}
 
-        //clear bonusExp after battle
-        for (int i = 0; i < bonusExpList.Count; i++)
-        {
-            bonusExpList[i].SetActive(false);
-        }
+        ////clear torches after battle
+        //for (int i = 0; i < torchesList.Count; i++)
+        //{
+        //    torchesList[i].SetActive(false);
+        //}
 
-        //clear bonusGold after battle
-        for(int i = 0; i < bonusGoldList.Count; i++)
-        {
-            bonusGoldList[i].SetActive(false);
-        }
+        ////clear bonusExp after battle
+        //for (int i = 0; i < bonusExpList.Count; i++)
+        //{
+        //    bonusExpList[i].SetActive(false);
+        //}
+
+        ////clear bonusGold after battle
+        //for(int i = 0; i < bonusGoldList.Count; i++)
+        //{
+        //    bonusGoldList[i].SetActive(false);
+        //}
     }
 
     private void OnEnable()
     {
-        EventManager.EndOfBattle += AllObjectsFalse;
+        EventManager.EndOfBattle += AllObjectsFalseAfterBattle;
     }
 
     private void OnDisable()
     {
-        EventManager.EndOfBattle -= AllObjectsFalse;
+        EventManager.EndOfBattle -= AllObjectsFalseAfterBattle;
     }
 }

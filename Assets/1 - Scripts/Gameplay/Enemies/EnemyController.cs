@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using static NameManager;
-using UnityEditor.Experimental.GraphView;
 
 public class EnemyController : MonoBehaviour
 {
@@ -36,8 +35,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject damageNote;
     private Color colorDamage = Color.red;
 
-    [SerializeField] private GameObject deathPrefab; 
-
     private HeroController hero;
     private Rigidbody2D rbEnemy;
     private float pushForce = 4000f;
@@ -66,6 +63,12 @@ public class EnemyController : MonoBehaviour
         {
            // Debug.Log(exp);
         }        
+    }
+
+    private void LateUpdate()
+    {
+        // we need check for death here because enemy can get much damage at the same time and activate few dead functions
+        if(currentHealth <= 0) Dead();
     }
 
     public void Initialize(Enemy stats = null)
@@ -123,8 +126,7 @@ public class EnemyController : MonoBehaviour
             ShowDamage(damage, colorDamage);
 
             if(forceDirection != Vector3.zero) PushMe(forceDirection, pushForce);
-
-            if(currentHealth <= 0) Dead();
+            
         }   
     }
 
@@ -173,8 +175,14 @@ public class EnemyController : MonoBehaviour
 
     private void Dead()
     {           
-        GameObject death = Instantiate(deathPrefab, transform.position, Quaternion.identity);
-        death.transform.SetParent(GlobalStorage.instance.effectsContainer.transform);
+        GameObject death = GlobalStorage.instance.objectsPoolManager.GetObjectFromPool(ObjectPool.EnemyDeath);
+        death.transform.position = transform.position;
+        death.SetActive(true);
+
+        GameObject bloodSpot = GlobalStorage.instance.objectsPoolManager.GetObjectFromPool(ObjectPool.BloodSpot);
+        bloodSpot.transform.position = transform.position;
+        bloodSpot.SetActive(true);
+
         CreateBonus();
 
         EventManager.OnEnemyDestroyedEvent(gameObject);

@@ -81,7 +81,7 @@ public class SimpleAnimator : MonoBehaviour
 
     public void SetSpeed(float newSpeed)
     {
-        StopCoroutine(animating);
+        if(animating != null) StopCoroutine(animating);
 
         framerate = newSpeed;
         animating = StartCoroutine(Animate());

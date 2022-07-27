@@ -99,8 +99,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -2.2212632, y: 0.09026394}
-  m_Size: {x: 4.4425273, y: 1.5998274}
+  m_Offset: {x: -2.2212632, y: 0.7}
+  m_Size: {x: 4.4425273, y: 1.6}
   m_Direction: 1
 --- !u!114 &4245415472375724151
 MonoBehaviour:
@@ -130,4 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22eb562bb5ae9c84b94ee96a49c0a2c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bottleDeath: {fileID: 0}
+  bottleShadowPrefab: {fileID: 0}
   speed: 1
