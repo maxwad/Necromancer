@@ -2156,12 +2156,12 @@ MonoBehaviour:
   - {fileID: 980100146850805271, guid: 9b2bd29149846bf4baa49e166ad33974, type: 3}
   - {fileID: 980100146850805271, guid: cccb166143f25b2498c7e282fc49141d, type: 3}
   - {fileID: 980100146850805271, guid: f6e8bb706f1df2c4aa08cba939f1fe69, type: 3}
+  - {fileID: 980100146850805271, guid: dcf6faed0a2fcca4bb91e7c82cf1c9e8, type: 3}
   - {fileID: 980100146850805271, guid: 8d305164e9ab84343bf2b62fa01f66cd, type: 3}
   - {fileID: 980100146850805271, guid: 07f0b105c19e5ed43bfd4fc4e87f4801, type: 3}
   - {fileID: 980100146850805271, guid: 71f99001b376a9e4baf84b0c370af944, type: 3}
   - {fileID: 980100146850805271, guid: 060ab4b0a527f194a8e7cbd6696008de, type: 3}
   - {fileID: 980100146850805271, guid: c2219873d5bc1e243bf14f5f883bcef1, type: 3}
-  - {fileID: 980100146850805271, guid: dcf6faed0a2fcca4bb91e7c82cf1c9e8, type: 3}
   - {fileID: 980100146850805271, guid: 2f88e7d550a2e5e4fb4dfa6641e1f267, type: 3}
   - {fileID: 980100146850805271, guid: 2f31f49e5c7aea54a91c19d2bfc0d59a, type: 3}
   - {fileID: 980100146850805271, guid: b0978118a3e8d1942a1c5bf511418163, type: 3}
@@ -6049,7 +6049,7 @@ MonoBehaviour:
   - {fileID: 1519183847934803847, guid: 8e0fc11bf2adeb448adf300cc352a402, type: 3}
   - {fileID: 6782845278681690980, guid: 7def023f6a9bf9041968a68d88c81bf6, type: 3}
   - {fileID: 6009554478940323327, guid: 02386f26cc765a14da2c9d57d2e44b38, type: 3}
-  falseEnemiesQuantity: 96000000960000009600000096000000
+  falseEnemiesQuantity: 0a0000000a0000000a0000000a000000
   allEnemiesList: []
   sizeMapX: 100
   sizeMapY: 100
@@ -9617,6 +9617,38 @@ MonoBehaviour:
   mana: {fileID: 310659111504139924, guid: e64c397c04e759d439d94edda7c417a4, type: 3}
   gold: {fileID: 310659111504139924, guid: 0a1026284e31c914da223730dcc6a428, type: 3}
   tempExp: {fileID: 310659111504139924, guid: 9f0f39d1a8a4fd943964590262e4aa38, type: 3}
+  healthBigSpriteList:
+  - {fileID: 6672340472763731729, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 5344480837552469090, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -399065490099471758, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -3272876325474868337, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  healthLargeSpriteList:
+  - {fileID: -1049760686348723944, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -7211367509557413602, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  manaBigSpriteList:
+  - {fileID: -1968302492131694454, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -4272842822391838376, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  manaLargeSpriteList:
+  - {fileID: 5031007378103520923, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 2230243138519018516, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  goldBigSpriteList:
+  - {fileID: -4939030482558361341, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -4939030482558361341, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  goldLargeSpriteList:
+  - {fileID: 1080930744390022889, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 1080930744390022889, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  tempExpBigSpriteList:
+  - {fileID: -6988764019275556124, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -6988764019275556124, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -6988764019275556124, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 1974369626626540396, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 8126853479380678069, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 4992433961517639873, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -6988764019275556124, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -6988764019275556124, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  tempExpLargeSpriteList:
+  - {fileID: 3848400131600762777, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 3848400131600762777, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
   bonusesOnTheMap: []
 --- !u!4 &1945469601
 Transform:

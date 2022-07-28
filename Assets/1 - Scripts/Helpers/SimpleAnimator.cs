@@ -11,6 +11,7 @@ public class SimpleAnimator : MonoBehaviour
 
     public AfterAnimation actionAfterAnimation;
     private SpriteRenderer image;
+    private Sprite startImage;
     public float framerate = 0.01f;
     private WaitForSeconds waitTime;
     private Coroutine animating;
@@ -19,14 +20,19 @@ public class SimpleAnimator : MonoBehaviour
 
     private void OnEnable()
     {
-        stopAnimation = false;
-
         image = GetComponent<SpriteRenderer>();
-        if (animating != null) StopCoroutine(animating);
+        startImage = spriteList[0];
 
         currentSpriteList = spriteList;
 
+        if (animating != null) StopCoroutine(animating);
+
         animating = StartCoroutine(Animate());
+    }
+
+    private void OnDisable()
+    {
+        ResetAnimation();
     }
 
     private IEnumerator Animate()
@@ -68,6 +74,13 @@ public class SimpleAnimator : MonoBehaviour
         stopAnimation = mode;
     }
 
+    public void ResetAnimation()
+    {
+        stopAnimation = false;
+        image.sprite = startImage;
+        currentSpriteList = spriteList;
+    }
+
     public void ChangeAnimation(Animations animation)
     {
         if(animating != null) StopCoroutine(animating);
@@ -76,7 +89,17 @@ public class SimpleAnimator : MonoBehaviour
 
         if(animation == Animations.Walk && spriteList.Count != 0) currentSpriteList = spriteList;
 
-        animating = StartCoroutine(Animate());
+        if(gameObject.activeInHierarchy == true) animating = StartCoroutine(Animate());
+    }
+
+    public void ChangeAnimation(List<Sprite> newSpriteList)
+    {
+        if(animating != null) StopCoroutine(animating);
+
+        currentSpriteList = newSpriteList;
+
+        if(gameObject.activeInHierarchy == true) animating = StartCoroutine(Animate());
+
     }
 
     public void SetSpeed(float newSpeed)

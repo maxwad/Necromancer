@@ -117,7 +117,7 @@ MonoBehaviour:
   bonusType: 1
   baseValue: 5
   originalBaseValue: 0
-  value: 2
+  value: 5
   isFromPoolObject: 0
 --- !u!114 &2774253302354803239
 MonoBehaviour:

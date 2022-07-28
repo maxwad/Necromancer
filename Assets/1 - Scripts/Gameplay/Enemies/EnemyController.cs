@@ -211,11 +211,11 @@ public class EnemyController : MonoBehaviour
     {
         if(GlobalStorage.instance.isEnoughTempExp == true && bonusType == BonusType.TempExp)
         {
-            GlobalStorage.instance.bonusManager.CreateBonus(alternativeBonusType, transform.position, exp);
+            GlobalStorage.instance.bonusManager.CreateBonus(isBoss, alternativeBonusType, transform.position, exp);
             return;
         }
 
-        GlobalStorage.instance.bonusManager.CreateBonus(bonusType, transform.position, exp);
+        GlobalStorage.instance.bonusManager.CreateBonus(isBoss, bonusType, transform.position, exp);
     }
 
     public void MakeBoss() 
@@ -244,7 +244,6 @@ public class EnemyController : MonoBehaviour
         exp                  /= 50;
 
         gameObject.GetComponent<BossController>().StopSpelling();
-        //GlobalStorage.instance.spellManager.GetComponent<SpellLibrary>().AbortBossSpell();
         Destroy(gameObject.GetComponent<BossController>());
     }
 

@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonusType: 0
-  baseValue: 5
+  baseValue: 20
   originalBaseValue: 0
   value: 20
   isFromPoolObject: 0
@@ -138,4 +138,4 @@ MonoBehaviour:
   - {fileID: 567963113581065628, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
   spriteListAttack: []
   actionAfterAnimation: 0
-  framerate: 0.2
+  framerate: 0.25

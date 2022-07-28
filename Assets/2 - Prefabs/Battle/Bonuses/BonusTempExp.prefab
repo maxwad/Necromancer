@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2605775561934873846}
   - component: {fileID: 3906939543600408266}
   - component: {fileID: 4449071221621892315}
+  - component: {fileID: 9149545506651939734}
   m_Layer: 0
   m_Name: BonusTempExp
   m_TagString: Untagged
@@ -118,3 +119,27 @@ MonoBehaviour:
   originalBaseValue: 0
   value: 1
   isFromPoolObject: 1
+--- !u!114 &9149545506651939734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310659111504139924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4955e2c422d8e3845b26019efc478f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteList:
+  - {fileID: -7745848540696411948, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -7745848540696411948, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 2823430643740256620, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 3509857456108771121, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: 8986615140600342538, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -7745848540696411948, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -7745848540696411948, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  - {fileID: -7745848540696411948, guid: 9ff0c2acc3a2f5646acf2cd6f467637d, type: 3}
+  spriteListAttack: []
+  actionAfterAnimation: 0
+  framerate: 0.25

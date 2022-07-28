@@ -11,11 +11,24 @@ public class BonusManager : MonoBehaviour
     [SerializeField] private GameObject gold;
     [SerializeField] private GameObject tempExp;
 
+    [Header("Sprites")]
+    [SerializeField] private List<Sprite> healthBigSpriteList;
+    [SerializeField] private List<Sprite> healthLargeSpriteList;
+    [Space]
+    [SerializeField] private List<Sprite> manaBigSpriteList;
+    [SerializeField] private List<Sprite> manaLargeSpriteList;
+    [Space]
+    [SerializeField] private List<Sprite> goldBigSpriteList;
+    [SerializeField] private List<Sprite> goldLargeSpriteList;
+    [Space]
+    [SerializeField] private List<Sprite> tempExpBigSpriteList;
+    [SerializeField] private List<Sprite> tempExpLargeSpriteList;
+
     private float bonusBoost = 0;
     private GameObject currentBonus;
     public List<GameObject> bonusesOnTheMap = new List<GameObject>();
 
-    public void CreateBonus(BonusType type, Vector3 position, float value = 0)
+    public void CreateBonus(bool isThisFromBoss, BonusType type, Vector3 position, float value = 0)
     {
         switch (type)
         {
@@ -64,7 +77,7 @@ public class BonusManager : MonoBehaviour
 
 
         if(value != 0) bonus.GetComponent<BonusController>().SetBonusValue(value);
-        bonus.GetComponent<BonusController>().BoostBonusValue(bonusBoost);
+        bonus.GetComponent<BonusController>().BoostBonusValue(bonusBoost, isThisFromBoss);
 
         bonusesOnTheMap.Add(bonus);
     }
@@ -77,6 +90,37 @@ public class BonusManager : MonoBehaviour
     public void BoostBonus(float value)
     {
         bonusBoost = value;
+    }
+
+    public List<Sprite> GetNewSprites(BonusType type, int size)
+    {
+        switch(type)
+        {
+            case BonusType.Health:
+                if(size == 1) return healthBigSpriteList;
+                if(size == 2) return healthLargeSpriteList;
+                break;
+
+            case BonusType.Mana:
+                if(size == 1) return manaBigSpriteList;
+                if(size == 2) return manaLargeSpriteList;
+                break;
+
+            case BonusType.Gold:
+                if(size == 1) return goldBigSpriteList;
+                if(size == 2) return goldLargeSpriteList;
+                break; 
+
+            case BonusType.TempExp:
+                if(size == 1) return tempExpBigSpriteList;
+                if(size == 2) return tempExpLargeSpriteList;
+                break;
+
+            default:
+                break;
+        }
+
+        return null;
     }
 
     private void OnEnable()

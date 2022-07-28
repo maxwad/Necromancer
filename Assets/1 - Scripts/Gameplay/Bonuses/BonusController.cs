@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static NameManager;
-using static UnityEngine.GraphicsBuffer;
 
 public class BonusController : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class BonusController : MonoBehaviour
     [SerializeField] private float originalBaseValue;
     public float value;
     public bool isFromPoolObject = false;
+    private bool isSpecialBonus = false;
 
     private GameObject player;
     private bool isActivate = false;
@@ -18,11 +18,19 @@ public class BonusController : MonoBehaviour
     private float inertion = -32f;
     private float currentInertion;
 
+    private BonusManager bonusManager;
+    private List<Sprite> currentSpriteList = new List<Sprite>();
+    private SimpleAnimator animator;
+
+
     private void Awake()
     {
         currentInertion = inertion;
         value = baseValue;
         originalBaseValue = baseValue;
+
+        bonusManager = GlobalStorage.instance.bonusManager;
+        animator = GetComponent<SimpleAnimator>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,6 +47,7 @@ public class BonusController : MonoBehaviour
         if(isActivate == false)
         {
             isActivate = true;
+            animator.StopAnimation(true);
             StartCoroutine("ToThePlayer");            
         }
         
@@ -61,7 +70,7 @@ public class BonusController : MonoBehaviour
     public void DestroyMe()
     {
         isActivate = false;
-        GlobalStorage.instance.bonusManager.bonusesOnTheMap.Remove(gameObject);
+        bonusManager.bonusesOnTheMap.Remove(gameObject);
         ResetBonusValue();
 
         if (isFromPoolObject == true)
@@ -75,9 +84,10 @@ public class BonusController : MonoBehaviour
         }
     }
 
-    public void BoostBonusValue(float boost)
+    public void BoostBonusValue(float boost, bool isThisFromBoss = false)
     {
         value = baseValue + (baseValue * boost);
+        if(isSpecialBonus == false) CheckSizeOfBonus(isThisFromBoss);
     }
 
     public void SetBonusValue(float newValue)
@@ -89,6 +99,32 @@ public class BonusController : MonoBehaviour
     {
         baseValue = originalBaseValue;
         value = originalBaseValue;
+        isSpecialBonus = false;
+    }
+
+    private void CheckSizeOfBonus(bool isThisFromBoss)
+    {
+        int size = 0;
+
+        if(value > baseValue) size = 1;
+
+        if(value > baseValue * 3) size = 2;
+
+        if(isThisFromBoss == true)
+        {
+            isSpecialBonus = true;
+            size = 2;
+        }
+
+        if(size != 0)
+        {
+            currentSpriteList = bonusManager.GetNewSprites(bonusType, size);
+            animator.ChangeAnimation(currentSpriteList);
+        }
+        else
+        {
+            animator.ResetAnimation();
+        }
     }
 
     private void OnEnable()

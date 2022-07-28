@@ -298,7 +298,7 @@ public class SpellLibrary : MonoBehaviour
                 BonusController bonus = bonuses[i].GetComponent<BonusController>();
                 if(bonus.bonusType == BonusType.TempExp)
                 {
-                    GlobalStorage.instance.bonusManager.CreateBonus(BonusType.Gold, bonus.transform.position);
+                    GlobalStorage.instance.bonusManager.CreateBonus(false, BonusType.Gold, bonus.transform.position);
                     bonus.DestroyMe();
                 }
             }
