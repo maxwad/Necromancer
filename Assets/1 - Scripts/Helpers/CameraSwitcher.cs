@@ -3,24 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CameraManager : MonoBehaviour
+public class CameraSwitcher : MonoBehaviour
 {
+    // Start options:
+    // x:0, y: 0, z: -10
+    // size: 10
+
     [SerializeField] private GameObject veil;
     [SerializeField] private Image fadeScreen;
 
     [SerializeField] private GameObject battlePlayer;
     [SerializeField] private GameObject globalPlayer;
 
-    private Vector3 globalCameraPosition = new Vector3(0, 0, -10);
+    private Vector3 globalCameraPosition = Vector3.zero;
+    private Vector3 globalCameraRotation = Vector3.zero;
     private Vector3 battleCameraPosition = new Vector3(0, 0, 10);
 
     private GlobalCamera globalCameraMode;
     private BattleCamera battleCameraMode;
 
+    [SerializeField] private GameObject MapsCameraContainer;
+
+    private Camera mainCamera;
+
     private void Start()
     {
+        mainCamera = Camera.main;
+
         globalCameraMode = GetComponent<GlobalCamera>();
         battleCameraMode = GetComponent<BattleCamera>();
+
+        globalCameraMode.SetGlobalCamera(globalCameraPosition, globalCameraRotation, globalPlayer);
     }
 
     private void FadeIn(bool mode)
@@ -52,14 +65,19 @@ public class CameraManager : MonoBehaviour
         {            
             globalCameraMode.enabled = true;
             battleCameraMode.enabled = false;
-            globalCameraMode.SetGlobalCamera(globalCameraPosition, globalPlayer);
+
+            mainCamera.transform.SetParent(MapsCameraContainer.transform);
+            globalCameraMode.SetGlobalCamera(globalCameraPosition, globalCameraRotation, globalPlayer);
         }
         else
         {
             globalCameraPosition = transform.position;
+            globalCameraRotation = transform.eulerAngles;
 
             globalCameraMode.enabled = false;
             battleCameraMode.enabled = true;
+
+            mainCamera.transform.SetParent(null);
             battleCameraMode.SetBattleCamera(battleCameraPosition, battlePlayer);
         }
 

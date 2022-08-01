@@ -32,17 +32,17 @@ public class PlayerManager : MonoBehaviour
         if (mode == false)
         {
             globalPlayer.SetActive(false);
-            globalMap.SetActive(false);
+            //globalMap.SetActive(false);
 
             battlePlayer.SetActive(true);
         }
         else
         {
             globalPlayer.SetActive(true);
-            globalMap.SetActive(true);
+            //globalMap.SetActive(true);
 
             battlePlayer.SetActive(false);
-            //battleMap we turn off in BattleMap script, because we should clear it first!
+            //battleMap we never turn off, just clear in BattleMap script
         }
     }
 

@@ -15,9 +15,12 @@ public class BattleCamera : MonoBehaviour
     private float shakingDuring = 0.5f;
     private Coroutine coroutine;
 
-    private void Start()
+    private Camera mainCamera;
+
+    private void Awake()
     {
-        originalCameraSize = Camera.main.orthographicSize;
+        mainCamera = Camera.main;
+        originalCameraSize = mainCamera.orthographicSize;
     }
 
     private void Update()
@@ -30,6 +33,8 @@ public class BattleCamera : MonoBehaviour
     {
         battlePlayer = player;
         transform.position = startPosition;
+        transform.eulerAngles = Vector3.zero;
+        mainCamera.orthographic = true;
     }
 
 
@@ -38,7 +43,7 @@ public class BattleCamera : MonoBehaviour
     public void ResetCameraShakingPoint(float shakingTime = 0.5f)
     {
         timeCount = 0f;
-        Camera.main.orthographicSize = originalCameraSize;
+        mainCamera.orthographicSize = originalCameraSize;
         shakingDuring = shakingTime;
     }
 
@@ -47,7 +52,7 @@ public class BattleCamera : MonoBehaviour
         while(timeCount < shakingDuring)        
         {
             timeCount += shakingInterval;
-            Camera.main.orthographicSize = (Camera.main.orthographicSize == originalCameraSize) ? 
+            mainCamera.orthographicSize = (mainCamera.orthographicSize == originalCameraSize) ? 
                 (originalCameraSize - (originalCameraSize * shakePercent)) : 
                 originalCameraSize;
 
