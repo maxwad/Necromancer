@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,49 +20,14 @@ public class HexMesh : MonoBehaviour
         hexMesh.name = "Hex Mesh";
     }
 
-    internal void Triangulate(HexCell[] cells)
-    {
-        hexMesh.Clear();
-        vertices.Clear();
-        triangles.Clear();
-        colors.Clear();
-
-        for(int i = 0; i < cells.Length; i++)
-            TriangulateCell(cells[i]);
-
-        hexMesh.vertices  = vertices.ToArray();
-        hexMesh.triangles = triangles.ToArray();
-        hexMesh.colors    = colors.ToArray();
-        hexMesh.RecalculateNormals();
-
-        meshCollider.sharedMesh = hexMesh;
-    }
-
-    private void TriangulateCell(HexCell cell)
-    {
-        Vector2 center = (Vector2)cell.transform.localPosition;
-
-        for(int i = 0; i < 6; i++)
-        {
-            AddTriangle(
-                center,
-                center + HexMetrics.corners[i],
-                center + HexMetrics.corners[i + 1]
-                );
-
-            AddTriangleColor(cell.Color);
-        }
-
-    }
-
-    private void AddTriangleColor(Color color)
+    public void AddTriangleColor(Color color)
     {
         colors.Add(color);
         colors.Add(color);
         colors.Add(color);
     }
 
-    private void AddTriangle(Vector2 p1, Vector2 p2, Vector2 p3)
+    public void AddTriangle(Vector2 p1, Vector2 p2, Vector2 p3)
     {
         int vertexIndex = vertices.Count;
 
@@ -75,5 +38,23 @@ public class HexMesh : MonoBehaviour
         triangles.Add(vertexIndex);
         triangles.Add(vertexIndex + 1);
         triangles.Add(vertexIndex + 2);
+    }
+
+    public void Clear()
+    {
+        hexMesh.Clear();
+        vertices.Clear();
+        triangles.Clear();
+        colors.Clear();
+    }
+
+    public void Apply()
+    {
+        hexMesh.SetVertices(vertices);
+        hexMesh.SetTriangles(triangles, 0);
+        hexMesh.SetColors(colors);
+        hexMesh.RecalculateNormals();
+
+        meshCollider.sharedMesh = hexMesh;
     }
 }

@@ -60,7 +60,7 @@ public class HexGrid : MonoBehaviour
         }
     }
 
-    public void ColorCell(Vector3 point, Color color)
+    public HexCell GetCell(Vector3 point)
     {
         point = transform.InverseTransformPoint(point);
 
@@ -68,8 +68,18 @@ public class HexGrid : MonoBehaviour
         Debug.Log("Clicked at " + coordinates.ToString());
 
         int index = coordinates.X + coordinates.Y * cellCountX + coordinates.Y / 2;
-        HexCell cell = cells[index];
-        cell.Color = color;
+        return cells[index];
+    }
+
+    public HexCell GetCell(HexCoordinates coordinates)
+    {
+        int y = coordinates.Y;
+        if(y < 0 || y >= cellCountY) return null;
+
+        int x = coordinates.X + y / 2;
+        if(x < 0 || x >= cellCountX) return null;
+
+        return cells[x + y * cellCountX];
     }
 
     private void CreateOneCell(int x, int y, int i)
@@ -79,13 +89,11 @@ public class HexGrid : MonoBehaviour
         position.y = y * (HexMetrics.outerRadius * 1.5f) * scaleMultiplier;
 
         HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
-        //cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
         cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, y);
         cell.Color = defaultColor;
 
         TMP_Text label = Instantiate<TMP_Text>(cellLabel);
-        //label.rectTransform.SetParent(gridCanvas.transform, false);
         label.rectTransform.anchoredPosition = new Vector2(position.x, position.y);
         label.text = cell.coordinates.ToString();
 
@@ -104,5 +112,13 @@ public class HexGrid : MonoBehaviour
         int localY = y - partY * HexMetrics.partSizeY;
         part.AddCell(localX + (localY * HexMetrics.partSizeX), cell);
 
+    }
+
+    public void ShowUI(bool visible)
+    {
+        for(int i = 0; i < mapsParts.Length; i++)
+        {
+            mapsParts[i].ShowUI(visible);
+        }
     }
 }
